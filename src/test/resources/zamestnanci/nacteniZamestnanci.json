@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "jmeno": "Petr",
+    "prijmeni": "Novák"
+  },
+  {
+    "id": 2,
+    "jmeno": "Ondra",
+    "prijmeni": "Malý"
+  },
+  {
+    "id": 3,
+    "jmeno": "Markéta",
+    "prijmeni": "Pospíšilová"
+  },
+  {
+    "id": 4,
+    "jmeno": "Lenka",
+    "prijmeni": "Drahá"
+  }
+]
