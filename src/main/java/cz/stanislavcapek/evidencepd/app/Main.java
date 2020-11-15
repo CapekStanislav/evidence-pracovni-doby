@@ -1,6 +1,6 @@
 package cz.stanislavcapek.evidencepd.app;
 
-import cz.stanislavcapek.evidencepd.view.HlavniOkno;
+import cz.stanislavcapek.evidencepd.view.MainWindow;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -15,12 +15,9 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Main {
 
-    private static void vytvorAZobrazGUI() {
-        // JFrame
-        JFrame okno = new HlavniOkno();
-
-        // zobrazení okna
-        okno.setVisible(true);
+    private static void createAndShowWindow() {
+        JFrame mainWindow = new MainWindow();
+        mainWindow.setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -29,7 +26,7 @@ public class Main {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             }
-            vytvorAZobrazGUI();
+            createAndShowWindow();
         });
     }
 

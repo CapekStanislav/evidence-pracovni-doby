@@ -1,7 +1,5 @@
 package cz.stanislavcapek.evidencepd.appconfig;
 
-import lombok.Value;
-
 import java.nio.file.Path;
 
 /**
@@ -12,27 +10,32 @@ import java.nio.file.Path;
  */
 public class ConfigPaths {
 
-    public static final Path DAT = Path.of("dat");
-    public static final Path SVATKY = Path.of("dat/svatky");
-    public static final Path EVIDENCE = Path.of("dat/evidence");
-    public static final Path ZAMESTNANCI = Path.of("dat/zamestnanci");
+    public static final Path DATA_PATH = Path.of("data");
+    public static final Path HOLIDAYS_PATH = DATA_PATH.resolve("svatky");
+    public static final Path RECORDS_PATH = DATA_PATH.resolve("evidence");
+    public static final Path EMPLOYEES_PATH = DATA_PATH.resolve("zamestnanci");
+    public static final Path LOG_PATH = DATA_PATH.resolve("logs");
 
     private ConfigPaths() {
     }
 
-    public static Path getDAT() {
-        return DAT;
+    public static Path getDataPath() {
+        return DATA_PATH;
     }
 
-    public static Path getSVATKY() {
-        return SVATKY;
+    public static Path getHolidaysPath() {
+        return HOLIDAYS_PATH;
     }
 
-    public static Path getEVIDENCE() {
-        return EVIDENCE;
+    public static Path getRecordsPath() {
+        return RECORDS_PATH;
     }
 
-    public static Path getZAMESTNANCI() {
-        return ZAMESTNANCI;
+    public static Path getEmployeesPath() {
+        return EMPLOYEES_PATH;
+    }
+
+    public static Path getLogPath() {
+        return LOG_PATH;
     }
 }

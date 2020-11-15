@@ -9,10 +9,10 @@ import java.nio.file.Path;
  * @author Stanislav Čapek
  * @version 1.0
  */
-public interface Dao <T>{
+public interface Dao<T> {
 
-    void uloz(Path cesta,T objekt) throws IOException;
+    void save(Path path, T object) throws IOException;
 
-    T nacti(Path cesta) throws IOException;
+    T load(Path path) throws IOException;
 
 }
