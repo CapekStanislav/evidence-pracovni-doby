@@ -1,9 +1,12 @@
 package cz.stanislavcapek.evidencepd.view.component;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
+import cz.stanislavcapek.evidencepd.view.component.utils.EmptyStringInputVerifier;
 
 import javax.swing.*;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * GUI pro editaci zaměstnance předaného v parametru konstruktoru. Třída na požádání vrací nového upraveného
@@ -27,7 +30,7 @@ class EmployeeEditorPanel extends JPanel {
                 employee.getFirstName(),
                 employee.getLastName());
 
-        StringVerifier stringVerifier = new StringVerifier();
+        EmptyStringInputVerifier stringVerifier = new EmptyStringInputVerifier();
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -41,6 +44,12 @@ class EmployeeEditorPanel extends JPanel {
 
         txtFirstName = new JTextField(employee.getFirstName());
         txtFirstName.setInputVerifier(stringVerifier);
+        txtFirstName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                newEmployee.setFirstName(txtFirstName.getText());
+            }
+        });
         panel.add(txtFirstName);
 
         panel.add(Box.createRigidArea(new Dimension(5, 5)));
@@ -50,6 +59,12 @@ class EmployeeEditorPanel extends JPanel {
 
         txtLastName = new JTextField(employee.getLastName());
         txtLastName.setInputVerifier(stringVerifier);
+        txtLastName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                newEmployee.setLastName(txtLastName.getText());
+            }
+        });
         panel.add(txtLastName);
         panel.add(Box.createRigidArea(new Dimension(10, 10)));
 
@@ -63,41 +78,6 @@ class EmployeeEditorPanel extends JPanel {
      */
     Employee getNewEmployee() {
         return newEmployee;
-    }
-
-    /**
-     * Validátor textového řetězce
-     */
-    private class StringVerifier extends InputVerifier {
-
-        // FIXME: 13.11.2020 odtrátovat - a komunikaci editoru řešit přes listener PropertyChangeListener
-
-        @Override
-        public boolean verify(JComponent input) {
-            if (input instanceof JTextField) {
-                return !((JTextField) input).getText().equals("");
-            }
-            return false;
-        }
-
-        @Override
-        public boolean shouldYieldFocus(JComponent source) {
-
-            if (verify(source)) {
-                if (source.equals(txtFirstName)) {
-                    String firstName = ((JTextField) source).getText();
-                    newEmployee.setFirstName(firstName);
-                } else if (source.equals(txtLastName)) {
-                    String lastName = ((JTextField) source).getText();
-                    newEmployee.setLastName(lastName);
-                }
-                return true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Nesmí obsahovat prázdné pole",
-                        "Chyba při zadávání", JOptionPane.WARNING_MESSAGE);
-            }
-            return false;
-        }
     }
 
 }

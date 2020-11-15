@@ -116,7 +116,7 @@ public class WorkingTimeRecordPanel extends JPanel {
             pnlRecordFromTempl.setVisible(true);
             final Set<Integer> ids = compareLists();
             if (!ids.isEmpty()) {
-                showPosibilityAddEmployeesDialog(ids);
+                showPossibilityAddEmployeesDialog(ids);
             }
         } else {
             lblLoadValidation.setText("Není načten správný soubor");
@@ -154,7 +154,7 @@ public class WorkingTimeRecordPanel extends JPanel {
      *
      * @param ids množnina ID zaměstnanců
      */
-    private void showPosibilityAddEmployeesDialog(Set<Integer> ids) {
+    private void showPossibilityAddEmployeesDialog(Set<Integer> ids) {
 //        final int length = ids.size();
         List<JPanel> panels = new ArrayList<>();
         for (Integer id : ids) {

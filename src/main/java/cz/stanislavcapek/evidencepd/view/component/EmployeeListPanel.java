@@ -9,7 +9,10 @@ package cz.stanislavcapek.evidencepd.view.component;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
+import cz.stanislavcapek.evidencepd.view.component.utils.ComponentsColorStrategy;
 import cz.stanislavcapek.evidencepd.view.component.utils.EmployeeListCellRenderer;
+import cz.stanislavcapek.evidencepd.view.component.utils.EmptyStringInputVerifier;
+import cz.stanislavcapek.evidencepd.view.component.utils.IntegerInputVerifier;
 import jiconfont.IconCode;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
@@ -56,9 +59,9 @@ public class EmployeeListPanel extends JPanel {
 
         // action creating
         Action pridejAction = new AddAction("Přidej", "Přidá nového zaměstnance", KeyEvent.VK_P);
-        removeAction = new RemoveAciton("Odeber", "Odebere vybraného zaměstnance", KeyEvent.VK_O);
-        editAciton = new EditAciton("Uprav", "Upraví vybraného zaměstnance", KeyEvent.VK_U);
-        Action nactiAction = new NactiAction("Načti", "Načíst nový seznam zaměstnance", KeyEvent.VK_N);
+        removeAction = new RemoveAction("Odeber", "Odebere vybraného zaměstnance", KeyEvent.VK_O);
+        editAciton = new EditAction("Uprav", "Upraví vybraného zaměstnance", KeyEvent.VK_U);
+        Action nactiAction = new LoadingAction("Načti", "Načíst nový seznam zaměstnance", KeyEvent.VK_N);
 
         // JPanel paddning //
         this.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -89,6 +92,7 @@ public class EmployeeListPanel extends JPanel {
         panel.add(lbl);
 
         panel.add(Box.createHorizontalGlue());
+
 
         txtId = new JTextField(sizeOfTextField);
         txtId.setMaximumSize(txtId.getPreferredSize());
@@ -200,30 +204,22 @@ public class EmployeeListPanel extends JPanel {
      * Obsluha načtení seznamu strážníků, smaže původní seznam a nahradí jej novým
      */
     private void loadEmployees() {
-        // TODO: 15.11.2020 opět rozdělit do metod
         JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
-        int volba = chooser.showOpenDialog(null);
+        int choice = chooser.showOpenDialog(this);
 
-        if (volba == JFileChooser.APPROVE_OPTION) {
+        if (choice == JFileChooser.APPROVE_OPTION) {
             Path file = Paths.get(chooser.getSelectedFile().getAbsolutePath());
             EmployeesDao io = new EmployeesDao();
 
             try {
-                boolean b = false;
-                List<Employee> seznam;
-                if ((seznam = io.load(file)) != null) {
-                    employeeListModel.clearList();
-                    for (Employee s :
-                            seznam) {
-                        employeeListModel.addEmployee(s);
-                    }
-                    b = true;
-                }
-                showLoadingResultDialog(b);
+                List<Employee> employeeList = io.load(file);
+
+                employeeListModel.clearList();
+                employeeList.forEach(employeeListModel::addEmployee);
+
+                showLoadingResultDialog(true);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Nepodařilo se načíst seznam strážníků. " +
-                                "Při náčítání souboru došlo k chybě",
-                        "Chyba při náčítání", JOptionPane.ERROR_MESSAGE);
+                showLoadingResultDialog(false);
                 e.printStackTrace();
             }
         }
@@ -232,71 +228,17 @@ public class EmployeeListPanel extends JPanel {
     /**
      * Ukáže dialogové okno s výsledkem načtení souboru
      *
-     * @param b výsledek
+     * @param success výsledek
      */
-    private void showLoadingResultDialog(boolean b) {
-        if (b) {
+    private void showLoadingResultDialog(boolean success) {
+        if (success) {
             JOptionPane.showMessageDialog(null, "Seznam úspěšně načten."
                     , "Načtení v pořádku", JOptionPane.PLAIN_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Seznam se nepodařilo načíst. " +
-                            "Nesprávný formát souboru"
+                            "Při načítání došlo k neočekávané chybě"
                     , "Chyba při načítání", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    /**
-     * Metoda validuje textové pole ID. Nesmí být prázdné a musí být číslo.
-     *
-     * @return false, prázdné nebo to není číslo
-     */
-    private boolean validateId() {
-        try {
-            Integer.parseInt(txtId.getText());
-            txtId.setBackground(Color.white);
-            return true;
-        } catch (NumberFormatException e) {
-            txtId.setBackground(Color.YELLOW);
-            return false;
-        }
-    }
-
-    /**
-     * Metoda validuje textová pole jména a příjmení, nesmí být prázdná
-     *
-     * @param txtField textové pole
-     * @return false, když je alespoň jedno pole prázdné
-     */
-    private boolean validateName(JTextField txtField) {
-        if (txtField.getText().equalsIgnoreCase("")) {
-            txtField.setBackground(Color.YELLOW);
-            return false;
-        } else {
-            txtField.setBackground(Color.WHITE);
-            return true;
-        }
-    }
-
-    /**
-     * Metoda kontroluje zda jsou všechny pole (Služební číslo, jméno a
-     * příjmení) správně vyplněné. Pokud není žádá o doplnění.
-     *
-     * @return {@code true} - v případě, kdy je vše vyplněno<br>
-     * {@code false} - alespoň jedno pole je prázdné
-     */
-    private Boolean isAllFilled() {
-        boolean valId = validateId();
-        boolean valJmeno = validateName(txtFirstName);
-        boolean valPrijmeni = validateName(txtLastName);
-
-        boolean isAllFilled = true;
-        if (!valId || !valJmeno || !valPrijmeni) {
-            isAllFilled = false;
-        }
-        if (!isAllFilled) {
-            showNeededFieldsDialog(valId, valJmeno, valPrijmeni);
-        }
-        return isAllFilled;
     }
 
     /**
@@ -372,6 +314,14 @@ public class EmployeeListPanel extends JPanel {
             }
         }
 
+        private boolean isAllFilled() {
+            final EmptyStringInputVerifier stringInputVerifier = new EmptyStringInputVerifier();
+            final InputVerifier integerInputVerifier = new IntegerInputVerifier();
+            return stringInputVerifier.shouldYieldFocus(txtFirstName, null) &&
+                    stringInputVerifier.shouldYieldFocus(txtLastName, null) &&
+                    integerInputVerifier.shouldYieldFocus(txtId, null);
+        }
+
         private void showExistingEnployeeDialog() {
             JOptionPane.showMessageDialog(btnAdd, "Strážník nebyl přidán! Již existuje strážník " +
                     "se stejným služebním číslem \n", "Nelze přidat strážníka", JOptionPane.ERROR_MESSAGE);
@@ -381,9 +331,9 @@ public class EmployeeListPanel extends JPanel {
     /**
      * Akce ODEBER
      */
-    private class RemoveAciton extends AbstractAction {
+    private class RemoveAction extends AbstractAction {
 
-        RemoveAciton(String name, String description, int mnemonic) {
+        RemoveAction(String name, String description, int mnemonic) {
             super(name);
             IconFontSwing.register(Elusive.getIconFont());
             final IconCode removIcon = Elusive.REMOVE;
@@ -427,9 +377,9 @@ public class EmployeeListPanel extends JPanel {
     /**
      * Akce UPRAV
      */
-    private class EditAciton extends AbstractAction {
+    private class EditAction extends AbstractAction {
 
-        EditAciton(String name, String description, int mnemonic) {
+        EditAction(String name, String description, int mnemonic) {
             super(name);
             IconFontSwing.register(Elusive.getIconFont());
 
@@ -474,9 +424,9 @@ public class EmployeeListPanel extends JPanel {
     /**
      * NAČTI zaměstnance
      */
-    private class NactiAction extends AbstractAction {
+    private class LoadingAction extends AbstractAction {
 
-        NactiAction(String name, String description, int mnemonic) {
+        LoadingAction(String name, String description, int mnemonic) {
             super(name);
             IconFontSwing.register(Elusive.getIconFont());
             final Elusive folderOpen = Elusive.FOLDER_OPEN;
