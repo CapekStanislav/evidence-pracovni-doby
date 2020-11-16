@@ -5,10 +5,11 @@
  */
 package cz.stanislavcapek.evidencepd.view.component;
 
-import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
+import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxTemplateFactory;
+import cz.stanislavcapek.evidencepd.view.component.utils.IntegerInputVerifier;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class WorkAttendanceTemplatePanel extends JPanel {
     private final JTextField txtYear;
     private final EmployeeListModel employeeListModel;
     private final JViewport viewport;
-    private List<Employee> selectedEmployeeList;
+    private final List<Employee> selectedEmployeeList;
 
     /**
      * Konstruktor bez parametru.
@@ -69,7 +70,19 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         panel.add(lbl);
 
         txtYear = new JTextField(10);
-        txtYear.setInputVerifier(new YearInputVerifier());
+        final InputVerifier integerInputVerifier = new IntegerInputVerifier() {
+            @Override
+            public boolean shouldYieldFocus(JComponent source, JComponent target) {
+                if (super.shouldYieldFocus(source, target)) {
+                    btnGenerate.setEnabled(true);
+                    return true;
+                } else {
+                    btnGenerate.setEnabled(false);
+                    return false;
+                }
+            }
+        };
+        txtYear.setInputVerifier(integerInputVerifier);
         Set<AWTKeyStroke> keys = txtYear.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
         Set<AWTKeyStroke> newKeys = new HashSet<>(keys);
         newKeys.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
@@ -270,37 +283,6 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         } else {
             JOptionPane.showMessageDialog(null, "Šablonu se nepodařilo vytvořit."
                     , "Chyba při generování šablony", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    /**
-     * Vnitřní třída, která validuje zadaný rok.
-     */
-    private class YearInputVerifier extends InputVerifier {
-
-        @Override
-        public boolean verify(JComponent input) {
-            try {
-                Integer.parseInt(txtYear.getText());
-            } catch (NumberFormatException e) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public boolean shouldYieldFocus(JComponent source) {
-
-            if (verify(source)) {
-                txtYear.setBackground(Color.WHITE);
-                btnGenerate.setEnabled(true);
-                btnGenerate.doClick();
-                return true;
-            } else {
-                txtYear.setBackground(Color.YELLOW);
-                btnGenerate.setEnabled(false);
-                return false;
-            }
         }
     }
 

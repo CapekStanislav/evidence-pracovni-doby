@@ -30,7 +30,18 @@ class EmployeeEditorPanel extends JPanel {
                 employee.getFirstName(),
                 employee.getLastName());
 
-        EmptyStringInputVerifier stringVerifier = new EmptyStringInputVerifier();
+        InputVerifier stringVerifier = new EmptyStringInputVerifier() {
+            @Override
+            public boolean shouldYieldFocus(JComponent source, JComponent target) {
+                if (super.shouldYieldFocus(source, target)) {
+                    return true;
+                } else {
+                    String message = "Políčko musí být vyplněno";
+                    JOptionPane.showMessageDialog(EmployeeEditorPanel.this,message);
+                    return false;
+                }
+            }
+        };
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));

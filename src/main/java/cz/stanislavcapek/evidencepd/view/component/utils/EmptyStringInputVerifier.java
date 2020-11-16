@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 import java.awt.Color;
 
 /**
- * Validátor textového řetězce
+ * Validátor textového řetězce. Při neplatném vstupu obarví element na žluto.
  */
 public class EmptyStringInputVerifier extends InputVerifier {
 
@@ -21,13 +21,12 @@ public class EmptyStringInputVerifier extends InputVerifier {
 
     @Override
     public boolean shouldYieldFocus(JComponent source, JComponent target) {
-        if (!verify(source)) {
-            String message = "Pole musí být vyplněno.";
-            JOptionPane.showMessageDialog(source, message);
+        if (verify(source)) {
+            source.setBackground(Color.WHITE);
+            return true;
+        } else {
             source.setBackground(Color.YELLOW);
             return false;
         }
-        source.setBackground(Color.WHITE);
-        return true;
     }
 }

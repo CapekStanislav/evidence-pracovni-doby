@@ -9,7 +9,6 @@ package cz.stanislavcapek.evidencepd.view.component;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
-import cz.stanislavcapek.evidencepd.view.component.utils.ComponentsColorStrategy;
 import cz.stanislavcapek.evidencepd.view.component.utils.EmployeeListCellRenderer;
 import cz.stanislavcapek.evidencepd.view.component.utils.EmptyStringInputVerifier;
 import cz.stanislavcapek.evidencepd.view.component.utils.IntegerInputVerifier;
@@ -315,8 +314,20 @@ public class EmployeeListPanel extends JPanel {
         }
 
         private boolean isAllFilled() {
-            final EmptyStringInputVerifier stringInputVerifier = new EmptyStringInputVerifier();
+            final InputVerifier stringInputVerifier = new EmptyStringInputVerifier() {
+                @Override
+                public boolean shouldYieldFocus(JComponent source, JComponent target) {
+                    if (super.shouldYieldFocus(source, target)) {
+                        return true;
+                    } else {
+                        String message = "Políčko musí být vyplněné.";
+                        JOptionPane.showMessageDialog(EmployeeListPanel.this, message);
+                        return false;
+                    }
+                }
+            };
             final InputVerifier integerInputVerifier = new IntegerInputVerifier();
+
             return stringInputVerifier.shouldYieldFocus(txtFirstName, null) &&
                     stringInputVerifier.shouldYieldFocus(txtLastName, null) &&
                     integerInputVerifier.shouldYieldFocus(txtId, null);

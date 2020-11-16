@@ -6,7 +6,8 @@ import javax.swing.JTextField;
 import java.awt.Color;
 
 /**
- * An instance of class {@code IntegerInputVerifier}
+ * An instance of class {@code IntegerInputVerifier} validate Integer input.
+ * If is not valid, it colors it to yellow.
  *
  * @author Stanislav Čapek
  * @version 1.0
