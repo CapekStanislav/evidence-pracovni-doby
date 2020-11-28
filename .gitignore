@@ -35,4 +35,6 @@ build/
 
 ### Others ###
 /data
+/out
+/src/main/java/META-INF
 

@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.view.component;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
-import cz.stanislavcapek.evidencepd.shiftplan.ShfitPlan;
+import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -24,7 +24,7 @@ import java.nio.file.Path;
 public class TemplateLoaderAction extends AbstractAction {
 
     private JFileChooser fileChooser = new JFileChooser();
-    private ShfitPlan shfitPlan;
+    private ShiftPlan shiftPlan;
     // TODO: 01.03.2020 dodělat ikonky
 
     public TemplateLoaderAction(String name) {
@@ -43,8 +43,8 @@ public class TemplateLoaderAction extends AbstractAction {
         JComponent source = (JComponent) e.getSource();
 
         try {
-            shfitPlan = nactiPlanSluzeb(source);
-            if (shfitPlan != null) {
+            shiftPlan = nactiPlanSluzeb(source);
+            if (shiftPlan != null) {
                 source.firePropertyChange("loaded", false, true);
             } else {
                 throw new Exception("Nepodařilo načíst šablonu");
@@ -56,8 +56,8 @@ public class TemplateLoaderAction extends AbstractAction {
 
     }
 
-    public ShfitPlan getPlanSmen() {
-        return shfitPlan;
+    public ShiftPlan getPlanSmen() {
+        return shiftPlan;
     }
 
     private void setupFileChooser() {
@@ -70,14 +70,14 @@ public class TemplateLoaderAction extends AbstractAction {
     /**
      * Metoda pro načtení souboru ve formatu xlsx.
      */
-    private ShfitPlan nactiPlanSluzeb(JComponent component) throws Exception {
+    private ShiftPlan nactiPlanSluzeb(JComponent component) throws Exception {
         int vracenaHodnota = fileChooser.showOpenDialog(component);
 
         if (vracenaHodnota == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             final Dao<XSSFWorkbook> io = new XlsxDao();
             XSSFWorkbook workbook = io.load(Path.of(file.toURI()));
-            return new ShfitPlan(workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS);
+            return new ShiftPlan(workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS);
         }
         return null;
     }

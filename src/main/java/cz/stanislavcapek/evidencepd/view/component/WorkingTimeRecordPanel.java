@@ -6,7 +6,7 @@
 package cz.stanislavcapek.evidencepd.view.component;
 
 import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.shiftplan.ShfitPlan;
+import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.view.component.record.RecordWindow;
@@ -42,7 +42,7 @@ public class WorkingTimeRecordPanel extends JPanel {
     private final JComboBox<Month> cmbMonths = new JComboBox<>(Month.values());
     private final JPanel pnlRecordFromTempl;
 
-    private ShfitPlan shfitPlan;
+    private ShiftPlan shiftPlan;
 
     /**
      * konstruktor bez parametru.
@@ -109,8 +109,8 @@ public class WorkingTimeRecordPanel extends JPanel {
         Icon goodIcon = IconFontSwing.buildIcon(Elusive.OK, fontSize, Color.GREEN);
         Icon wrongIcon = IconFontSwing.buildIcon(Elusive.REMOVE, fontSize, Color.RED);
         if (((boolean) evt.getNewValue())) {
-            shfitPlan = action.getPlanSmen();
-            final String txt = String.format("Plán služeb %d", shfitPlan.getYear());
+            shiftPlan = action.getPlanSmen();
+            final String txt = String.format("Plán služeb %d", shiftPlan.getYear());
             lblLoadValidation.setText(txt);
             lblLoadValidation.setIcon(goodIcon);
             pnlRecordFromTempl.setVisible(true);
@@ -135,7 +135,7 @@ public class WorkingTimeRecordPanel extends JPanel {
 
     private void showRecordFromTemplateWindow(ActionEvent e) {
         final RecordWindow window = new RecordWindow(
-                shfitPlan,
+                shiftPlan,
                 cmbMonths.getSelectedIndex() + 1
         );
         window.setVisible(true);
@@ -160,7 +160,7 @@ public class WorkingTimeRecordPanel extends JPanel {
         for (Integer id : ids) {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
-            final String fullName = shfitPlan.getEmployee(id).getFullName();
+            final String fullName = shiftPlan.getEmployee(id).getFullName();
             final String[] split = fullName.split(" ");
             final Employee employee = new Employee(id, split[0], split[1]);
             panel.setBorder(BorderFactory.createEmptyBorder(5, 50, 5, 50));
@@ -215,7 +215,7 @@ public class WorkingTimeRecordPanel extends JPanel {
      * @return množinu ID, které nejsou v aplikaci
      */
     private Set<Integer> compareLists() {
-        final Set<Integer> employeeIds = shfitPlan.getEmployeeIds();
+        final Set<Integer> employeeIds = shiftPlan.getEmployeeIds();
         return employeeIds.stream()
                 .filter(employeeListModel::containsEmployee)
                 .collect(Collectors.toSet());

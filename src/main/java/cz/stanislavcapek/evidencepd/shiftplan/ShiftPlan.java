@@ -22,14 +22,14 @@ import static org.apache.poi.ss.usermodel.CellType.FORMULA;
 import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
 
 /**
- * An instance of class {@code ShfitPlan}
+ * An instance of class {@code ShiftPlan}
  *
  * @author Stanislav Čapek
  * @version 1.0
  */
 @EqualsAndHashCode
 @ToString
-public class ShfitPlan {
+public class ShiftPlan {
 
     @ToString.Exclude
     private final XSSFWorkbook workbook;
@@ -43,7 +43,7 @@ public class ShfitPlan {
      * Map {@code <Měsíc, Map<ID,Record>> }
      */
 
-    public ShfitPlan(XSSFWorkbook workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime) {
+    public ShiftPlan(XSSFWorkbook workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime) {
         this.workbook = workbook;
         this.typeOfWeeklyWorkingTime = typeOfWeeklyWorkingTime;
         this.year = getYear();

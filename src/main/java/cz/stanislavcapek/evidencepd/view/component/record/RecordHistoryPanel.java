@@ -35,7 +35,7 @@ public class RecordHistoryPanel extends JPanel {
             fileNames = loadFileNames(ConfigPaths.RECORDS_PATH);
         } catch (IOException e) {
             fileNames = Collections.emptyList();
-        }
+       }
 
         final JList<String> recordList = new JList<>(fileNames.toArray(String[]::new));
         final JScrollPane jScrollPane = new JScrollPane();

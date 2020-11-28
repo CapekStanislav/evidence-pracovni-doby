@@ -2,7 +2,7 @@ package cz.stanislavcapek.evidencepd.model;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.record.Record;
-import cz.stanislavcapek.evidencepd.shiftplan.ShfitPlan;
+import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,19 +16,19 @@ import static cz.stanislavcapek.evidencepd.model.WorkingTimeFund.TypeOfWeeklyWor
 import static org.junit.jupiter.api.Assertions.*;
 
 @Log4j2
-class ShfitPlanTest {
+class ShiftPlanTest {
 
 
-    private static ShfitPlan plan;
-    private static ShfitPlan planChybny;
+    private static ShiftPlan plan;
+    private static ShiftPlan planChybny;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         Dao<XSSFWorkbook> io = new XlsxDao();
         XSSFWorkbook workbook = io.load(Path.of("src/test/resources/test_4_straznici.xlsx"));
         XSSFWorkbook workbookBezStrazniku = io.load(Path.of("src/test/resources/test_0_straznici.xlsx"));
-        plan = new ShfitPlan(workbook, MULTISHIFT_CONTINUOUS);
-        planChybny = new ShfitPlan(workbookBezStrazniku, MULTISHIFT_CONTINUOUS);
+        plan = new ShiftPlan(workbook, MULTISHIFT_CONTINUOUS);
+        planChybny = new ShiftPlan(workbookBezStrazniku, MULTISHIFT_CONTINUOUS);
     }
 
     @Test

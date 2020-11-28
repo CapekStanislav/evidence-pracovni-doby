@@ -1,1 +1,1 @@
-[{"id":1,"jmeno":"Petr","prijmeni":"Novák"},{"id":2,"jmeno":"Ondra","prijmeni":"Malý"},{"id":3,"jmeno":"Markéta","prijmeni":"Pospíšilová"},{"id":4,"jmeno":"Lenka","prijmeni":"Drahá"}]
+[{"id":1,"firstName":"Petr","lastName":"Novák"},{"id":2,"firstName":"Ondra","lastName":"Malý"},{"id":3,"firstName":"Markéta","lastName":"Pospíšilová"},{"id":4,"firstName":"Lenka","lastName":"Drahá"}]

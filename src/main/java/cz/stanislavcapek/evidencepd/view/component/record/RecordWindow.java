@@ -5,9 +5,7 @@ import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.record.Record;
 import cz.stanislavcapek.evidencepd.record.RecordDao;
 import cz.stanislavcapek.evidencepd.record.DefaultRecord;
-import cz.stanislavcapek.evidencepd.shiftplan.ShfitPlan;
-import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -20,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
-import static cz.stanislavcapek.evidencepd.model.WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS;
 
 /**
  * Instance třídy {@code RecordWindow}
@@ -46,14 +42,14 @@ public class RecordWindow extends JFrame {
     private final JMenu menuEmployees = new JMenu("Zaměstnanci");
     private boolean isSaved = false;
 
-    public RecordWindow(ShfitPlan shfitPlan, int month) {
+    public RecordWindow(ShiftPlan shiftPlan, int month) {
 
         pnlEmployeeList.clear();
         pnlEmployeeList.addAll(
-                shfitPlan.getEmployeeIds()
+                shiftPlan.getEmployeeIds()
                         .stream()
-                        .filter(id -> shfitPlan.isEmployee(id, month))
-                        .map(id -> getEvidencePanel(shfitPlan, month, id))
+                        .filter(id -> shiftPlan.isEmployee(id, month))
+                        .map(id -> getEvidencePanel(shiftPlan, month, id))
                         .collect(Collectors.toList())
         );
 
@@ -92,10 +88,10 @@ public class RecordWindow extends JFrame {
         contentPane.setViewportView(currentPanel);
     }
 
-    private RecordPanel getEvidencePanel(ShfitPlan shfitPlan, int month, int id) {
+    private RecordPanel getEvidencePanel(ShiftPlan shiftPlan, int month, int id) {
         return new RecordPanel(
-                shfitPlan.getRecord(month, id),
-                shfitPlan.getRecordOvertime(month, id));
+                shiftPlan.getRecord(month, id),
+                shiftPlan.getRecordOvertime(month, id));
     }
 
     private void setTitleName(String text) {
@@ -349,19 +345,19 @@ public class RecordWindow extends JFrame {
         );
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            final Dao<XSSFWorkbook> io = new XlsxDao();
-
-            XSSFWorkbook workbook = null;
-            try {
-                workbook = io.load(Path.of("test_4_straznici.xlsx"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ShfitPlan plan = new ShfitPlan(workbook, MULTISHIFT_CONTINUOUS);
-            new RecordWindow(plan, 1).setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            final Dao<XSSFWorkbook> io = new XlsxDao();
+//
+//            XSSFWorkbook workbook = null;
+//            try {
+//                workbook = io.load(Path.of("test_4_straznici.xlsx"));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            ShiftPlan plan = new ShiftPlan(workbook, MULTISHIFT_CONTINUOUS);
+//            new RecordWindow(plan, 1).setVisible(true);
+//        });
+//    }
 
 }
