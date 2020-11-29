@@ -1,15 +1,14 @@
 package cz.stanislavcapek.evidencepd.pdf;
 
-import org.apache.logging.log4j.core.util.FileUtils;
-import org.apache.logging.log4j.core.util.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.xmlbeans.ResourceLoader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -29,6 +28,7 @@ import java.util.List;
  *
  * @author Stanislav Čapek
  */
+@Component
 public class WorkingTimeRecordPdfFactory {
     private static final float PADDING = 50f;
     private static final PDRectangle A4 = PDRectangle.A4;
@@ -37,12 +37,13 @@ public class WorkingTimeRecordPdfFactory {
     private static final int FONT_SIZE_NORMAL = 12;
     private static final int FONT_SIZE_LARGE = 16;
     private static final String TITLE = "Evidence pracovní doby";
-    private static final String FONTS_CALIBRI_TTF = "fonts/calibri.ttf";
-    private static final String FONTS_CALIBRIB_TTF = "fonts/calibrib.ttf";
 
     private static LocalDate period;
     private static PDFont normalFont;
     private static PDFont boldFont;
+
+    private static Resource calibriFontResource;
+    private static Resource calibribFontResource;
 
     public static PDDocument createRecordPDDocument(WorkAttendanceDocument model) throws IOException {
         return createRecordPDDocument(model, TITLE);
@@ -62,16 +63,13 @@ public class WorkingTimeRecordPdfFactory {
         document.addPage(page);
 
 
-
         // load font
         if (normalFont == null || boldFont == null) {
-            final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-
-            try (final InputStream inputStream = classLoader.getResourceAsStream(FONTS_CALIBRI_TTF)) {
+            try (final InputStream inputStream = calibriFontResource.getInputStream()) {
                 normalFont = PDType0Font.load(document, inputStream, true);
             }
 
-            try (InputStream inputStream = classLoader.getResourceAsStream(FONTS_CALIBRIB_TTF)) {
+            try (InputStream inputStream = calibribFontResource.getInputStream()) {
                 boldFont = PDType0Font.load(document, inputStream, true);
             }
         }
@@ -287,5 +285,15 @@ public class WorkingTimeRecordPdfFactory {
         );
 
         return builder.build();
+    }
+
+    @Value("classpath:fonts/calibri.ttf")
+    public void setCalibriFontResource(Resource calibriFontResource) {
+        WorkingTimeRecordPdfFactory.calibriFontResource = calibriFontResource;
+    }
+
+    @Value("classpath:fonts/calibrib.ttf")
+    public void setCalibribFontResource(Resource calibribFontResource) {
+        WorkingTimeRecordPdfFactory.calibribFontResource = calibribFontResource;
     }
 }
