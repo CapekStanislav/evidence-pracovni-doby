@@ -2,9 +2,9 @@ package cz.stanislavcapek.evidencepd.view.component.record;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.dao.Dao;
-import cz.stanislavcapek.evidencepd.record.Record;
-import cz.stanislavcapek.evidencepd.record.RecordDao;
-import cz.stanislavcapek.evidencepd.record.DefaultRecord;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendanceDao;
+import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 
 import javax.swing.*;
@@ -20,11 +20,11 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
- * Instance třídy {@code RecordWindow}
+ * Instance třídy {@code WorkAttendanceWindow}
  *
  * @author Stanislav Čapek
  */
-public class RecordWindow extends JFrame {
+public class WorkAttendanceWindow extends JFrame {
     private static final String TITLE = "Evidence pracovní doby";
 
     private JMenuItem mniSave;
@@ -32,8 +32,8 @@ public class RecordWindow extends JFrame {
     private JMenuItem mniLoad;
     private JMenuItem mniPrint;
     private JMenuItem mniQuit;
-    private final List<RecordPanel> pnlEmployeeList = new ArrayList<>();
-    private RecordPanel currentPanel;
+    private final List<WorkAttendancePanel> pnlEmployeeList = new ArrayList<>();
+    private WorkAttendancePanel currentPanel;
     private final JScrollPane contentPane = new JScrollPane();
     private final String nameFormat = "%s-%s-%s.%s";
     private final String recordStr = "evidence";
@@ -42,7 +42,7 @@ public class RecordWindow extends JFrame {
     private final JMenu menuEmployees = new JMenu("Zaměstnanci");
     private boolean isSaved = false;
 
-    public RecordWindow(ShiftPlan shiftPlan, int month) {
+    public WorkAttendanceWindow(ShiftPlan shiftPlan, int month) {
 
         pnlEmployeeList.clear();
         pnlEmployeeList.addAll(
@@ -56,7 +56,7 @@ public class RecordWindow extends JFrame {
         initClass();
     }
 
-    public RecordWindow(String fileName) {
+    public WorkAttendanceWindow(String fileName) {
         loadStateFromFile(fileName);
         initClass();
     }
@@ -79,7 +79,7 @@ public class RecordWindow extends JFrame {
         initListeners();
     }
 
-    private void updateViewPort(List<RecordPanel> panels) {
+    private void updateViewPort(List<WorkAttendancePanel> panels) {
         if (!panels.isEmpty()) {
             final int index = 0;
             setTitleName(panels.get(index).getShiftRecord().getEmployee().getFullName());
@@ -88,8 +88,8 @@ public class RecordWindow extends JFrame {
         contentPane.setViewportView(currentPanel);
     }
 
-    private RecordPanel getEvidencePanel(ShiftPlan shiftPlan, int month, int id) {
-        return new RecordPanel(
+    private WorkAttendancePanel getEvidencePanel(ShiftPlan shiftPlan, int month, int id) {
+        return new WorkAttendancePanel(
                 shiftPlan.getRecord(month, id),
                 shiftPlan.getRecordOvertime(month, id));
     }
@@ -116,7 +116,7 @@ public class RecordWindow extends JFrame {
     private void showNotSaveDialog(WindowEvent e) {
         if (!isSaved) {
             int volba = JOptionPane.showConfirmDialog(
-                    RecordWindow.this,
+                    WorkAttendanceWindow.this,
                     "Práce nebyla uložena. Chcete jí nyní uložit?",
                     "Ukončení bez uložení",
                     JOptionPane.YES_NO_OPTION,
@@ -159,17 +159,17 @@ public class RecordWindow extends JFrame {
      * @param date
      */
     private void loadState(LocalDate date) {
-        Dao<List<Record>> io = new RecordDao();
+        Dao<List<WorkAttendance>> io = new WorkAttendanceDao();
         final int year = date.getYear();
         final int month = date.getMonthValue();
 
         final Path shiftsFile = Paths.get(String.format(nameFormat, recordStr, year, month, suffix));
         final Path overtimesFile = Paths.get(String.format(nameFormat, overtimeStr, year, month, suffix));
 
-        List<Record> recordList = null;
+        List<WorkAttendance> workAttendanceList = null;
 
         try {
-            recordList = io.load(ConfigPaths.RECORDS_PATH.resolve(shiftsFile));
+            workAttendanceList = io.load(ConfigPaths.RECORDS_PATH.resolve(shiftsFile));
         } catch (IOException e) {
             showErrorMessage(
                     String.format("Nepodařilo se nalézt požadovaný soubor evidence " +
@@ -178,7 +178,7 @@ public class RecordWindow extends JFrame {
             this.dispose();
         }
 
-        List<Record> overtimeList;
+        List<WorkAttendance> overtimeList;
         try {
             overtimeList = io.load(ConfigPaths.RECORDS_PATH.resolve(overtimesFile));
         } catch (IOException e) {
@@ -187,15 +187,15 @@ public class RecordWindow extends JFrame {
                             "nebo je soubor poškozen: %s/%s", month, year)
 
             );
-            overtimeList = createEmptyOvertimeList(recordList);
+            overtimeList = createEmptyOvertimeList(workAttendanceList);
         }
 
         pnlEmployeeList.clear();
-        for (int i = 0; i < recordList.size(); i++) {
-            final Record record = recordList.get(i);
-            final Record prescasy = overtimeList.get(i);
+        for (int i = 0; i < workAttendanceList.size(); i++) {
+            final WorkAttendance workAttendance = workAttendanceList.get(i);
+            final WorkAttendance prescasy = overtimeList.get(i);
             pnlEmployeeList.add(
-                    new RecordPanel(record, prescasy)
+                    new WorkAttendancePanel(workAttendance, prescasy)
             );
         }
         updateEmployeesMenu(menuEmployees, pnlEmployeeList);
@@ -203,17 +203,17 @@ public class RecordWindow extends JFrame {
         isSaved = false;
     }
 
-    private List<Record> createEmptyOvertimeList(List<Record> recordList) {
-        List<Record> list = new ArrayList<>();
+    private List<WorkAttendance> createEmptyOvertimeList(List<WorkAttendance> workAttendanceList) {
+        List<WorkAttendance> list = new ArrayList<>();
 
-        for (final Record record : recordList) {
+        for (final WorkAttendance workAttendance : workAttendanceList) {
             list.add(
-                    new DefaultRecord(
-                            record.getEmployee(),
-                            record.getMonth(),
-                            record.getYear(),
-                            record.getTypeOfWeeklyWorkingTime(),
-                            record.getLastMonth(),
+                    new DefaultWorkAttendance(
+                            workAttendance.getEmployee(),
+                            workAttendance.getMonth(),
+                            workAttendance.getYear(),
+                            workAttendance.getTypeOfWeeklyWorkingTime(),
+                            workAttendance.getLastMonth(),
                             new TreeMap<>()
                     )
             );
@@ -229,7 +229,7 @@ public class RecordWindow extends JFrame {
     }
 
     private void saveStateToFile() {
-        final Dao<List<Record>> io = new RecordDao();
+        final Dao<List<WorkAttendance>> io = new WorkAttendanceDao();
 
         final int year = currentPanel.getShiftRecord().getYear();
         final int month = currentPanel.getShiftRecord().getMonth().getNumber();
@@ -237,16 +237,16 @@ public class RecordWindow extends JFrame {
         final Path shiftsFile = Paths.get(String.format(nameFormat, recordStr, year, month, suffix));
         final Path overtimesFile = Paths.get(String.format(nameFormat, overtimeStr, year, month, suffix));
 
-        final List<Record> recordList = this.pnlEmployeeList.stream()
-                .map(RecordPanel::getShiftRecord)
+        final List<WorkAttendance> workAttendanceList = this.pnlEmployeeList.stream()
+                .map(WorkAttendancePanel::getShiftRecord)
                 .collect(Collectors.toList());
 
-        final List<Record> prescasyList = this.pnlEmployeeList.stream()
-                .map(RecordPanel::getOvertimesRecord)
+        final List<WorkAttendance> prescasyList = this.pnlEmployeeList.stream()
+                .map(WorkAttendancePanel::getOvertimesRecord)
                 .collect(Collectors.toList());
 
         try {
-            io.save(ConfigPaths.RECORDS_PATH.resolve(shiftsFile), recordList);
+            io.save(ConfigPaths.RECORDS_PATH.resolve(shiftsFile), workAttendanceList);
         } catch (IOException e) {
             showErrorMessage("Nastala neočekávaná chyba při ukládání směn");
             e.printStackTrace();
@@ -259,7 +259,7 @@ public class RecordWindow extends JFrame {
         }
 
         isSaved = true;
-        showDoneMessage(String.format("Record %s/%s byly úspěšně uloženy", month, year));
+        showDoneMessage(String.format("WorkAttendance %s/%s byly úspěšně uloženy", month, year));
     }
 
     private void print() {
@@ -314,18 +314,18 @@ public class RecordWindow extends JFrame {
         return jMenuBar;
     }
 
-    private void updateEmployeesMenu(JMenu menu, List<RecordPanel> recordPanels) {
+    private void updateEmployeesMenu(JMenu menu, List<WorkAttendancePanel> workAttendancePanels) {
         menu.removeAll();
-        recordPanels.forEach(recordPanel -> {
-            recordPanel.addPropertyChangeListener("dataChange", evt -> isSaved = false);
+        workAttendancePanels.forEach(workAttendancePanel -> {
+            workAttendancePanel.addPropertyChangeListener("dataChange", evt -> isSaved = false);
 
-            final String fullName = recordPanel.getShiftRecord().getEmployee().getFullName();
+            final String fullName = workAttendancePanel.getShiftRecord().getEmployee().getFullName();
 
             final JMenuItem mniEmployee = new JMenuItem(fullName);
             mniEmployee.addActionListener(e -> {
                 setTitleName(fullName);
-                this.currentPanel = recordPanel;
-                this.contentPane.setViewportView(recordPanel);
+                this.currentPanel = workAttendancePanel;
+                this.contentPane.setViewportView(workAttendancePanel);
             });
 
             menu.add(mniEmployee);
@@ -356,7 +356,7 @@ public class RecordWindow extends JFrame {
 //                e.printStackTrace();
 //            }
 //            ShiftPlan plan = new ShiftPlan(workbook, MULTISHIFT_CONTINUOUS);
-//            new RecordWindow(plan, 1).setVisible(true);
+//            new WorkAttendanceWindow(plan, 1).setVisible(true);
 //        });
 //    }
 

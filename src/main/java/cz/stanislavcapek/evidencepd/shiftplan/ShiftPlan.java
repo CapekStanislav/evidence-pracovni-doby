@@ -1,10 +1,10 @@
 package cz.stanislavcapek.evidencepd.shiftplan;
 
-import cz.stanislavcapek.evidencepd.record.Record;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.Shift;
-import cz.stanislavcapek.evidencepd.record.DefaultRecord;
+import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,12 +35,12 @@ public class ShiftPlan {
     private final XSSFWorkbook workbook;
     private final WorkingTimeFund.TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime;
     @ToString.Exclude
-    private final Map<Integer, Map<Integer, Record>> shiftsInYear = new TreeMap<>();
+    private final Map<Integer, Map<Integer, WorkAttendance>> shiftsInYear = new TreeMap<>();
     private int year;
     private Set<Integer> employeeIds;
 
     /**
-     * Map {@code <Měsíc, Map<ID,Record>> }
+     * Map {@code <Měsíc, Map<ID,WorkAttendance>> }
      */
 
     public ShiftPlan(XSSFWorkbook workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime) {
@@ -72,7 +72,7 @@ public class ShiftPlan {
      * @throws IllegalArgumentException pokud hodnota měsíce není v rozmezí 1-12
      * @throws IllegalArgumentException pokud se id zaměstnance nenachází v daném měsíci
      */
-    public Record getRecord(int monthNum, int id) {
+    public WorkAttendance getRecord(int monthNum, int id) {
         if (!isValidMonth(monthNum)) {
             throw new InvalidMonthNumberException(monthNum);
         }
@@ -85,10 +85,10 @@ public class ShiftPlan {
 
     /**
      * @param monthNum měsíc
-     * @return Mapu {@code <ID, Record>}
+     * @return Mapu {@code <ID, WorkAttendance>}
      * @throws IllegalArgumentException pokud hodnota měsíce není v rozmezí 1-12
      */
-    public Map<Integer, Record> getRecordByMonth(int monthNum) {
+    public Map<Integer, WorkAttendance> getRecordByMonth(int monthNum) {
         if (!isValidMonth(monthNum)) {
             throw new InvalidMonthNumberException(monthNum);
         }
@@ -100,7 +100,7 @@ public class ShiftPlan {
      * @param id       zaměstnance
      * @return seznam přesčasů
      */
-    public Record getRecordOvertime(int monthNum, int id) {
+    public WorkAttendance getRecordOvertime(int monthNum, int id) {
         if (!isValidMonth(monthNum)) {
             throw new InvalidMonthNumberException(monthNum);
         }
@@ -185,7 +185,7 @@ public class ShiftPlan {
         employeeIds = new TreeSet<>();
         for (int i = 1; i <= 12; i++) {
             int[] ids = getEmployeeIdByMonth(i);
-            Map<Integer, Record> byMonth = new TreeMap<>();
+            Map<Integer, WorkAttendance> byMonth = new TreeMap<>();
             final int numOfEmployees = getNumberOfEmployees(i);
             for (int j = 0; j < numOfEmployees; j++) {
                 int id = ids[j];
@@ -196,21 +196,21 @@ public class ShiftPlan {
                         getEmployee(id),
                         this.year
                 );
-                Record record = converteToRecord(shiftsByMonth);
-                byMonth.put(id, record);
+                WorkAttendance workAttendance = converteToRecord(shiftsByMonth);
+                byMonth.put(id, workAttendance);
             }
             shiftsInYear.put(i, byMonth);
         }
     }
 
-    private Record converteToRecord(ShiftsByMonth shiftsByMonth) {
+    private WorkAttendance converteToRecord(ShiftsByMonth shiftsByMonth) {
         Employee employee = shiftsByMonth.getEmployee();
         final Month month = Month.valueOf(shiftsByMonth.getMonth());
         Map<Integer, Shift> shifts = new TreeMap<>();
 
         shiftsByMonth.getShifts()
                 .forEach(shift -> shifts.put(shift.getStart().getDayOfMonth(), shift));
-        return new DefaultRecord(
+        return new DefaultWorkAttendance(
                 employee,
                 month,
                 shiftsByMonth.getYear(),
@@ -220,7 +220,7 @@ public class ShiftPlan {
         );
     }
 
-    private Record converteToRecord(List<Shift> overtimes, int year, int month, int id) {
+    private WorkAttendance converteToRecord(List<Shift> overtimes, int year, int month, int id) {
         final Month monthTyp = Month.valueOf(month);
         final Employee employee = getEmployee(id);
 
@@ -228,7 +228,7 @@ public class ShiftPlan {
                 .collect(Collectors.toMap(overtimes::indexOf, shift -> shift));
 
         final int lastMonth = 0;
-        return new DefaultRecord(
+        return new DefaultWorkAttendance(
                 employee,
                 monthTyp,
                 year,

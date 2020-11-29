@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.shift;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import cz.stanislavcapek.evidencepd.record.Record;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.servants.ShiftTimeAdjuster;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @JsonIgnoreProperties({"rowCount", "columnCount", "tableModelListeners"})
 @ToString
-public class ShiftTableModelRecord extends AbstractTableModel implements Record {
+public class ShiftTableModelWorkAttendance extends AbstractTableModel implements WorkAttendance {
 
 
     private enum Time {
@@ -33,17 +33,17 @@ public class ShiftTableModelRecord extends AbstractTableModel implements Record 
 
     private final String[] columnNames = {"den", "od", "do", "typ", "odpr. hodin",
             "noční", "víkend", "svátek", "dovolená", "neodpracované hodiny"};
-    private Record record;
+    private WorkAttendance workAttendance;
     private final Map<Integer, Shift> shifts;
 
-    public ShiftTableModelRecord(Record record) {
-        this.record = record;
-        this.shifts = record.getShifts();
+    public ShiftTableModelWorkAttendance(WorkAttendance workAttendance) {
+        this.workAttendance = workAttendance;
+        this.shifts = workAttendance.getShifts();
     }
 
     @Override
     public int getRowCount() {
-        return record.getShifts().size();
+        return workAttendance.getShifts().size();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class ShiftTableModelRecord extends AbstractTableModel implements Record 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         int day = rowIndex + 1;
         final Shift shift = shifts.get(day);
-        final LocalDate datum = LocalDate.of(record.getYear(), record.getMonth().getNumber(), day);
+        final LocalDate datum = LocalDate.of(workAttendance.getYear(), workAttendance.getMonth().getNumber(), day);
 
         switch (columnIndex) {
             case 1:
@@ -140,32 +140,32 @@ public class ShiftTableModelRecord extends AbstractTableModel implements Record 
 
     @Override
     public Employee getEmployee() {
-        return record.getEmployee();
+        return workAttendance.getEmployee();
     }
 
     @Override
     public Month getMonth() {
-        return record.getMonth();
+        return workAttendance.getMonth();
     }
 
     @Override
     public int getYear() {
-        return record.getYear();
+        return workAttendance.getYear();
     }
 
     @Override
     public WorkingTimeFund.TypeOfWeeklyWorkingTime getTypeOfWeeklyWorkingTime() {
-        return record.getTypeOfWeeklyWorkingTime();
+        return workAttendance.getTypeOfWeeklyWorkingTime();
     }
 
     @Override
     public double getLastMonth() {
-        return record.getLastMonth();
+        return workAttendance.getLastMonth();
     }
 
     @Override
     public Map<Integer, Shift> getShifts() {
-        return record.getShifts();
+        return workAttendance.getShifts();
     }
 
     private String getTime(Shift shift, Time timeTyp) {

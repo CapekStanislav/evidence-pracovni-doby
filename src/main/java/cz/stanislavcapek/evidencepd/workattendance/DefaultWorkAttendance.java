@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.record;
+package cz.stanislavcapek.evidencepd.workattendance;
 
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 
 /**
- * An instance of class {@code Record}
+ * An instance of class {@code WorkAttendance}
  *
  * @author Stanislav Čapek
  * @version 1.0
@@ -19,7 +19,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DefaultRecord implements Record {
+public class DefaultWorkAttendance implements WorkAttendance {
 
     private Employee Employee;
     private Month month;

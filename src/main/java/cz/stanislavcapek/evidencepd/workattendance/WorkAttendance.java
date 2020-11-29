@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.record;
+package cz.stanislavcapek.evidencepd.workattendance;
 
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
@@ -8,12 +8,12 @@ import cz.stanislavcapek.evidencepd.shift.Shift;
 import java.util.Map;
 
 /**
- * An instance of interface {@code Record}
+ * An instance of interface {@code WorkAttendance}
  *
  * @author Stanislav Čapek
  * @version 1.0
  */
-public interface Record {
+public interface WorkAttendance {
 
     Employee getEmployee();
 

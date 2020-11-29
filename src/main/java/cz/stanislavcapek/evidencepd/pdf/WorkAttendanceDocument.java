@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.pdf;
 
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
-import cz.stanislavcapek.evidencepd.record.Record;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.shift.WorkingTime;
 import cz.stanislavcapek.evidencepd.shift.Shift;
 
@@ -9,31 +9,31 @@ import javax.swing.table.TableModel;
 import java.time.LocalDate;
 
 /**
- * An instance of class {@code RecordDocument}
+ * An instance of class {@code WorkAttendanceDocument}
  *
  * @author Stanislav Čapek
  * @version 1.0
  */
-public class RecordDocument {
+public class WorkAttendanceDocument {
 
     private final TableModel model;
-    private final Record record;
+    private final WorkAttendance workAttendance;
 
-    public <T extends TableModel> RecordDocument(Record record, T model) {
-        this.record = record;
+    public <T extends TableModel> WorkAttendanceDocument(WorkAttendance workAttendance, T model) {
+        this.workAttendance = workAttendance;
         this.model = model;
     }
 
     public String getName() {
-        return record.getEmployee().getFullName();
+        return workAttendance.getEmployee().getFullName();
     }
 
     public int getYear() {
-        return record.getYear();
+        return workAttendance.getYear();
     }
 
     public String getMonth() {
-        return record.getMonth().getName();
+        return workAttendance.getMonth().getName();
     }
 
     /**
@@ -42,7 +42,7 @@ public class RecordDocument {
      */
     public LocalDate getDate(int rowIndex) {
         final int day = rowIndex + 1;
-        return record.getShifts().get(day).getStart().toLocalDate();
+        return workAttendance.getShifts().get(day).getStart().toLocalDate();
     }
 
     public int getColumnCount() {
@@ -64,12 +64,12 @@ public class RecordDocument {
     public double getWorkTimeFund() {
         return WorkingTimeFund.calculateWorkingTimeFund(
                 getDate(0),
-                record.getTypeOfWeeklyWorkingTime()
+                workAttendance.getTypeOfWeeklyWorkingTime()
         );
     }
 
     public double getLastMonthHours() {
-        return record.getLastMonth();
+        return workAttendance.getLastMonth();
     }
 
     public double getNextMonthHours() {
@@ -77,7 +77,7 @@ public class RecordDocument {
     }
 
     public double getWorkedHours() {
-        return record.getShifts().values()
+        return workAttendance.getShifts().values()
                 .stream()
                 .map(Shift::getWorkingHours)
                 .mapToDouble(WorkingTime::getWorkedOut)

@@ -40,12 +40,12 @@ public class WorkingTimeRecordPdfFactory {
     private static PDFont normalFont;
     private static PDFont boldFont;
 
-    public static PDDocument createRecordPDDocument(RecordDocument model) throws IOException {
+    public static PDDocument createRecordPDDocument(WorkAttendanceDocument model) throws IOException {
         return createRecordPDDocument(model, TITLE);
     }
 
     public static PDDocument createRecordPDDocument(
-            RecordDocument model, String title) throws IOException {
+            WorkAttendanceDocument model, String title) throws IOException {
         period = model.getDate(0);
         final float daySize = 40;
         final float timeSize = 40;
@@ -128,7 +128,7 @@ public class WorkingTimeRecordPdfFactory {
         return document;
     }
 
-    private static Row createTableSum(RecordDocument model) {
+    private static Row createTableSum(WorkAttendanceDocument model) {
         Row.RowBuilder rowBuilder = Row.builder();
         rowBuilder
                 .font(boldFont)
@@ -151,7 +151,7 @@ public class WorkingTimeRecordPdfFactory {
         return rowBuilder.build();
     }
 
-    private static void createTableContent(RecordDocument model, Table.TableBuilder builder) {
+    private static void createTableContent(WorkAttendanceDocument model, Table.TableBuilder builder) {
         Row.RowBuilder rowBuilder;
         for (int i = 0; i < model.getRowCount(); i++) {
             rowBuilder = Row.builder();
@@ -174,7 +174,7 @@ public class WorkingTimeRecordPdfFactory {
         }
     }
 
-    private static Row createTableHeader(RecordDocument model) {
+    private static Row createTableHeader(WorkAttendanceDocument model) {
         Row.RowBuilder rowBuilder = Row.builder();
         for (int i = 0; i < model.getColumnCount(); i++) {
             rowBuilder.add(
@@ -188,7 +188,7 @@ public class WorkingTimeRecordPdfFactory {
         return rowBuilder.build();
     }
 
-    private static Table createHeader(RecordDocument model, String title) {
+    private static Table createHeader(WorkAttendanceDocument model, String title) {
         final Table.TableBuilder builder = Table.builder();
 
         builder
@@ -228,7 +228,7 @@ public class WorkingTimeRecordPdfFactory {
 
     }
 
-    private static Table createFooter(RecordDocument model, PDFont normal) {
+    private static Table createFooter(WorkAttendanceDocument model, PDFont normal) {
         final float cellSize = PRINTABLE_AREA / 3;
         final Table.TableBuilder builder = Table.builder();
         builder

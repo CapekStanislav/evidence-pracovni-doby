@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.record;
+package cz.stanislavcapek.evidencepd.workattendance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
@@ -11,15 +11,15 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * An instance of class {@code RecordDao}
+ * An instance of class {@code WorkAttendanceDao}
  *
  * @author Stanislav Čapek
  * @version 1.0
  */
-public class RecordDao implements Dao<List<Record>> {
+public class WorkAttendanceDao implements Dao<List<WorkAttendance>> {
 
     @Override
-    public void save(Path path, List<Record> object) throws IOException {
+    public void save(Path path, List<WorkAttendance> object) throws IOException {
         final ObjectMapper mapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule());
         Files.createDirectories(path.getParent());
@@ -27,12 +27,12 @@ public class RecordDao implements Dao<List<Record>> {
     }
 
     @Override
-    public List<Record> load(Path path) throws IOException {
+    public List<WorkAttendance> load(Path path) throws IOException {
         final ObjectMapper mapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule());
 
         final CollectionLikeType collectionLikeType = mapper.getTypeFactory()
-                .constructCollectionLikeType(List.class, DefaultRecord.class);
+                .constructCollectionLikeType(List.class, DefaultWorkAttendance.class);
 
         return mapper.readValue(Files.newBufferedReader(path), collectionLikeType);
     }

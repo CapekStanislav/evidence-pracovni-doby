@@ -9,7 +9,7 @@ import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.view.component.record.RecordWindow;
+import cz.stanislavcapek.evidencepd.view.component.record.WorkAttendanceWindow;
 import cz.stanislavcapek.evidencepd.view.component.record.RecordHistoryPanel;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
@@ -134,7 +134,7 @@ public class WorkingTimeRecordPanel extends JPanel {
     }
 
     private void showRecordFromTemplateWindow(ActionEvent e) {
-        final RecordWindow window = new RecordWindow(
+        final WorkAttendanceWindow window = new WorkAttendanceWindow(
                 shiftPlan,
                 cmbMonths.getSelectedIndex() + 1
         );
@@ -144,7 +144,7 @@ public class WorkingTimeRecordPanel extends JPanel {
     private void showRecordHistoryDialog(ActionEvent e) {
         final RecordHistoryPanel records = new RecordHistoryPanel().showListDialog();
         if (records.isChosen()) {
-            new RecordWindow(records.getRecordName()).setVisible(true);
+            new WorkAttendanceWindow(records.getRecordName()).setVisible(true);
         }
     }
 

@@ -1,6 +1,6 @@
 package cz.stanislavcapek.evidencepd.view.component.record;
 
-import cz.stanislavcapek.evidencepd.pdf.RecordDocument;
+import cz.stanislavcapek.evidencepd.pdf.WorkAttendanceDocument;
 import cz.stanislavcapek.evidencepd.pdf.WorkingTimeRecordPdfFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
 public
 class DocumentCreatingTask extends SwingWorker<PDDocument, Integer> {
 
-    private final RecordDocument shifts;
-    private final RecordDocument overtimes;
+    private final WorkAttendanceDocument shifts;
+    private final WorkAttendanceDocument overtimes;
 
-    public DocumentCreatingTask(RecordDocument shifts, RecordDocument overtimes) {
+    public DocumentCreatingTask(WorkAttendanceDocument shifts, WorkAttendanceDocument overtimes) {
         this.shifts = shifts;
         this.overtimes = overtimes;
     }

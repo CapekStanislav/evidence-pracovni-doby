@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.dao;
 
-import cz.stanislavcapek.evidencepd.record.Record;
-import cz.stanislavcapek.evidencepd.record.RecordDao;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendanceDao;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static cz.stanislavcapek.evidencepd.model.WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS;
 
-class RecordDaoTest {
+class WorkAttendanceDaoTest {
 
 
     private static ShiftPlan PLAN;
@@ -29,11 +29,11 @@ class RecordDaoTest {
 
     @Test
     void uloz() {
-        final Record record = PLAN.getRecord(1, 2);
-        final RecordDao dao = new RecordDao();
+        final WorkAttendance workAttendance = PLAN.getRecord(1, 2);
+        final WorkAttendanceDao dao = new WorkAttendanceDao();
         final Path path = Paths.get("src/test/resources/evidenceUlozitTest.json");
         try {
-            dao.save(path, List.of(record));
+            dao.save(path, List.of(workAttendance));
             assert true;
         } catch (IOException e) {
             assert false;
@@ -43,12 +43,12 @@ class RecordDaoTest {
 
     @Test
     void nacti() {
-        final RecordDao dao = new RecordDao();
+        final WorkAttendanceDao dao = new WorkAttendanceDao();
         final Path path = Paths.get("src/test/resources/evidenceNacistTest.json");
 
         try {
-            final List<Record> recordList = dao.load(path);
-            System.out.println("recordList = " + recordList);
+            final List<WorkAttendance> workAttendanceList = dao.load(path);
+            System.out.println("workAttendanceList = " + workAttendanceList);
             assert true;
         } catch (IOException e) {
             assert false;

@@ -1,8 +1,8 @@
 package cz.stanislavcapek.evidencepd.view.component.record;
 
 
-import cz.stanislavcapek.evidencepd.pdf.RecordDocument;
-import cz.stanislavcapek.evidencepd.record.Record;
+import cz.stanislavcapek.evidencepd.pdf.WorkAttendanceDocument;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.model.*;
 import cz.stanislavcapek.evidencepd.shift.servants.TwelveHoursShiftWorkingTimeCounter;
 import cz.stanislavcapek.evidencepd.shift.servants.WorkingTimeCounter;
@@ -31,16 +31,16 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Instance třídy {@code RecordPanel}
+ * Instance třídy {@code WorkAttendancePanel}
  *
  * @author Stanislav Čapek
  */
-class RecordPanel extends JPanel {
+class WorkAttendancePanel extends JPanel {
 
-    private final Record shiftsRecord;
-    private final Record overtimesRecord;
-    private final OverTimeTableModelRecord overTimeTableModelRecord;
-    private final ShiftTableModelRecord shiftTableModelRecord;
+    private final WorkAttendance shiftsWorkAttendance;
+    private final WorkAttendance overtimesWorkAttendance;
+    private final OverTimeTableModelWorkAttendance overTimeTableModelRecord;
+    private final ShiftTableModelWorkAttendance shiftTableModelRecord;
     private final JButton btnAdd;
     private final JButton btnRemove;
     private final JTable tableOvertime;
@@ -60,16 +60,16 @@ class RecordPanel extends JPanel {
     private final double workingTimeFund;
     private final int year;
 
-    public RecordPanel(Record shiftsRecord, Record overtimesRecord) {
-        shiftTableModelRecord = new ShiftTableModelRecord(shiftsRecord);
-        overTimeTableModelRecord = new OverTimeTableModelRecord(overtimesRecord);
-        this.shiftsRecord = shiftTableModelRecord;
-        this.overtimesRecord = overTimeTableModelRecord;
+    public WorkAttendancePanel(WorkAttendance shiftsWorkAttendance, WorkAttendance overtimesWorkAttendance) {
+        shiftTableModelRecord = new ShiftTableModelWorkAttendance(shiftsWorkAttendance);
+        overTimeTableModelRecord = new OverTimeTableModelWorkAttendance(overtimesWorkAttendance);
+        this.shiftsWorkAttendance = shiftTableModelRecord;
+        this.overtimesWorkAttendance = overTimeTableModelRecord;
 
 
-        year = this.shiftsRecord.getYear();
+        year = this.shiftsWorkAttendance.getYear();
         workingTimeFund = WorkingTimeFund
-                .calculateWorkingTimeFund(LocalDate.of(year, shiftsRecord.getMonth().getNumber(), 1));
+                .calculateWorkingTimeFund(LocalDate.of(year, shiftsWorkAttendance.getMonth().getNumber(), 1));
 
         final JPanel wrapperMain = new JPanel();
         wrapperMain.setPreferredSize(new Dimension(800, 800));
@@ -112,7 +112,7 @@ class RecordPanel extends JPanel {
         };
 
         // color differentiation
-        final ColorerWeekendShiftTableCellRenderer weekendShiftTableCellRenderer = new ColorerWeekendShiftTableCellRenderer(shiftsRecord);
+        final ColorerWeekendShiftTableCellRenderer weekendShiftTableCellRenderer = new ColorerWeekendShiftTableCellRenderer(shiftsWorkAttendance);
         tableShift.setDefaultRenderer(Object.class, weekendShiftTableCellRenderer);
 
 
@@ -164,12 +164,12 @@ class RecordPanel extends JPanel {
 
     }
 
-    public Record getShiftRecord() {
-        return shiftsRecord;
+    public WorkAttendance getShiftRecord() {
+        return shiftsWorkAttendance;
     }
 
-    public Record getOvertimesRecord() {
-        return overtimesRecord;
+    public WorkAttendance getOvertimesRecord() {
+        return overtimesWorkAttendance;
     }
 
     /**
@@ -181,12 +181,12 @@ class RecordPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 4, 10, 5));
 
-        JLabel lbl = new JLabel("Jméno: " + shiftsRecord.getEmployee().getFullName());
+        JLabel lbl = new JLabel("Jméno: " + shiftsWorkAttendance.getEmployee().getFullName());
         panel.add(lbl);
 
         lbl = new JLabel("Rok: " + year);
         panel.add(lbl);
-        final Month month = shiftsRecord.getMonth();
+        final Month month = shiftsWorkAttendance.getMonth();
         lbl = new JLabel("Měsíc: " + month.getName());
         panel.add(lbl);
         lbl = new JLabel("Fond prac. doby: " +
@@ -275,7 +275,7 @@ class RecordPanel extends JPanel {
         lbl = new JLabel("Převod z min. měsíce:");
         panel.add(lbl, c);
 
-        JLabel lblPrevodMin = new JLabel(Double.toString(shiftsRecord.getLastMonth()));
+        JLabel lblPrevodMin = new JLabel(Double.toString(shiftsWorkAttendance.getLastMonth()));
         panel.add(lblPrevodMin, c);
 
         lbl = new JLabel("Převod do dal. měsíce: ");
@@ -376,7 +376,7 @@ class RecordPanel extends JPanel {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         String defaultFileName = String.format(
                 "%s_%s_%d",
-                shiftsRecord.getEmployee().getFullName(), shiftsRecord.getMonth().getName(), shiftsRecord.getYear()
+                shiftsWorkAttendance.getEmployee().getFullName(), shiftsWorkAttendance.getMonth().getName(), shiftsWorkAttendance.getYear()
         );
 
         chooser.setSelectedFile(new File(defaultFileName));
@@ -412,21 +412,21 @@ class RecordPanel extends JPanel {
     }
 
     private PDDocument getDocument() throws Exception {
-        final RecordDocument shiftsRecordDocument = new RecordDocument(
-                shiftsRecord,
+        final WorkAttendanceDocument shiftsWorkAttendanceDocument = new WorkAttendanceDocument(
+                shiftsWorkAttendance,
                 shiftTableModelRecord
         );
-        final RecordDocument overTimeRecordDocument = new RecordDocument(
-                shiftsRecord,
+        final WorkAttendanceDocument overTimeWorkAttendanceDocument = new WorkAttendanceDocument(
+                shiftsWorkAttendance,
                 overTimeTableModelRecord
         );
         final DocumentCreatingTask task = new DocumentCreatingTask(
-                shiftsRecordDocument, overTimeRecordDocument);
+                shiftsWorkAttendanceDocument, overTimeWorkAttendanceDocument);
         return task.doInBackground();
     }
 
     private void addOvertime() {
-        final LocalDate period = this.shiftsRecord.getShifts().get(1).getStart().toLocalDate();
+        final LocalDate period = this.shiftsWorkAttendance.getShifts().get(1).getStart().toLocalDate();
         final int lengthOfMonth = period.getMonth().length(period.isLeapYear());
         final String message = String.format(
                 "Zadejte den přesčasu. Den musí být v rozmezí %d - %d",
@@ -470,7 +470,7 @@ class RecordPanel extends JPanel {
         final WorkingTimeCounter workingTimeCounter = new TwelveHoursShiftWorkingTimeCounter();
         final PremiumPaymentsCounter premiumPaymentsCounter = new DefaultPremiumPaymentsCounter();
 
-        final Collection<Shift> shifts = shiftsRecord.getShifts().values();
+        final Collection<Shift> shifts = shiftsWorkAttendance.getShifts().values();
         for (Shift shift : shifts) {
             // counting with working time
             final WorkingTime workingTime = workingTimeCounter.calulate(shift);
@@ -486,7 +486,7 @@ class RecordPanel extends JPanel {
         }
 
         // intermediate calculation
-        final double fromLastMonth = shiftsRecord.getLastMonth();
+        final double fromLastMonth = shiftsWorkAttendance.getLastMonth();
         double hSumWorkedOut = hWorkedOut + hWorkHoliday + hNotWorkedOut;
         hNextMonth = hSumWorkedOut - workingTimeFund + fromLastMonth;
 
@@ -521,7 +521,7 @@ class RecordPanel extends JPanel {
         double hHoliday = 0;
         double hWorkedOut = 0;
 
-        for (Shift overtime : overtimesRecord.getShifts().values()) {
+        for (Shift overtime : overtimesWorkAttendance.getShifts().values()) {
             overtime.setWorkingHours(workingTimeCounter.calulate(overtime));
             overtime.setPremiumPayments(premiumPaymentsCounter.calculate(overtime));
 

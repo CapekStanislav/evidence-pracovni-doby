@@ -2,7 +2,7 @@ package cz.stanislavcapek.evidencepd.shift;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import cz.stanislavcapek.evidencepd.record.Record;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.shift.servants.ShiftTimeAdjuster;
@@ -23,17 +23,17 @@ import java.util.*;
  */
 @JsonIgnoreProperties({"rowCount", "columnCount", "tableModelListeners"})
 @ToString
-public class OverTimeTableModelRecord extends AbstractTableModel implements Record {
+public class OverTimeTableModelWorkAttendance extends AbstractTableModel implements WorkAttendance {
 
     private final String[] columnNames = {"den", "od", "do", "typ", "odpr. hodin", "noční", "víkend", "svátek"};
-    private final Record record;
+    private final WorkAttendance workAttendance;
     private final Rounder rounder = new Rounder() {
     };
     private final List<Shift> shiftList;
 
-    public OverTimeTableModelRecord(Record record) {
-        this.record = record;
-        shiftList = new ArrayList<>(this.record.getShifts().values());
+    public OverTimeTableModelWorkAttendance(WorkAttendance workAttendance) {
+        this.workAttendance = workAttendance;
+        shiftList = new ArrayList<>(this.workAttendance.getShifts().values());
         sortAndNotify();
     }
 
@@ -126,27 +126,27 @@ public class OverTimeTableModelRecord extends AbstractTableModel implements Reco
 
     @Override
     public Employee getEmployee() {
-        return record.getEmployee();
+        return workAttendance.getEmployee();
     }
 
     @Override
     public Month getMonth() {
-        return record.getMonth();
+        return workAttendance.getMonth();
     }
 
     @Override
     public int getYear() {
-        return record.getYear();
+        return workAttendance.getYear();
     }
 
     @Override
     public WorkingTimeFund.TypeOfWeeklyWorkingTime getTypeOfWeeklyWorkingTime() {
-        return record.getTypeOfWeeklyWorkingTime();
+        return workAttendance.getTypeOfWeeklyWorkingTime();
     }
 
     @Override
     public double getLastMonth() {
-        return record.getLastMonth();
+        return workAttendance.getLastMonth();
     }
 
     @Override

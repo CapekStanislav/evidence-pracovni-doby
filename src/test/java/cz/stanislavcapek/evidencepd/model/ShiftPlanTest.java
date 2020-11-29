@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.model;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
-import cz.stanislavcapek.evidencepd.record.Record;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import lombok.extern.log4j.Log4j2;
@@ -53,22 +53,22 @@ class ShiftPlanTest {
 
     @Test
     void ziskejEvidenciZamestnanceZaMesic() {
-        final Record record = plan.getRecord(1, 2);
+        final WorkAttendance workAttendance = plan.getRecord(1, 2);
 
-        log.info("Record");
-        log.info(record.getEmployee().toString());
-        log.info(record.getMonth().toString());
-        log.info(String.valueOf(record.getLastMonth()));
-        log.info(record.getShifts().toString());
+        log.info("WorkAttendance");
+        log.info(workAttendance.getEmployee().toString());
+        log.info(workAttendance.getMonth().toString());
+        log.info(String.valueOf(workAttendance.getLastMonth()));
+        log.info(workAttendance.getShifts().toString());
 
-        assertNotNull(record);
+        assertNotNull(workAttendance);
     }
 
     @Test
     void ziskejEvidenciPrescasu() {
-        final Record prescasy = plan.getRecordOvertime(1, 2);
+        final WorkAttendance prescasy = plan.getRecordOvertime(1, 2);
 
-        log.info("Record přesčasů");
+        log.info("WorkAttendance přesčasů");
         log.info(prescasy.toString());
 
         assertNotNull(prescasy);
