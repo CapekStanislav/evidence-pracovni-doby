@@ -5,11 +5,12 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
 import cz.stanislavcapek.evidencepd.view.component.TemplateLoaderAction;
-import cz.stanislavcapek.evidencepd.view.component.WorkingTimeRecordPanel;
+import cz.stanislavcapek.evidencepd.view.component.WorkAttendanceLoadPanel;
 import cz.stanislavcapek.evidencepd.view.component.WorkAttendanceTemplatePanel;
 import cz.stanislavcapek.evidencepd.view.component.EmployeeListPanel;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -31,6 +32,7 @@ import java.util.List;
  *
  * @author Stanislav Čapek
  */
+@Component
 public class MainWindow extends JFrame {
     public static final String TITLE = "Správa evidence pracovní doby";
     private final Path employeeListFile = Paths.get("seznamZamestnancu.json");
@@ -61,14 +63,14 @@ public class MainWindow extends JFrame {
 
         JPanel contentPane = new JPanel(new BorderLayout());
 
-        final WorkingTimeRecordPanel workingTimeRecordPanel = new WorkingTimeRecordPanel();
+        final WorkAttendanceLoadPanel workAttendanceLoadPanel = new WorkAttendanceLoadPanel();
         final JPanel zamestnancuTab = new EmployeeListPanel();
         final JPanel sablonaRokTab = new WorkAttendanceTemplatePanel();
 
         final JPanel cards = new JPanel(new CardLayout());
 
         final String evidenceString = "evidence";
-        cards.add(workingTimeRecordPanel, evidenceString);
+        cards.add(workAttendanceLoadPanel, evidenceString);
         final String seznamString = "seznam";
         cards.add(zamestnancuTab, seznamString);
         final String sablonaString = "sablona";
@@ -128,7 +130,7 @@ public class MainWindow extends JFrame {
                                     genEvidenceAction.getValue(Action.ACTION_COMMAND_KEY).toString()
                             )
                     );
-                    workingTimeRecordPanel.validateLoadedTemplate(templateLoaderAction, evt);
+                    workAttendanceLoadPanel.validateLoadedTemplate(templateLoaderAction, evt);
 
                 }
 

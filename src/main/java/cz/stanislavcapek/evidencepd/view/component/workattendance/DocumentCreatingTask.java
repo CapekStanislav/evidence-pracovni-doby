@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.record;
+package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.pdf.WorkAttendanceDocument;
 import cz.stanislavcapek.evidencepd.pdf.WorkingTimeRecordPdfFactory;

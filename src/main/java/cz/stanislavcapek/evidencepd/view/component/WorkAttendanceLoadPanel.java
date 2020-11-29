@@ -9,8 +9,8 @@ import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.view.component.record.WorkAttendanceWindow;
-import cz.stanislavcapek.evidencepd.view.component.record.RecordHistoryPanel;
+import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindow;
+import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceHistoryPanel;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -22,6 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  *
  * @author Stanislav Čapek
  */
-public class WorkingTimeRecordPanel extends JPanel {
+public class WorkAttendanceLoadPanel extends JPanel {
     private final JLabel lblLoadValidation = new JLabel();
     private final JButton btnLoad = new JButton();
     private final JButton btnShow = new JButton("Otevřít");
@@ -47,14 +48,16 @@ public class WorkingTimeRecordPanel extends JPanel {
     /**
      * konstruktor bez parametru.
      */
-    public WorkingTimeRecordPanel() {
+    public WorkAttendanceLoadPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 40, 0));
 
         this.employeeListModel = EmployeeListModel.getInstance();
 
-        final JPanel pnlRecordHistory = getRecordHistoryPanel();
+        cmbMonths.setRenderer((list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getName()));
+
+        final JPanel pnlRecordHistory = getWorkAttendanceHistoryPanel();
         final JPanel pnlTemplateLoader = getTemplateLoaderPanel();
         pnlRecordFromTempl = getRecordFromTemplatePanel();
         pnlRecordHistory.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -92,9 +95,9 @@ public class WorkingTimeRecordPanel extends JPanel {
         return panel;
     }
 
-    private JPanel getRecordHistoryPanel() {
+    private JPanel getWorkAttendanceHistoryPanel() {
         final JButton btnLoadFromHistory = new JButton("Načíst z uložených");
-        btnLoadFromHistory.addActionListener(this::showRecordHistoryDialog);
+        btnLoadFromHistory.addActionListener(this::showWorkAttendanceHistoryDialog);
 
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
@@ -141,8 +144,8 @@ public class WorkingTimeRecordPanel extends JPanel {
         window.setVisible(true);
     }
 
-    private void showRecordHistoryDialog(ActionEvent e) {
-        final RecordHistoryPanel records = new RecordHistoryPanel().showListDialog();
+    private void showWorkAttendanceHistoryDialog(ActionEvent e) {
+        final WorkAttendanceHistoryPanel records = new WorkAttendanceHistoryPanel().showListDialog();
         if (records.isChosen()) {
             new WorkAttendanceWindow(records.getRecordName()).setVisible(true);
         }
@@ -217,7 +220,7 @@ public class WorkingTimeRecordPanel extends JPanel {
     private Set<Integer> compareLists() {
         final Set<Integer> employeeIds = shiftPlan.getEmployeeIds();
         return employeeIds.stream()
-                .filter(employeeListModel::containsEmployee)
+                .filter(Predicate.not(employeeListModel::containsEmployee))
                 .collect(Collectors.toSet());
     }
 

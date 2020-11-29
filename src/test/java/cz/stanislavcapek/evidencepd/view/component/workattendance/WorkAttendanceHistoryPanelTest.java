@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.record;
+package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import lombok.extern.log4j.Log4j2;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Log4j2
-class RecordHistoryPanelTest {
+class WorkAttendanceHistoryPanelTest {
 
     @Test
     void prohledaniSlozkyAVypsaniJmenaSouboru() throws IOException {
@@ -23,12 +23,12 @@ class RecordHistoryPanelTest {
 
     @Test
     void zobrazeniAZpracovniVysledku() {
-        new RecordHistoryPanel().showListDialog().isChosen(System.out::println);
+        new WorkAttendanceHistoryPanel().showListDialog().isChosen(System.out::println);
     }
 
     @Test
     void zobrazeniAZpracovaniPriZruseniVolby() {
-        final String neboJinyNazev = new RecordHistoryPanel()
+        final String neboJinyNazev = new WorkAttendanceHistoryPanel()
                 .showListDialog()
                 .orElseGet(() -> "nebylo nic vybrano");
         System.out.println("neboJinyNazev = " + neboJinyNazev);
@@ -36,7 +36,7 @@ class RecordHistoryPanelTest {
 
     @Test
     void zobrazeniAPremapovani() {
-        final Path path = new RecordHistoryPanel()
+        final Path path = new WorkAttendanceHistoryPanel()
                 .showListDialog()
                 .map(s -> Paths.get(s + ".json"));
         log.info(path.toString());

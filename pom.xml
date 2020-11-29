@@ -8,6 +8,7 @@
         <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>cz.stanislavcapek</groupId>
     <artifactId>evidencepd</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -19,6 +20,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -85,10 +90,7 @@
             <artifactId>jsoup</artifactId>
             <version>1.12.1</version>
         </dependency>
-
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -100,10 +102,9 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <classifier>spring-boot</classifier>
                             <finalName>EvidencePD</finalName>
                             <mainClass>
-                                cz.stanislavcapek.evidencepd.app.Main
+                                cz.stanislavcapek.evidencepd.Main
                             </mainClass>
                         </configuration>
                     </execution>
@@ -111,5 +112,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

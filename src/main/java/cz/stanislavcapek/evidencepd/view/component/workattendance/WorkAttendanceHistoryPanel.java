@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.record;
+package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 
@@ -18,17 +18,17 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * An instance of class {@code RecordHistoryPanel}
+ * An instance of class {@code WorkAttendanceHistoryPanel}
  *
  * @author Stanislav Čapek
  * @version 1.0
  */
-public class RecordHistoryPanel extends JPanel {
+public class WorkAttendanceHistoryPanel extends JPanel {
 
     private boolean isChosen = false;
     private String selection;
 
-    public RecordHistoryPanel() {
+    public WorkAttendanceHistoryPanel() {
 
         List<String> fileNames;
         try {
@@ -79,7 +79,7 @@ public class RecordHistoryPanel extends JPanel {
         }
     }
 
-    public RecordHistoryPanel showListDialog() {
+    public WorkAttendanceHistoryPanel showListDialog() {
         final String title = "Výběr z archivu evidencí";
         Object[] options = {"Načíst", "Zrušit"};
         final int choice = JOptionPane.showOptionDialog(

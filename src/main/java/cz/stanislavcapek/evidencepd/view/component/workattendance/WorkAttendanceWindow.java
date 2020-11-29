@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.record;
+package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.dao.Dao;
@@ -144,7 +144,7 @@ public class WorkAttendanceWindow extends JFrame {
             final LocalDate date = parseDateFromFileName(fileName[0]);
             loadState(date);
         } else {
-            final RecordHistoryPanel pnlRecordHistory = new RecordHistoryPanel().showListDialog();
+            final WorkAttendanceHistoryPanel pnlRecordHistory = new WorkAttendanceHistoryPanel().showListDialog();
             if (pnlRecordHistory.isChosen()) {
                 final LocalDate date = pnlRecordHistory.map(this::parseDateFromFileName);
                 loadState(date);
@@ -259,7 +259,7 @@ public class WorkAttendanceWindow extends JFrame {
         }
 
         isSaved = true;
-        showDoneMessage(String.format("WorkAttendance %s/%s byly úspěšně uloženy", month, year));
+        showDoneMessage(String.format("Pracovní docházky %s/%s byly úspěšně uloženy", month, year));
     }
 
     private void print() {

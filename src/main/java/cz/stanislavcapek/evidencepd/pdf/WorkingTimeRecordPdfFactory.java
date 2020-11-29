@@ -1,11 +1,15 @@
 package cz.stanislavcapek.evidencepd.pdf;
 
+import org.apache.logging.log4j.core.util.FileUtils;
+import org.apache.logging.log4j.core.util.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.xmlbeans.ResourceLoader;
+import org.springframework.core.io.Resource;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -56,6 +60,8 @@ public class WorkingTimeRecordPdfFactory {
         final PDDocument document = new PDDocument();
         PDPage page = new PDPage(A4);
         document.addPage(page);
+
+
 
         // load font
         if (normalFont == null || boldFont == null) {
