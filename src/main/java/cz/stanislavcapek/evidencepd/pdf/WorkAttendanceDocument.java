@@ -73,7 +73,9 @@ public class WorkAttendanceDocument {
     }
 
     public double getNextMonthHours() {
-        return (getWorkedHours() + getLastMonthHours()) - getWorkTimeFund();
+        final double totalWorkedHours = getWorkedHours() + getHolidayHours() +
+                getNotWorkedHours() + getLastMonthHours();
+        return totalWorkedHours - getWorkTimeFund();
     }
 
     public double getWorkedHours() {
@@ -84,4 +86,21 @@ public class WorkAttendanceDocument {
                 .sum();
 
     }
+
+    public double getNotWorkedHours() {
+        return workAttendance.getShifts().values()
+                .stream()
+                .map(Shift::getWorkingHours)
+                .mapToDouble(WorkingTime::getNotWorkedOut)
+                .sum();
+    }
+
+    public double getHolidayHours() {
+        return workAttendance.getShifts().values()
+                .stream()
+                .map(Shift::getWorkingHours)
+                .mapToDouble(WorkingTime::getHoliday)
+                .sum();
+    }
+
 }

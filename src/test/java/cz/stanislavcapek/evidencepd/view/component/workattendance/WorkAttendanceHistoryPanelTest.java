@@ -31,7 +31,6 @@ class WorkAttendanceHistoryPanelTest {
         final String neboJinyNazev = new WorkAttendanceHistoryPanel()
                 .showListDialog()
                 .orElseGet(() -> "nebylo nic vybrano");
-        System.out.println("neboJinyNazev = " + neboJinyNazev);
     }
 
     @Test
