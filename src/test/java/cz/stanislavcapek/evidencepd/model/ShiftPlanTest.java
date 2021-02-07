@@ -21,14 +21,17 @@ class ShiftPlanTest {
 
     private static ShiftPlan plan;
     private static ShiftPlan planChybny;
+    private static ShiftPlan planBezMesicu;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         Dao<XSSFWorkbook> io = new XlsxDao();
         XSSFWorkbook workbook = io.load(Path.of("src/test/resources/test_4_straznici.xlsx"));
         XSSFWorkbook workbookBezStrazniku = io.load(Path.of("src/test/resources/test_0_straznici.xlsx"));
+        final XSSFWorkbook workbookBezMesicu = io.load(Path.of("src/test/resources/test_4_straznici_bez_mesicu.xlsx"));
         plan = new ShiftPlan(workbook, MULTISHIFT_CONTINUOUS);
         planChybny = new ShiftPlan(workbookBezStrazniku, MULTISHIFT_CONTINUOUS);
+        planBezMesicu = new ShiftPlan(workbookBezMesicu,MULTISHIFT_CONTINUOUS);
     }
 
     @Test
@@ -74,5 +77,12 @@ class ShiftPlanTest {
         assertNotNull(prescasy);
         assertEquals(prescasy.getShifts().size(), 2);
 
+    }
+
+    @Test
+    void ziskejEvidenciKdyzChybiNektereMesice() {
+        assertNotNull(planBezMesicu);
+
+        
     }
 }

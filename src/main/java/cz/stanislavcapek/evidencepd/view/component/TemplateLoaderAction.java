@@ -43,7 +43,7 @@ public class TemplateLoaderAction extends AbstractAction {
         JComponent source = (JComponent) e.getSource();
 
         try {
-            shiftPlan = nactiPlanSluzeb(source);
+            shiftPlan = loadWorkAttendancePlan(source);
             if (shiftPlan != null) {
                 source.firePropertyChange("loaded", false, true);
             } else {
@@ -56,7 +56,7 @@ public class TemplateLoaderAction extends AbstractAction {
 
     }
 
-    public ShiftPlan getPlanSmen() {
+    public ShiftPlan getWorkAttendancePlan() {
         return shiftPlan;
     }
 
@@ -70,10 +70,10 @@ public class TemplateLoaderAction extends AbstractAction {
     /**
      * Metoda pro načtení souboru ve formatu xlsx.
      */
-    private ShiftPlan nactiPlanSluzeb(JComponent component) throws Exception {
-        int vracenaHodnota = fileChooser.showOpenDialog(component);
+    private ShiftPlan loadWorkAttendancePlan(JComponent component) throws Exception {
+        int response = fileChooser.showOpenDialog(component);
 
-        if (vracenaHodnota == JFileChooser.APPROVE_OPTION) {
+        if (response == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             final Dao<XSSFWorkbook> io = new XlsxDao();
             XSSFWorkbook workbook = io.load(Path.of(file.toURI()));

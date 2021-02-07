@@ -111,8 +111,8 @@ public class WorkAttendanceLoadPanel extends JPanel {
         final int fontSize = 12;
         Icon goodIcon = IconFontSwing.buildIcon(Elusive.OK, fontSize, Color.GREEN);
         Icon wrongIcon = IconFontSwing.buildIcon(Elusive.REMOVE, fontSize, Color.RED);
-        if (((boolean) evt.getNewValue())) {
-            shiftPlan = action.getPlanSmen();
+        if ((boolean) evt.getNewValue()) {
+            shiftPlan = action.getWorkAttendancePlan();
             final String txt = String.format("Plán služeb %d", shiftPlan.getYear());
             lblLoadValidation.setText(txt);
             lblLoadValidation.setIcon(goodIcon);
