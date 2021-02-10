@@ -133,7 +133,7 @@ public class ShiftPlan {
         } catch (Exception e) {
             overtimesByMonth = new ArrayList<>();
         }
-        return convertToRecord(overtimesByMonth, getYear(), monthNum, id);
+        return convertToWorkAttendance(overtimesByMonth, getYear(), monthNum, id);
     }
 
     /**
@@ -215,7 +215,7 @@ public class ShiftPlan {
             final int monthNumber = Month.getNumberByName(sheet.getSheetName());
 
             if (!Month.isValidMonth(monthNumber)) {
-                return;
+                continue;
             }
 
             int[] ids = getEmployeeIdByMonth(i);
@@ -230,7 +230,7 @@ public class ShiftPlan {
                         getEmployee(id),
                         this.year
                 );
-                WorkAttendance workAttendance = convertToRecord(shiftsByMonth);
+                WorkAttendance workAttendance = convertToWorkAttendance(shiftsByMonth);
                 byMonth.put(id, workAttendance);
             }
             shiftsInYear.put(monthNumber, byMonth);
@@ -238,7 +238,7 @@ public class ShiftPlan {
         }
     }
 
-    private WorkAttendance convertToRecord(ShiftsByMonth shiftsByMonth) {
+    private WorkAttendance convertToWorkAttendance(ShiftsByMonth shiftsByMonth) {
         Employee employee = shiftsByMonth.getEmployee();
         final Month month = Month.valueOf(shiftsByMonth.getMonth());
         Map<Integer, Shift> shifts = new TreeMap<>();
@@ -255,7 +255,7 @@ public class ShiftPlan {
         );
     }
 
-    private WorkAttendance convertToRecord(List<Shift> overtimes, int year, int month, int id) {
+    private WorkAttendance convertToWorkAttendance(List<Shift> overtimes, int year, int month, int id) {
         final Month monthTyp = Month.valueOf(month);
         final Employee employee = getEmployee(id);
 
