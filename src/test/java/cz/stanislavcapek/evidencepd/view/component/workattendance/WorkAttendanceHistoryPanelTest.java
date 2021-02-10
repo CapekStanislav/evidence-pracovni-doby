@@ -23,7 +23,7 @@ class WorkAttendanceHistoryPanelTest {
 
     @Test
     void zobrazeniAZpracovniVysledku() {
-        new WorkAttendanceHistoryPanel().showListDialog().isChosen(System.out::println);
+        new WorkAttendanceHistoryPanel().showListDialog().ifChosen(System.out::println);
     }
 
     @Test

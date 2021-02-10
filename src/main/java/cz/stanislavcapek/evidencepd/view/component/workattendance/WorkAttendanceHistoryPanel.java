@@ -61,7 +61,7 @@ public class WorkAttendanceHistoryPanel extends JPanel {
         return isChosen;
     }
 
-    public void isChosen(Consumer<String> consumer) {
+    public void ifChosen(Consumer<String> consumer) {
         if (isChosen) {
             consumer.accept(selection);
         }
