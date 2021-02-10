@@ -1,22 +1,22 @@
 [
   {
     "id": 1,
-    "jmeno": "Petr",
-    "prijmeni": "Novák"
+    "firstName": "Petr",
+    "lastName": "Novák"
   },
   {
     "id": 2,
-    "jmeno": "Ondra",
-    "prijmeni": "Malý"
+    "firstName": "Ondra",
+    "lastName": "Malý"
   },
   {
     "id": 3,
-    "jmeno": "Markéta",
-    "prijmeni": "Pospíšilová"
+    "firstName": "Markéta",
+    "lastName": "Pospíšilová"
   },
   {
     "id": 4,
-    "jmeno": "Lenka",
-    "prijmeni": "Drahá"
+    "firstName": "Lenka",
+    "lastName": "Drahá"
   }
 ]

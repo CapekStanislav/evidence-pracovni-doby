@@ -12,7 +12,7 @@ import java.util.Arrays;
 public enum Month {
 
     JANUARY("leden", 1),
-    FEBRUARY("unor", 2),
+    FEBRUARY("únor", 2),
     MARCH("březen", 3),
     APRIL("duben", 4),
     MAY("květen", 5),
@@ -61,5 +61,20 @@ public enum Month {
      */
     public static boolean isValidMonth(int month) {
         return month > 0 && month < 13;
+    }
+
+    /**
+     * Metoda vrátí číslo měsíce korespondující s jeho názvem.
+     *
+     * @param name český název měsíce
+     * @return číslo měsíce jinak -1
+     */
+    public static int getNumberByName(String name) {
+        return Arrays.stream(values())
+                .filter(month -> month.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .map(Month::getNumber)
+                .orElse(-1);
+
     }
 }

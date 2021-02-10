@@ -1,1 +1,22 @@
-[{"id":1,"firstName":"Petr","lastName":"Novák"},{"id":2,"firstName":"Ondra","lastName":"Malý"},{"id":3,"firstName":"Markéta","lastName":"Pospíšilová"},{"id":4,"firstName":"Lenka","lastName":"Drahá"}]
+[
+  {
+    "id": 1,
+    "firstName": "Petr",
+    "lastName": "Novák"
+  },
+  {
+    "id": 2,
+    "firstName": "Ondra",
+    "lastName": "Malý"
+  },
+  {
+    "id": 3,
+    "firstName": "Markéta",
+    "lastName": "Pospíšilová"
+  },
+  {
+    "id": 4,
+    "firstName": "Lenka",
+    "lastName": "Drahá"
+  }
+]

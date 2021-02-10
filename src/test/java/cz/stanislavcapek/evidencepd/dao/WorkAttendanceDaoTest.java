@@ -29,15 +29,15 @@ class WorkAttendanceDaoTest {
 
     @Test
     void uloz() {
-        final WorkAttendance workAttendance = PLAN.getRecord(1, 2);
+        final WorkAttendance workAttendance = PLAN.getWorkAttendance(1, 2);
         final WorkAttendanceDao dao = new WorkAttendanceDao();
         final Path path = Paths.get("src/test/resources/evidenceUlozitTest.json");
         try {
             dao.save(path, List.of(workAttendance));
             assert true;
         } catch (IOException e) {
-            assert false;
             e.printStackTrace();
+            assert false;
         }
     }
 
@@ -48,11 +48,10 @@ class WorkAttendanceDaoTest {
 
         try {
             final List<WorkAttendance> workAttendanceList = dao.load(path);
-            System.out.println("workAttendanceList = " + workAttendanceList);
             assert true;
         } catch (IOException e) {
-            assert false;
             e.printStackTrace();
+            assert false;
         }
 
 

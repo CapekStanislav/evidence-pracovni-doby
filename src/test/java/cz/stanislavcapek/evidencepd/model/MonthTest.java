@@ -23,9 +23,9 @@ class MonthTest {
 
     @Test
     void getPocetDniVMesici() {
-        assertEquals(Month.getNumberOfDays(Month.JANUARY,2020), 31);
-        assertEquals(Month.getNumberOfDays(Month.MARCH,2020), 31);
-        assertEquals(Month.getNumberOfDays(Month.SEPTEMBER,2020), 30);
+        assertEquals(Month.getNumberOfDays(Month.JANUARY, 2020), 31);
+        assertEquals(Month.getNumberOfDays(Month.MARCH, 2020), 31);
+        assertEquals(Month.getNumberOfDays(Month.SEPTEMBER, 2020), 30);
     }
 
     @Test
@@ -37,7 +37,35 @@ class MonthTest {
 
     @Test
     void getExceptionWhenIllegalMonthNumber() {
-        assertThrows(IllegalArgumentException.class,() -> Month.valueOf(0));
+        assertThrows(IllegalArgumentException.class, () -> Month.valueOf(0));
         assertThrows(IllegalArgumentException.class, () -> Month.valueOf(13));
+    }
+
+    @Test
+    void whenCorrectLocalizedNameThenCorrectNumber() {
+        assertAll(() -> {
+            assertEquals(1, Month.getNumberByName("leden"));
+            assertEquals(2, Month.getNumberByName("únor"));
+            assertEquals(3, Month.getNumberByName("Březen"));
+            assertEquals(4, Month.getNumberByName("duben"));
+            assertEquals(5, Month.getNumberByName("KVĚTEN"));
+            assertEquals(6, Month.getNumberByName("červen"));
+            assertEquals(7, Month.getNumberByName("červenec"));
+            assertEquals(8, Month.getNumberByName("srPEn"));
+            assertEquals(9, Month.getNumberByName("zÁŘí"));
+            assertEquals(10, Month.getNumberByName("říjen"));
+            assertEquals(11, Month.getNumberByName("listoPAD"));
+            assertEquals(12, Month.getNumberByName("prosinec"));
+        });
+    }
+
+    @Test
+    void whenWrongLocalizedNameThenMinusOne () {
+        assertAll(() -> {
+            assertEquals(-1,Month.getNumberByName("brezen"));
+            assertEquals(-1,Month.getNumberByName("unor"));
+            assertEquals(-1,Month.getNumberByName("ljfsdlka"));
+            assertEquals(-1,Month.getNumberByName("ZARI"));
+        });
     }
 }

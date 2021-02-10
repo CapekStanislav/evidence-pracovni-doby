@@ -1,15 +1,19 @@
 package cz.stanislavcapek.evidencepd.shiftplan;
 
+import cz.stanislavcapek.evidencepd.utils.Constraint;
 import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.Shift;
 import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
 import cz.stanislavcapek.evidencepd.employee.Employee;
+import cz.stanislavcapek.evidencepd.workattendance.exception.WorkAttendanceNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -36,8 +40,11 @@ public class ShiftPlan {
     private final WorkingTimeFund.TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime;
     @ToString.Exclude
     private final Map<Integer, Map<Integer, WorkAttendance>> shiftsInYear = new TreeMap<>();
-    private int year;
     private Set<Integer> employeeIds;
+    private final Constraint<Integer> monthNumberConstraint = MonthNumberConstraint.getInstance();
+    private final Constraint<Integer> workAttConstraint;
+    private final Constraint<MonthAndIdValue> monthIdConstraint;
+    private int year;
 
     /**
      * Map {@code <Měsíc, Map<ID,WorkAttendance>> }
@@ -47,6 +54,22 @@ public class ShiftPlan {
         this.workbook = workbook;
         this.typeOfWeeklyWorkingTime = typeOfWeeklyWorkingTime;
         this.year = getYear();
+
+        workAttConstraint = new Constraint<>(
+                shiftsInYear::containsKey,
+                WorkAttendanceNotFoundException::new
+        );
+
+        monthIdConstraint = new Constraint<>(
+                monthAndId -> isEmployee(monthAndId.getId(), monthAndId.getMonth()),
+                monthAndId -> {
+                    final String s = String
+                            .format("Zaměstnanec s id %d se nenachází v zadaném měsíci.", monthAndId.getId());
+                    return new IllegalArgumentException(s);
+                }
+        );
+
+
         loadAllPlan();
     }
 
@@ -69,17 +92,14 @@ public class ShiftPlan {
      * @param monthNum měsíc
      * @param id       id zaměstnance
      * @return evidence směn
-     * @throws IllegalArgumentException pokud hodnota měsíce není v rozmezí 1-12
-     * @throws IllegalArgumentException pokud se id zaměstnance nenachází v daném měsíci
+     * @throws InvalidMonthNumberException     pokud hodnota měsíce není v rozmezí 1-12
+     * @throws WorkAttendanceNotFoundException pokud se v plánu nenachází zadaný měsíc
+     * @throws IllegalArgumentException        pokud se id zaměstnance nenachází v daném měsíci
      */
-    public WorkAttendance getRecord(int monthNum, int id) {
-        if (!isValidMonth(monthNum)) {
-            throw new InvalidMonthNumberException(monthNum);
-        }
-        if (!isEmployee(id, monthNum)) {
-            final String s = String.format("Zaměstnanec s id %d se nenachází v zadaném měsíci.", id);
-            throw new IllegalArgumentException(s);
-        }
+    public WorkAttendance getWorkAttendance(int monthNum, int id) {
+        monthNumberConstraint.orThrow(monthNum);
+        workAttConstraint.orThrow(monthNum);
+        monthIdConstraint.orThrow(MonthAndIdValue.of(monthNum, id));
         return shiftsInYear.get(monthNum).get(id);
     }
 
@@ -88,10 +108,9 @@ public class ShiftPlan {
      * @return Mapu {@code <ID, WorkAttendance>}
      * @throws IllegalArgumentException pokud hodnota měsíce není v rozmezí 1-12
      */
-    public Map<Integer, WorkAttendance> getRecordByMonth(int monthNum) {
-        if (!isValidMonth(monthNum)) {
-            throw new InvalidMonthNumberException(monthNum);
-        }
+    public Map<Integer, WorkAttendance> getWorkAttendanceByMonth(int monthNum) {
+        monthNumberConstraint.orThrow(monthNum);
+        workAttConstraint.orThrow(monthNum);
         return shiftsInYear.get(monthNum);
     }
 
@@ -99,15 +118,14 @@ public class ShiftPlan {
      * @param monthNum měsíc
      * @param id       zaměstnance
      * @return seznam přesčasů
+     * @throws InvalidMonthNumberException     pokud hodnota měsíce není v rozmezí 1-12
+     * @throws WorkAttendanceNotFoundException pokud se v plánu nenachází zadaný měsíc
+     * @throws IllegalArgumentException        pokud se id zaměstnance nenachází v daném měsíci
      */
-    public WorkAttendance getRecordOvertime(int monthNum, int id) {
-        if (!isValidMonth(monthNum)) {
-            throw new InvalidMonthNumberException(monthNum);
-        }
-        if (!isEmployee(id, monthNum)) {
-            final String s = String.format("Zaměstnanec s id %d se nenachází v zadaném měsíci.", id);
-            throw new IllegalArgumentException(s);
-        }
+    public WorkAttendance getWorkAttendanceOvertime(int monthNum, int id) {
+        monthNumberConstraint.orThrow(monthNum);
+        workAttConstraint.orThrow(monthNum);
+        monthIdConstraint.orThrow(MonthAndIdValue.of(monthNum, id));
 
         List<Shift> overtimesByMonth;
         try {
@@ -115,7 +133,7 @@ public class ShiftPlan {
         } catch (Exception e) {
             overtimesByMonth = new ArrayList<>();
         }
-        return converteToRecord(overtimesByMonth, getYear(), monthNum, id);
+        return convertToRecord(overtimesByMonth, getYear(), monthNum, id);
     }
 
     /**
@@ -140,8 +158,9 @@ public class ShiftPlan {
      * @throws IllegalArgumentException měsíc je mimo požadovaný rozsah
      */
     public boolean isEmployee(int id, int monthNum) throws IllegalArgumentException {
-        if (!isValidMonth(monthNum)) {
-            throw new InvalidMonthNumberException(monthNum);
+        monthNumberConstraint.orThrow(monthNum);
+        if (!shiftsInYear.containsKey(monthNum)) {
+            return false;
         }
         return shiftsInYear.get(monthNum).containsKey(id);
     }
@@ -167,6 +186,10 @@ public class ShiftPlan {
         return employeeIds;
     }
 
+    public Set<Integer> getAvailableMonths() {
+        return shiftsInYear.keySet();
+    }
+
     /**
      * Metoda validuje zadaný měsíc, který musí být v rozmezí 1 - 12
      *
@@ -183,7 +206,18 @@ public class ShiftPlan {
      */
     private void loadAllPlan() {
         employeeIds = new TreeSet<>();
-        for (int i = 1; i <= 12; i++) {
+
+        final Iterator<Sheet> sheetIterator = workbook.sheetIterator();
+
+        while (sheetIterator.hasNext()) {
+            final Sheet sheet = sheetIterator.next();
+            final int i = workbook.getSheetIndex(sheet) + 1;
+            final int monthNumber = Month.getNumberByName(sheet.getSheetName());
+
+            if (!Month.isValidMonth(monthNumber)) {
+                return;
+            }
+
             int[] ids = getEmployeeIdByMonth(i);
             Map<Integer, WorkAttendance> byMonth = new TreeMap<>();
             final int numOfEmployees = getNumberOfEmployees(i);
@@ -196,14 +230,15 @@ public class ShiftPlan {
                         getEmployee(id),
                         this.year
                 );
-                WorkAttendance workAttendance = converteToRecord(shiftsByMonth);
+                WorkAttendance workAttendance = convertToRecord(shiftsByMonth);
                 byMonth.put(id, workAttendance);
             }
-            shiftsInYear.put(i, byMonth);
+            shiftsInYear.put(monthNumber, byMonth);
+
         }
     }
 
-    private WorkAttendance converteToRecord(ShiftsByMonth shiftsByMonth) {
+    private WorkAttendance convertToRecord(ShiftsByMonth shiftsByMonth) {
         Employee employee = shiftsByMonth.getEmployee();
         final Month month = Month.valueOf(shiftsByMonth.getMonth());
         Map<Integer, Shift> shifts = new TreeMap<>();
@@ -220,7 +255,7 @@ public class ShiftPlan {
         );
     }
 
-    private WorkAttendance converteToRecord(List<Shift> overtimes, int year, int month, int id) {
+    private WorkAttendance convertToRecord(List<Shift> overtimes, int year, int month, int id) {
         final Month monthTyp = Month.valueOf(month);
         final Employee employee = getEmployee(id);
 
@@ -302,9 +337,7 @@ public class ShiftPlan {
     private List<String> getWholeRowByEmployee(int id, int month) throws IllegalArgumentException {
         List<String> wholeRow;
 
-        if (!isValidMonth(month)) {
-            throw new InvalidMonthNumberException(month);
-        }
+        monthNumberConstraint.orThrow(month);
 
         int employeeRow = getEmployeeRow(id);
 
@@ -371,6 +404,12 @@ public class ShiftPlan {
 
         }
         return name;
+    }
+
+    @Value(staticConstructor = "of")
+    private static class MonthAndIdValue {
+        int month;
+        int id;
     }
 
 

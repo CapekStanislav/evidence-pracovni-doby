@@ -1,914 +1,914 @@
 [
   {
-    "mesic": "LEDEN",
-    "rok": 2019,
-    "tydenniPracDoba": "VICESMENNY_NEPRETRZITY",
-    "predchoziMesic": 0.0,
-    "smeny": {
+    "month": "JANUARY",
+    "year": 2019,
+    "typeOfWeeklyWorkingTime": "MULTISHIFT_CONTINUOUS",
+    "lastMonth": 0.0,
+    "shifts": {
       "1": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           1,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           1,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "PULDENNI_DOVOLENA"
+        "typeOfShiftTwelveHours": "HALF_HOLIDAY"
       },
       "2": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           2,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           2,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "PULDENNI_DOVOLENA"
+        "typeOfShiftTwelveHours": "HALF_HOLIDAY"
       },
       "3": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           3,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           3,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DENNI"
+        "typeOfShiftTwelveHours": "DAY"
       },
       "4": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           4,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           4,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "5": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           5,
           19,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           6,
           7,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "NOCNI"
+        "typeOfShiftTwelveHours": "NIGHT"
       },
       "6": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           6,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           6,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "7": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           7,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           7,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "8": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           8,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           8,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DENNI"
+        "typeOfShiftTwelveHours": "DAY"
       },
       "9": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           9,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           9,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DENNI"
+        "typeOfShiftTwelveHours": "DAY"
       },
       "10": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           10,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           10,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "11": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           11,
           19,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           12,
           7,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "NOCNI"
+        "typeOfShiftTwelveHours": "NIGHT"
       },
       "12": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           12,
           19,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           13,
           7,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "NOCNI"
+        "typeOfShiftTwelveHours": "NIGHT"
       },
       "13": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           13,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           13,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "14": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           14,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           14,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "15": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           15,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           15,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZDRAV_VOLNO"
+        "typeOfShiftTwelveHours": "SICK_DAY"
       },
       "16": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           16,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           16,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "17": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           17,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           17,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "18": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           18,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           18,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DENNI"
+        "typeOfShiftTwelveHours": "DAY"
       },
       "19": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           19,
           19,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           20,
           7,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "NOCNI"
+        "typeOfShiftTwelveHours": "NIGHT"
       },
       "20": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           20,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           20,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "21": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           21,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           21,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "22": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           22,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           22,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DOVOLENA"
+        "typeOfShiftTwelveHours": "HOLIDAY"
       },
       "23": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           23,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           23,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DOVOLENA"
+        "typeOfShiftTwelveHours": "HOLIDAY"
       },
       "24": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           24,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           24,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "DOVOLENA"
+        "typeOfShiftTwelveHours": "HOLIDAY"
       },
       "25": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           25,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           25,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "26": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           26,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           26,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "27": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           27,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           27,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "28": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           28,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           28,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       },
       "29": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           29,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           29,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "NESCHOPNOST"
+        "typeOfShiftTwelveHours": "INABILITY"
       },
       "30": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           30,
           7,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           30,
           19,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "NESCHOPNOST"
+        "typeOfShiftTwelveHours": "INABILITY"
       },
       "31": {
-        "zacatek": [
+        "start": [
           2019,
           1,
           31,
           0,
           0
         ],
-        "konec": [
+        "end": [
           2019,
           1,
           31,
           0,
           0
         ],
-        "pracovniDoba": {
-          "delka": 0.0,
-          "odpracovano": 0.0,
-          "neodpracovano": 0.0,
-          "dovolena": 0.0
+        "workingHours": {
+          "length": 0.0,
+          "workedOut": 0.0,
+          "notWorkedOut": 0.0,
+          "holiday": 0.0
         },
-        "priplatky": {
-          "nocni": 0.0,
-          "vikend": 0.0,
-          "svatek": 0.0,
-          "prescas": 0.0
+        "premiumPayments": {
+          "night": 0.0,
+          "weekend": 0.0,
+          "holiday": 0.0,
+          "overtime": 0.0
         },
-        "typSmeny": "ZADNA"
+        "typeOfShiftTwelveHours": "NONE"
       }
     },
-    "zamestnanec": {
+    "employee": {
       "id": 2,
-      "jmeno": "Jiří",
-      "prijmeni": "Matuška"
+      "firstName": "Jiří",
+      "lastName": "Matuška"
     }
   }
 ]

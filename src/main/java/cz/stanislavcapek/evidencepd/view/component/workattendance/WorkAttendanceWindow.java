@@ -90,8 +90,8 @@ public class WorkAttendanceWindow extends JFrame {
 
     private WorkAttendancePanel getEvidencePanel(ShiftPlan shiftPlan, int month, int id) {
         return new WorkAttendancePanel(
-                shiftPlan.getRecord(month, id),
-                shiftPlan.getRecordOvertime(month, id));
+                shiftPlan.getWorkAttendance(month, id),
+                shiftPlan.getWorkAttendanceOvertime(month, id));
     }
 
     private void setTitleName(String text) {

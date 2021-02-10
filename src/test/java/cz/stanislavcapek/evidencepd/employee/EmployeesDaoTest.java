@@ -14,8 +14,8 @@ import java.util.List;
 
 class EmployeesDaoTest {
 
-    private static final List<Employee> zamestnanci = new ArrayList<>();
-    private final Path testDir = Paths.get("src/test/resources/zamestnanci");
+    private static final List<Employee> EMPLOYEES = new ArrayList<>();
+    private static final Path TEST_DIR = Paths.get("src/test/resources/zamestnanci");
 
     @BeforeAll
     static void beforeAll() {
@@ -23,19 +23,19 @@ class EmployeesDaoTest {
         final Employee z2 = new Employee(2, "Ondra", "Malý");
         final Employee z3 = new Employee(3, "Markéta", "Pospíšilová");
         final Employee z4 = new Employee(4, "Lenka", "Drahá");
-        zamestnanci.add(z1);
-        zamestnanci.add(z2);
-        zamestnanci.add(z3);
-        zamestnanci.add(z4);
+        EMPLOYEES.add(z1);
+        EMPLOYEES.add(z2);
+        EMPLOYEES.add(z3);
+        EMPLOYEES.add(z4);
     }
 
     @Test
     void ulozeniSeznamuZamestnancu() {
         final Dao<List<Employee>> dao = new EmployeesDao();
-        final Path cesta = Paths.get(testDir.toString(), "ulozeniZamestnanci.json");
+        final Path path = Paths.get(TEST_DIR.toString(), "ulozeniZamestnanci.json");
 
         try {
-            dao.save(cesta, zamestnanci);
+            dao.save(path, EMPLOYEES);
             assert true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,10 +46,10 @@ class EmployeesDaoTest {
     @Test
     void nacteniSeznamuZamestnancu() {
         final Dao<List<Employee>> dao = new EmployeesDao();
-        final Path cesta = Paths.get(testDir.toString(), "nacteniZamestnanci.json");
+        final Path path = Paths.get(TEST_DIR.toString(), "nacteniZamestnanci.json");
 
         try {
-            final List<Employee> employeeList = dao.load(cesta);
+            final List<Employee> employeeList = dao.load(path);
             Assertions.assertEquals(4, employeeList.size());
             assert true;
         } catch (IOException e) {

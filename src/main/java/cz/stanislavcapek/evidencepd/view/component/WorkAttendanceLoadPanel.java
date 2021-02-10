@@ -20,6 +20,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -40,7 +41,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private final JButton btnLoad = new JButton();
     private final JButton btnShow = new JButton("Otevřít");
     private final EmployeeListModel employeeListModel;
-    private final JComboBox<Month> cmbMonths = new JComboBox<>(Month.values());
+    private final JComboBox<Month> cmbMonths;
     private final JPanel pnlRecordFromTempl;
 
     private ShiftPlan shiftPlan;
@@ -55,6 +56,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
 
         this.employeeListModel = EmployeeListModel.getInstance();
 
+        cmbMonths = new JComboBox<>(Month.values());
         cmbMonths.setRenderer((list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getName()));
 
         final JPanel pnlRecordHistory = getWorkAttendanceHistoryPanel();
@@ -70,6 +72,15 @@ public class WorkAttendanceLoadPanel extends JPanel {
         pnlRecordFromTempl.setVisible(false);
 
         this.add(Box.createVerticalGlue());
+    }
+
+    private Month[] getFilteredMonths(ShiftPlan plan) {
+
+        final Set<Integer> availableMonths = plan.getAvailableMonths();
+        return Arrays.stream(Month.values())
+                .filter(month -> availableMonths.contains(month.getNumber()))
+                .toArray(Month[]::new);
+
     }
 
 
@@ -121,6 +132,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
             if (!ids.isEmpty()) {
                 showPossibilityAddEmployeesDialog(ids);
             }
+            cmbMonths.setModel(new DefaultComboBoxModel<>(getFilteredMonths(shiftPlan)));
         } else {
             lblLoadValidation.setText("Není načten správný soubor");
             lblLoadValidation.setIcon(wrongIcon);
