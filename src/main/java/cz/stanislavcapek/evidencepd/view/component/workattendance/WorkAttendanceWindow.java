@@ -2,21 +2,19 @@ package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.dao.Dao;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendanceDao;
-import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
+import cz.stanislavcapek.evidencepd.shift.Shift;
+import cz.stanislavcapek.evidencepd.workattendance.*;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +24,10 @@ import java.util.stream.Collectors;
  */
 public class WorkAttendanceWindow extends JFrame {
     private static final String TITLE = "Evidence pracovní doby";
+    private static final String FILE_NAME_FORMAT = "%s-%s-%s.%s";
+    private static final String WORK_ATTENDANCE_FILE_NAME = "evidence";
+    private static final String SUFFIX = "json";
+    private static final Dao<List<WorkAttendanceWithOvertimes>> IO = new WorkAttendanceWithOvertimeDao();
 
     private JMenuItem mniSave;
     private JMenuItem mniSaveAs;
@@ -35,15 +37,11 @@ public class WorkAttendanceWindow extends JFrame {
     private final List<WorkAttendancePanel> pnlEmployeeList = new ArrayList<>();
     private WorkAttendancePanel currentPanel;
     private final JScrollPane contentPane = new JScrollPane();
-    private final String nameFormat = "%s-%s-%s.%s";
-    private final String recordStr = "evidence";
-    private final String overtimeStr = "prescasy";
-    private final String suffix = "json";
     private final JMenu menuEmployees = new JMenu("Zaměstnanci");
     private boolean isSaved = false;
 
     public WorkAttendanceWindow(ShiftPlan shiftPlan, int month) {
-
+        super();
         pnlEmployeeList.clear();
         pnlEmployeeList.addAll(
                 shiftPlan.getEmployeeIds()
@@ -57,6 +55,7 @@ public class WorkAttendanceWindow extends JFrame {
     }
 
     public WorkAttendanceWindow(String fileName) {
+        super();
         loadStateFromFile(fileName);
         initClass();
     }
@@ -115,17 +114,17 @@ public class WorkAttendanceWindow extends JFrame {
 
     private void showNotSaveDialog(WindowEvent e) {
         if (!isSaved) {
-            int volba = JOptionPane.showConfirmDialog(
+            int choice = JOptionPane.showConfirmDialog(
                     WorkAttendanceWindow.this,
                     "Práce nebyla uložena. Chcete jí nyní uložit?",
                     "Ukončení bez uložení",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE
             );
-            if (volba == JOptionPane.YES_OPTION) {
+            if (choice == JOptionPane.YES_OPTION) {
                 saveStateToFile();
                 e.getWindow().dispose();
-            } else if (volba == JOptionPane.NO_OPTION) {
+            } else if (choice == JOptionPane.NO_OPTION) {
                 e.getWindow().dispose();
             }
         } else {
@@ -159,66 +158,58 @@ public class WorkAttendanceWindow extends JFrame {
      * @param date
      */
     private void loadState(LocalDate date) {
-        Dao<List<WorkAttendance>> io = new WorkAttendanceDao();
         final int year = date.getYear();
         final int month = date.getMonthValue();
 
-        final Path shiftsFile = Paths.get(String.format(nameFormat, recordStr, year, month, suffix));
-        final Path overtimesFile = Paths.get(String.format(nameFormat, overtimeStr, year, month, suffix));
+        final Path workAttendancesPath = Paths.get(String.format(FILE_NAME_FORMAT, WORK_ATTENDANCE_FILE_NAME, year, month, SUFFIX));
 
-        List<WorkAttendance> workAttendanceList = null;
+        List<WorkAttendanceWithOvertimes> workAttendanceList;
 
         try {
-            workAttendanceList = io.load(ConfigPaths.RECORDS_PATH.resolve(shiftsFile));
+            workAttendanceList = IO.load(ConfigPaths.RECORDS_PATH.resolve(workAttendancesPath));
         } catch (IOException e) {
             showErrorMessage(
                     String.format("Nepodařilo se nalézt požadovaný soubor evidence " +
                             "nebo je soubor poškozen: %s/%s", month, year)
             );
             this.dispose();
+            return;
         }
 
-        List<WorkAttendance> overtimeList;
-        try {
-            overtimeList = io.load(ConfigPaths.RECORDS_PATH.resolve(overtimesFile));
-        } catch (IOException e) {
-            showErrorMessage(
-                    String.format("Nepodařilo se nalézt požadovaný soubor přesčasů " +
-                            "nebo je soubor poškozen: %s/%s", month, year)
-
-            );
-            overtimeList = createEmptyOvertimeList(workAttendanceList);
-        }
 
         pnlEmployeeList.clear();
-        for (int i = 0; i < workAttendanceList.size(); i++) {
-            final WorkAttendance workAttendance = workAttendanceList.get(i);
-            final WorkAttendance prescasy = overtimeList.get(i);
-            pnlEmployeeList.add(
-                    new WorkAttendancePanel(workAttendance, prescasy)
-            );
-        }
+        workAttendanceList.forEach(this::addEmployeePanel);
+
         updateEmployeesMenu(menuEmployees, pnlEmployeeList);
         updateViewPort(pnlEmployeeList);
+
         isSaved = false;
     }
 
-    private List<WorkAttendance> createEmptyOvertimeList(List<WorkAttendance> workAttendanceList) {
-        List<WorkAttendance> list = new ArrayList<>();
+    private void addEmployeePanel(WorkAttendanceWithOvertimes workAttendanceWithOvertimes) {
+        WorkAttendance regular = new DefaultWorkAttendance(workAttendanceWithOvertimes);
+        WorkAttendance overtimes = extractOvertimesWorkAttendance(workAttendanceWithOvertimes);
+        pnlEmployeeList.add(
+                new WorkAttendancePanel(regular, overtimes)
+        );
+    }
 
-        for (final WorkAttendance workAttendance : workAttendanceList) {
-            list.add(
-                    new DefaultWorkAttendance(
-                            workAttendance.getEmployee(),
-                            workAttendance.getMonth(),
-                            workAttendance.getYear(),
-                            workAttendance.getTypeOfWeeklyWorkingTime(),
-                            workAttendance.getLastMonth(),
-                            new TreeMap<>()
-                    )
-            );
+    private WorkAttendance extractOvertimesWorkAttendance(WorkAttendanceWithOvertimes workAttendanceWithOvertimes) {
+        final DefaultWorkAttendance overtimes = new DefaultWorkAttendance(workAttendanceWithOvertimes);
+
+        final TreeMap<Integer, Shift> map = new TreeMap<>();
+
+        final List<Shift> overtimesList = workAttendanceWithOvertimes.getOvertimes() != null
+                ? workAttendanceWithOvertimes.getOvertimes()
+                : new ArrayList<>();
+
+        for (int i = 0; i < overtimesList.size(); i++) {
+            map.put(i, overtimesList.get(i));
         }
-        return list;
+
+        overtimes.setShifts(map);
+
+        return overtimes;
     }
 
     private LocalDate parseDateFromFileName(String fileName) {
@@ -229,38 +220,67 @@ public class WorkAttendanceWindow extends JFrame {
     }
 
     private void saveStateToFile() {
-        final Dao<List<WorkAttendance>> io = new WorkAttendanceDao();
 
         final int year = currentPanel.getShiftRecord().getYear();
         final int month = currentPanel.getShiftRecord().getMonth().getNumber();
 
-        final Path shiftsFile = Paths.get(String.format(nameFormat, recordStr, year, month, suffix));
-        final Path overtimesFile = Paths.get(String.format(nameFormat, overtimeStr, year, month, suffix));
+        final List<WorkAttendanceWithOvertimes> workAttendanceWithOvertimesList = getAllWorkAttendanceWithOvertimes();
 
-        final List<WorkAttendance> workAttendanceList = this.pnlEmployeeList.stream()
-                .map(WorkAttendancePanel::getShiftRecord)
-                .collect(Collectors.toList());
+        final Path workAttendancesPath = Paths.get(String.format(FILE_NAME_FORMAT, WORK_ATTENDANCE_FILE_NAME, year, month, SUFFIX));
 
-        final List<WorkAttendance> prescasyList = this.pnlEmployeeList.stream()
-                .map(WorkAttendancePanel::getOvertimesRecord)
-                .collect(Collectors.toList());
-
-        try {
-            io.save(ConfigPaths.RECORDS_PATH.resolve(shiftsFile), workAttendanceList);
-        } catch (IOException e) {
-            showErrorMessage("Nastala neočekávaná chyba při ukládání směn");
-            e.printStackTrace();
+        if (isExistsFile(workAttendancesPath)) {
+            if (!isOverwriteOption()) {
+                return;
+            }
         }
-        try {
-            io.save(ConfigPaths.RECORDS_PATH.resolve(overtimesFile), prescasyList);
-        } catch (IOException e) {
-            showErrorMessage("Nastala neočekávaná chyba při ukládání přesčasů");
-            e.printStackTrace();
-        }
+
+        saveToFile(
+                ConfigPaths.RECORDS_PATH.resolve(workAttendancesPath),
+                workAttendanceWithOvertimesList,
+                "Nastala neočekávaná chyba při ukládání směn"
+        );
 
         isSaved = true;
         showDoneMessage(String.format("Pracovní docházky %s/%s byly úspěšně uloženy", month, year));
     }
+
+    private List<WorkAttendanceWithOvertimes> getAllWorkAttendanceWithOvertimes() {
+        return this.pnlEmployeeList.stream()
+                .map(this::getWorkAttendanceWithOvertimes)
+                .collect(Collectors.toList());
+    }
+
+    private WorkAttendanceWithOvertimes getWorkAttendanceWithOvertimes(WorkAttendancePanel panel) {
+        final ExtendedWorkAttendance extendedWorkAttendance = new ExtendedWorkAttendance(panel.getShiftRecord());
+        final Collection<Shift> overtimes = panel.getOvertimesRecord().getShifts().values();
+        extendedWorkAttendance.setOvertimes(new ArrayList<>(overtimes));
+        return extendedWorkAttendance;
+    }
+
+
+    private boolean isExistsFile(Path shiftsFile) {
+        return Files.exists(ConfigPaths.RECORDS_PATH.resolve(shiftsFile));
+    }
+
+    private boolean isOverwriteOption() {
+        return JOptionPane
+                .showConfirmDialog(
+                        this,
+                        "Soubor již exstuje. Chcete jej přepsat?",
+                        "Soubor již existuje",
+                        JOptionPane.YES_NO_OPTION
+                ) == JOptionPane.YES_OPTION;
+    }
+
+    private void saveToFile(Path file, List<WorkAttendanceWithOvertimes> list, String errMsg) {
+        try {
+            IO.save(file, list);
+        } catch (IOException e) {
+            showErrorMessage(errMsg);
+            e.printStackTrace();
+        }
+    }
+
 
     private void print() {
         if (currentPanel == null) {

@@ -24,10 +24,6 @@ public class Main {
                 .run(args);
         EventQueue.invokeLater(() -> {
             final MainWindow bean = ctx.getBean(MainWindow.class);
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ignored) {
-            }
             bean.setVisible(true);
         });
     }

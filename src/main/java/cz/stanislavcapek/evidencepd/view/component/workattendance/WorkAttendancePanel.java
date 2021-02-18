@@ -135,17 +135,17 @@ class WorkAttendancePanel extends JPanel {
                         BorderFactory.createTitledBorder("Přesčasy"),
                         BorderFactory.createEmptyBorder(10, 5, 10, 5)
                 ));
-        // tabulka přesčasů
+        // overtimes table
         tableOvertime = new JTable(overTimeTableModelRecord);
         tableOvertime.setDefaultRenderer(Object.class, new ColorerWeekendOvertimeTableCellRenderer(this.year));
         tableOvertime.setFillsViewportHeight(true);
         scrollPane = new JScrollPane(tableOvertime);
         pnlOvertimeWrapper.add(scrollPane);
 
-        // sumarizace
+        // summarization
         pnlOvertimeWrapper.add(createSummarizationOvertime());
 
-        // tlačítka
+        // buttons
         final JPanel pnlButtonsWrapper = new JPanel();
         btnAdd = new JButton("Přidat");
         btnRemove = new JButton("Odebrat");
