@@ -18,6 +18,8 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,9 +44,10 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private final JButton btnShow = new JButton("Otevřít");
     private final EmployeeListModel employeeListModel;
     private final JComboBox<Month> cmbMonths;
-    private final JPanel pnlRecordFromTempl;
+    private final JPanel pnlRecordFromTemplate;
 
     private ShiftPlan shiftPlan;
+    private WorkAttendanceWindow window;
 
     /**
      * konstruktor bez parametru.
@@ -61,15 +64,15 @@ public class WorkAttendanceLoadPanel extends JPanel {
 
         final JPanel pnlRecordHistory = getWorkAttendanceHistoryPanel();
         final JPanel pnlTemplateLoader = getTemplateLoaderPanel();
-        pnlRecordFromTempl = getRecordFromTemplatePanel();
+        pnlRecordFromTemplate = getRecordFromTemplatePanel();
         pnlRecordHistory.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlTemplateLoader.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(pnlRecordHistory);
         final int height = 10;
         this.add(Box.createVerticalStrut(height));
         this.add(pnlTemplateLoader);
-        this.add(pnlRecordFromTempl);
-        pnlRecordFromTempl.setVisible(false);
+        this.add(pnlRecordFromTemplate);
+        pnlRecordFromTemplate.setVisible(false);
 
         this.add(Box.createVerticalGlue());
     }
@@ -127,7 +130,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
             final String txt = String.format("Plán služeb %d", shiftPlan.getYear());
             lblLoadValidation.setText(txt);
             lblLoadValidation.setIcon(goodIcon);
-            pnlRecordFromTempl.setVisible(true);
+            pnlRecordFromTemplate.setVisible(true);
             final Set<Integer> ids = compareLists();
             if (!ids.isEmpty()) {
                 showPossibilityAddEmployeesDialog(ids);
@@ -136,7 +139,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
         } else {
             lblLoadValidation.setText("Není načten správný soubor");
             lblLoadValidation.setIcon(wrongIcon);
-            pnlRecordFromTempl.setVisible(false);
+            pnlRecordFromTemplate.setVisible(false);
         }
     }
 
@@ -153,14 +156,38 @@ public class WorkAttendanceLoadPanel extends JPanel {
                 shiftPlan,
                 cmbMonths.getSelectedIndex() + 1
         );
-        window.setVisible(true);
+        showWorkAttendanceWindow(window);
     }
 
     private void showWorkAttendanceHistoryDialog(ActionEvent e) {
         final WorkAttendanceHistoryPanel records = new WorkAttendanceHistoryPanel().showListDialog();
         if (records.isChosen()) {
-            new WorkAttendanceWindow(records.getRecordName()).setVisible(true);
+            final WorkAttendanceWindow window = new WorkAttendanceWindow(records.getRecordName());
+            showWorkAttendanceWindow(window);
         }
+    }
+
+    private void showWorkAttendanceWindow(WorkAttendanceWindow window) {
+        if (this.window != null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Již je jedno okno s evidencí otevřené. Nelze otevřít další. Nejprve zavřete aktuální okno."
+
+            );
+            return;
+        }
+        this.window = window;
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                updateWindowStatus(e);
+            }
+        });
+        window.setVisible(true);
+    }
+
+    private void updateWindowStatus(WindowEvent event) {
+        this.window = null;
     }
 
     /**
