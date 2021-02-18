@@ -26,4 +26,5 @@ public interface WorkAttendance {
     double getLastMonth();
 
     Map<Integer, Shift> getShifts();
+
 }
