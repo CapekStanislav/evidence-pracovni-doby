@@ -152,9 +152,11 @@ public class WorkAttendanceLoadPanel extends JPanel {
     }
 
     private void showRecordFromTemplateWindow(ActionEvent e) {
+        final String selectedItemName = cmbMonths.getSelectedItem().toString();
+        final Month month = Month.valueOf(selectedItemName);
         final WorkAttendanceWindow window = new WorkAttendanceWindow(
                 shiftPlan,
-                cmbMonths.getSelectedIndex() + 1
+                Month.getNumberByName(month.getName())
         );
         showWorkAttendanceWindow(window);
     }

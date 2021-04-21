@@ -226,7 +226,7 @@ public class ShiftPlan {
                 employeeIds.add(id);
                 ShiftsByMonth shiftsByMonth = new ShiftsByMonth(
                         getWholeRowByEmployee(id, i),
-                        i,
+                        monthNumber,
                         getEmployee(id),
                         this.year
                 );
