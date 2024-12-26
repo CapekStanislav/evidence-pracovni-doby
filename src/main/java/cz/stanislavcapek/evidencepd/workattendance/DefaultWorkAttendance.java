@@ -1,12 +1,9 @@
 package cz.stanislavcapek.evidencepd.workattendance;
 
+import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.Shift;
-import cz.stanislavcapek.evidencepd.employee.Employee;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
@@ -16,9 +13,6 @@ import java.util.Map;
  * @author Stanislav Čapek
  * @version 1.0
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class DefaultWorkAttendance implements WorkAttendance {
 
     private Employee employee;
@@ -28,6 +22,16 @@ public class DefaultWorkAttendance implements WorkAttendance {
     private double lastMonth;
     private Map<Integer, Shift> shifts;
 
+    public DefaultWorkAttendance(Employee employee, Month month, int year, WorkingTimeFund.
+            TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime, double lastMonth, Map<Integer, Shift> shifts) {
+        this.employee = employee;
+        this.month = month;
+        this.year = year;
+        this.typeOfWeeklyWorkingTime = typeOfWeeklyWorkingTime;
+        this.lastMonth = lastMonth;
+        this.shifts = shifts;
+    }
+
     public DefaultWorkAttendance(WorkAttendance workAttendance) {
         this.employee = workAttendance.getEmployee();
         this.month = workAttendance.getMonth();
@@ -35,5 +39,39 @@ public class DefaultWorkAttendance implements WorkAttendance {
         this.typeOfWeeklyWorkingTime = workAttendance.getTypeOfWeeklyWorkingTime();
         this.lastMonth = workAttendance.getLastMonth();
         this.shifts = workAttendance.getShifts();
+    }
+
+    @Override
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    @Override
+    public Month getMonth() {
+        return month;
+    }
+
+    @Override
+    public int getYear() {
+        return year;
+    }
+
+    @Override
+    public WorkingTimeFund.TypeOfWeeklyWorkingTime getTypeOfWeeklyWorkingTime() {
+        return typeOfWeeklyWorkingTime;
+    }
+
+    @Override
+    public double getLastMonth() {
+        return lastMonth;
+    }
+
+    @Override
+    public Map<Integer, Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(Map<Integer, Shift> shifts) {
+        this.shifts = shifts;
     }
 }

@@ -1,7 +1,5 @@
 package cz.stanislavcapek.evidencepd.utils;
 
-import lombok.AllArgsConstructor;
-
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -11,11 +9,15 @@ import java.util.function.Predicate;
  * @author Stanislav Čapek
  * @version 1.0
  */
-@AllArgsConstructor
 public class Constraint<T> {
 
     protected final Predicate<T> predicate;
     protected final Function<T, ? extends RuntimeException> exceptionGenerator;
+
+    public Constraint(Predicate<T> predicate, Function<T, ? extends RuntimeException> exceptionGenerator) {
+        this.predicate = predicate;
+        this.exceptionGenerator = exceptionGenerator;
+    }
 
     public boolean check(T type) {
         return predicate.test(type);

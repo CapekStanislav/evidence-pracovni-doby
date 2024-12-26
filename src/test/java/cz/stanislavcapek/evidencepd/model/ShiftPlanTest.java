@@ -1,11 +1,10 @@
 package cz.stanislavcapek.evidencepd.model;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.workattendance.exception.WorkAttendanceNotFoundException;
-import lombok.extern.log4j.Log4j2;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import java.util.Set;
 import static cz.stanislavcapek.evidencepd.model.WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Log4j2
+
 class ShiftPlanTest {
 
 
@@ -60,21 +59,12 @@ class ShiftPlanTest {
     void ziskejEvidenciZamestnanceZaMesic() {
         final WorkAttendance workAttendance = plan.getWorkAttendance(1, 2);
 
-        log.info("WorkAttendance");
-        log.info(workAttendance.getEmployee().toString());
-        log.info(workAttendance.getMonth().toString());
-        log.info(String.valueOf(workAttendance.getLastMonth()));
-        log.info(workAttendance.getShifts().toString());
-
         assertNotNull(workAttendance);
     }
 
     @Test
     void ziskejEvidenciPrescasu() {
         final WorkAttendance prescasy = plan.getWorkAttendanceOvertime(1, 2);
-
-        log.info("WorkAttendance přesčasů");
-        log.info(prescasy.toString());
 
         assertNotNull(prescasy);
         assertEquals(prescasy.getShifts().size(), 2);
@@ -104,7 +94,7 @@ class ShiftPlanTest {
         final Set<Integer> availableMonths = planBezMesicu.getAvailableMonths();
 
         assertNotNull(availableMonths);
-        assertEquals(10,availableMonths.size());
+        assertEquals(10, availableMonths.size());
 
         assertFalse(availableMonths.contains(1));
         assertFalse(availableMonths.contains(2));

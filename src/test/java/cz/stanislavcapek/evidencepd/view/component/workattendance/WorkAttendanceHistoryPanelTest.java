@@ -1,7 +1,6 @@
 package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Log4j2
 class WorkAttendanceHistoryPanelTest {
 
     @Test
@@ -38,7 +36,5 @@ class WorkAttendanceHistoryPanelTest {
         final Path path = new WorkAttendanceHistoryPanel()
                 .showListDialog()
                 .map(s -> Paths.get(s + ".json"));
-        log.info(path.toString());
-
     }
 }

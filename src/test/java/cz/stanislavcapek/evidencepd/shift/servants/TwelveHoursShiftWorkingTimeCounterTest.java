@@ -1,8 +1,6 @@
 package cz.stanislavcapek.evidencepd.shift.servants;
 
 import cz.stanislavcapek.evidencepd.shift.*;
-import cz.stanislavcapek.evidencepd.shift.Shift;
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +10,6 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Log4j2
 class TwelveHoursShiftWorkingTimeCounterTest {
 
     private static final WorkingTimeCounter POCITADLO_PRACOVNI_DOBY = new TwelveHoursShiftWorkingTimeCounter();
@@ -34,13 +31,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),12d);
-            assertEquals(workingTime.getNotWorkedOut(),0d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 12d);
+            assertEquals(workingTime.getNotWorkedOut(), 0d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
     }
 
@@ -49,13 +44,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.NIGHT);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),12d);
-            assertEquals(workingTime.getNotWorkedOut(),0d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 12d);
+            assertEquals(workingTime.getNotWorkedOut(), 0d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
 
     }
@@ -65,13 +58,12 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.HOLIDAY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
 
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),0);
-            assertEquals(workingTime.getNotWorkedOut(),0d);
-            assertEquals(workingTime.getHoliday(),12d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 0);
+            assertEquals(workingTime.getNotWorkedOut(), 0d);
+            assertEquals(workingTime.getHoliday(), 12d);
         });
     }
 
@@ -80,13 +72,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.HALF_HOLIDAY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),6d);
-            assertEquals(workingTime.getNotWorkedOut(),0d);
-            assertEquals(workingTime.getHoliday(),6d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 6d);
+            assertEquals(workingTime.getNotWorkedOut(), 0d);
+            assertEquals(workingTime.getHoliday(), 6d);
         });
     }
 
@@ -95,13 +85,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.INABILITY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),0d);
-            assertEquals(workingTime.getNotWorkedOut(),12d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 0d);
+            assertEquals(workingTime.getNotWorkedOut(), 12d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
     }
 
@@ -110,13 +98,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.HOME_CARE);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),0d);
-            assertEquals(workingTime.getNotWorkedOut(),12d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 0d);
+            assertEquals(workingTime.getNotWorkedOut(), 12d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
     }
 
@@ -125,13 +111,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.TRAINING);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),7.5d);
-            assertEquals(workingTime.getWorkedOut(),7.5d);
-            assertEquals(workingTime.getNotWorkedOut(),0d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 7.5d);
+            assertEquals(workingTime.getWorkedOut(), 7.5d);
+            assertEquals(workingTime.getNotWorkedOut(), 0d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
 
     }
@@ -141,13 +125,12 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.NONE);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
 
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),0d);
-            assertEquals(workingTime.getWorkedOut(),0d);
-            assertEquals(workingTime.getNotWorkedOut(),0d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 0d);
+            assertEquals(workingTime.getWorkedOut(), 0d);
+            assertEquals(workingTime.getNotWorkedOut(), 0d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
     }
 
@@ -156,13 +139,11 @@ class TwelveHoursShiftWorkingTimeCounterTest {
         final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.SICK_DAY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
-        log.debug(workingTime.toString());
-
         assertAll(() -> {
-            assertEquals(workingTime.getLength(),12d);
-            assertEquals(workingTime.getWorkedOut(),0d);
-            assertEquals(workingTime.getNotWorkedOut(),12d);
-            assertEquals(workingTime.getHoliday(),0d);
+            assertEquals(workingTime.getLength(), 12d);
+            assertEquals(workingTime.getWorkedOut(), 0d);
+            assertEquals(workingTime.getNotWorkedOut(), 12d);
+            assertEquals(workingTime.getHoliday(), 0d);
         });
     }
 }

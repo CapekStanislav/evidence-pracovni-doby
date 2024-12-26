@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * An instance of class {@code Employee}
@@ -9,16 +9,38 @@ import lombok.*;
  * @author Stanislav Čapek
  * @version 1.0
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Employee {
 
-    @Setter(value = AccessLevel.NONE)
-    private int id;
+    private final int id;
     private String firstName;
-    @EqualsAndHashCode.Exclude
     private String lastName;
+
+    public Employee(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     @JsonIgnore
     public String getFullName() {

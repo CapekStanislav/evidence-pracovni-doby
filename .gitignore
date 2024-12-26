@@ -38,3 +38,17 @@ build/
 /out
 /src/main/java/META-INF
 
+/.gradle/7.3/checksums/checksums.lock
+/.gradle/7.3/checksums/md5-checksums.bin
+/.gradle/7.3/checksums/sha1-checksums.bin
+/.gradle/7.3/dependencies-accessors/dependencies-accessors.lock
+/.gradle/7.3/dependencies-accessors/gc.properties
+/.gradle/7.3/executionHistory/executionHistory.bin
+/.gradle/7.3/executionHistory/executionHistory.lock
+/.gradle/7.3/fileChanges/last-build.bin
+/.gradle/7.3/fileHashes/fileHashes.bin
+/.gradle/7.3/fileHashes/fileHashes.lock
+/.gradle/7.3/fileHashes/resourceHashesCache.bin
+/.gradle/7.3/gc.properties
+/.gradle/vcs-1/gc.properties
+/.gradle/file-system.probe

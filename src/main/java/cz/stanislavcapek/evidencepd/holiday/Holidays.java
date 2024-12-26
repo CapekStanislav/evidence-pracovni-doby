@@ -1,8 +1,5 @@
 package cz.stanislavcapek.evidencepd.holiday;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -14,8 +11,6 @@ import java.util.stream.Collectors;
  *
  * @author Stanislav Čapek
  */
-@EqualsAndHashCode
-@ToString
 public class Holidays {
 
     private static final HolidaysDao HOLIDAYS_DAO = new HolidaysDao();
@@ -47,7 +42,7 @@ public class Holidays {
 
     public List<LocalDate> getDatesOfHolidays() {
         return holidayList.stream()
-                .map(Holiday::getDate)
+                .map(Holiday::date)
                 .collect(Collectors.toList());
     }
 

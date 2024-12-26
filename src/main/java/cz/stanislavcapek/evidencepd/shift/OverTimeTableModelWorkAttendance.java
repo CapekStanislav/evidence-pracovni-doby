@@ -2,12 +2,12 @@ package cz.stanislavcapek.evidencepd.shift;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
-import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.shift.servants.ShiftTimeAdjuster;
 import cz.stanislavcapek.evidencepd.employee.Employee;
+import cz.stanislavcapek.evidencepd.model.Month;
+import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
+import cz.stanislavcapek.evidencepd.shift.servants.ShiftTimeAdjuster;
 import cz.stanislavcapek.evidencepd.utils.Rounder;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import lombok.ToString;
 
 import javax.swing.table.AbstractTableModel;
@@ -67,11 +67,11 @@ public class OverTimeTableModelWorkAttendance extends AbstractTableModel impleme
             case 4:
                 return round(overtime.getWorkingHours().getWorkedOut());
             case 5:
-                return round(overtime.getPremiumPayments().getNight());
+                return round(overtime.getPremiumPayments().night());
             case 6:
-                return round(overtime.getPremiumPayments().getWeekend());
+                return round(overtime.getPremiumPayments().weekend());
             case 7:
-                return round(overtime.getPremiumPayments().getHoliday());
+                return round(overtime.getPremiumPayments().holiday());
             default:
                 return "";
         }

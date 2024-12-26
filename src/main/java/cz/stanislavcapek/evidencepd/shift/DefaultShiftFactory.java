@@ -139,8 +139,8 @@ public class DefaultShiftFactory implements ShiftFactory {
                 final Shift shift = new Shift(
                         startAndEnd,
                         startAndEnd,
-                        new WorkingTime(),
-                        new PremiumPayments(),
+                        new WorkingTime(0, 0, 0, 0),
+                        new PremiumPayments(0, 0, 0, 0),
                         TypeOfShiftTwelveHours.NONE
                 );
                 return shift;
@@ -155,8 +155,8 @@ public class DefaultShiftFactory implements ShiftFactory {
         return new Shift(
                 start,
                 end,
-                new WorkingTime(),
-                new PremiumPayments(),
+                new WorkingTime(0, 0, 0, 0),
+                new PremiumPayments(0, 0, 0, 0),
                 type
         );
     }

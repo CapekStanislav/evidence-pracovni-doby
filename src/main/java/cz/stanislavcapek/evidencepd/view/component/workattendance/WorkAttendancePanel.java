@@ -1,28 +1,24 @@
 package cz.stanislavcapek.evidencepd.view.component.workattendance;
 
 
+import cz.stanislavcapek.evidencepd.model.Month;
+import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.pdf.WorkAttendanceDocument;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
-import cz.stanislavcapek.evidencepd.model.*;
+import cz.stanislavcapek.evidencepd.shift.*;
+import cz.stanislavcapek.evidencepd.shift.servants.DefaultPremiumPaymentsCounter;
+import cz.stanislavcapek.evidencepd.shift.servants.PremiumPaymentsCounter;
 import cz.stanislavcapek.evidencepd.shift.servants.TwelveHoursShiftWorkingTimeCounter;
 import cz.stanislavcapek.evidencepd.shift.servants.WorkingTimeCounter;
-import cz.stanislavcapek.evidencepd.shift.servants.PremiumPaymentsCounter;
-import cz.stanislavcapek.evidencepd.shift.servants.DefaultPremiumPaymentsCounter;
-import cz.stanislavcapek.evidencepd.shift.*;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
-import cz.stanislavcapek.evidencepd.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.utils.Rounder;
 import cz.stanislavcapek.evidencepd.view.component.utils.ColorerWeekendOvertimeTableCellRenderer;
 import cz.stanislavcapek.evidencepd.view.component.utils.ColorerWeekendShiftTableCellRenderer;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.time.DateTimeException;
@@ -480,9 +476,9 @@ class WorkAttendancePanel extends JPanel {
 
             // counting premium payments
             final PremiumPayments premiumPayments = premiumPaymentsCounter.calculate(shift);
-            hNight += premiumPayments.getNight();
-            hWeekend += premiumPayments.getWeekend();
-            hHoliday += premiumPayments.getHoliday();
+            hNight += premiumPayments.night();
+            hWeekend += premiumPayments.weekend();
+            hHoliday += premiumPayments.holiday();
         }
 
         // intermediate calculation
@@ -527,9 +523,9 @@ class WorkAttendancePanel extends JPanel {
 
             final PremiumPayments premiumPayments = overtime.getPremiumPayments();
             hWorkedOut += overtime.getWorkingHours().getWorkedOut();
-            hNight += premiumPayments.getNight();
-            hWeekend += premiumPayments.getWeekend();
-            hHoliday += premiumPayments.getHoliday();
+            hNight += premiumPayments.night();
+            hWeekend += premiumPayments.weekend();
+            hHoliday += premiumPayments.holiday();
         }
 
         lblWorkedOutOvertime.setText(String.valueOf(round(hWorkedOut)));

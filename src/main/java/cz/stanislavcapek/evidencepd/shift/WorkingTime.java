@@ -1,34 +1,53 @@
 package cz.stanislavcapek.evidencepd.shift;
 
-import lombok.Data;
-
 /**
  * An instance of class {@code WorkingTime}
- *
- * @author Stanislav Čapek
- * @version 1.0
  */
-@Data
 public class WorkingTime {
-
-    /**
-     * Celková délka směny
-     */
     private double length;
-    /**
-     * Odpracované hodiny ve smyslu fyzické přítomnosti na pracovišti.
-     * Započitatelné do pracovní doby
-     */
     private double workedOut;
-    /**
-     * Neodpracované hodiny ve smyslu hodin započitatelných do pracovní
-     * doby, které nebyly fyzicky odpracované (např. neschopnost)
-     */
     private double notWorkedOut;
-
-    /**
-     * Hodiny, které se považují za dovolenou
-     */
     private double holiday;
 
+    public WorkingTime(double length,
+                       double workedOut,
+                       double notWorkedOut,
+                       double holiday) {
+        this.length = length;
+        this.workedOut = workedOut;
+        this.notWorkedOut = notWorkedOut;
+        this.holiday = holiday;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public double getWorkedOut() {
+        return workedOut;
+    }
+
+    public void setWorkedOut(double workedOut) {
+        this.workedOut = workedOut;
+    }
+
+    public double getNotWorkedOut() {
+        return notWorkedOut;
+    }
+
+    public void setNotWorkedOut(double notWorkedOut) {
+        this.notWorkedOut = notWorkedOut;
+    }
+
+    public double getHoliday() {
+        return holiday;
+    }
+
+    public void setHoliday(double holiday) {
+        this.holiday = holiday;
+    }
 }

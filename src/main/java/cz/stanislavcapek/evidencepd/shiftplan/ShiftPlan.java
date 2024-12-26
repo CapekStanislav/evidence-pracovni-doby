@@ -1,16 +1,15 @@
 package cz.stanislavcapek.evidencepd.shiftplan;
 
-import cz.stanislavcapek.evidencepd.utils.Constraint;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
+import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.Shift;
+import cz.stanislavcapek.evidencepd.utils.Constraint;
 import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
-import cz.stanislavcapek.evidencepd.employee.Employee;
+import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.workattendance.exception.WorkAttendanceNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -61,10 +60,10 @@ public class ShiftPlan {
         );
 
         monthIdConstraint = new Constraint<>(
-                monthAndId -> isEmployee(monthAndId.getId(), monthAndId.getMonth()),
+                monthAndId -> isEmployee(monthAndId.id(), monthAndId.month()),
                 monthAndId -> {
                     final String s = String
-                            .format("Zaměstnanec s id %d se nenachází v zadaném měsíci.", monthAndId.getId());
+                            .format("Zaměstnanec s id %d se nenachází v zadaném měsíci.", monthAndId.id());
                     return new IllegalArgumentException(s);
                 }
         );
@@ -99,7 +98,7 @@ public class ShiftPlan {
     public WorkAttendance getWorkAttendance(int monthNum, int id) {
         monthNumberConstraint.orThrow(monthNum);
         workAttConstraint.orThrow(monthNum);
-        monthIdConstraint.orThrow(MonthAndIdValue.of(monthNum, id));
+        monthIdConstraint.orThrow(new MonthAndIdValue(monthNum, id));
         return shiftsInYear.get(monthNum).get(id);
     }
 
@@ -125,7 +124,7 @@ public class ShiftPlan {
     public WorkAttendance getWorkAttendanceOvertime(int monthNum, int id) {
         monthNumberConstraint.orThrow(monthNum);
         workAttConstraint.orThrow(monthNum);
-        monthIdConstraint.orThrow(MonthAndIdValue.of(monthNum, id));
+        monthIdConstraint.orThrow(new MonthAndIdValue(monthNum, id));
 
         List<Shift> overtimesByMonth;
         try {
@@ -406,11 +405,7 @@ public class ShiftPlan {
         return name;
     }
 
-    @Value(staticConstructor = "of")
-    private static class MonthAndIdValue {
-        int month;
-        int id;
+
+    private record MonthAndIdValue(int month, int id) {
     }
-
-
 }

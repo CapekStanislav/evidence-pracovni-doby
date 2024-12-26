@@ -1,7 +1,5 @@
 package cz.stanislavcapek.evidencepd.holiday;
 
-import lombok.Value;
-
 import java.time.LocalDate;
 
 /**
@@ -9,8 +7,5 @@ import java.time.LocalDate;
  *
  * @author Stanislav Čapek
  */
-@Value
-public class Holiday {
-    public LocalDate date;
-    public String name;
+public record Holiday(LocalDate date, String name) {
 }

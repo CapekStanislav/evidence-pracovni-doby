@@ -4,9 +4,6 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.Shift;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +15,6 @@ import java.util.Map;
  * @author Stanislav Čapek
  * @version 1.0
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ExtendedWorkAttendance implements WorkAttendanceWithOvertimes {
 
     private Employee employee;
@@ -39,5 +33,45 @@ public class ExtendedWorkAttendance implements WorkAttendanceWithOvertimes {
         this.lastMonth = workAttendance.getLastMonth();
         this.shifts = workAttendance.getShifts();
         this.overtimes = new ArrayList<>();
+    }
+
+
+    @Override
+    public List<Shift> getOvertimes() {
+        return overtimes;
+    }
+
+    @Override
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    @Override
+    public Month getMonth() {
+        return null;
+    }
+
+    @Override
+    public int getYear() {
+        return 0;
+    }
+
+    @Override
+    public WorkingTimeFund.TypeOfWeeklyWorkingTime getTypeOfWeeklyWorkingTime() {
+        return null;
+    }
+
+    @Override
+    public double getLastMonth() {
+        return lastMonth;
+    }
+
+    @Override
+    public Map<Integer, Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setOvertimes(List<Shift> overtimes) {
+        this.overtimes = overtimes;
     }
 }

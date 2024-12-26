@@ -1,16 +1,14 @@
 package cz.stanislavcapek.evidencepd.shift.servants;
 
 import cz.stanislavcapek.evidencepd.shift.*;
-import cz.stanislavcapek.evidencepd.shift.Shift;
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Log4j2
 class DefaultPremiumPaymentsCounterTest {
 
 
@@ -33,13 +31,12 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
 
         assertAll(() -> {
-            assertEquals(0d, premiumPayments.getNight());
-            assertEquals(0d, premiumPayments.getWeekend());
-            assertEquals(0d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(0d, premiumPayments.night());
+            assertEquals(0d, premiumPayments.weekend());
+            assertEquals(0d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -49,13 +46,11 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
-
         assertAll(() -> {
-            assertEquals(8d, premiumPayments.getNight());
-            assertEquals(0d, premiumPayments.getWeekend());
-            assertEquals(0d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(8d, premiumPayments.night());
+            assertEquals(0d, premiumPayments.weekend());
+            assertEquals(0d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -65,13 +60,12 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
 
         assertAll(() -> {
-            assertEquals(0d, premiumPayments.getNight());
-            assertEquals(0d, premiumPayments.getWeekend());
-            assertEquals(12d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(0d, premiumPayments.night());
+            assertEquals(0d, premiumPayments.weekend());
+            assertEquals(12d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -81,14 +75,12 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(shift.toString());
-        log.debug(premiumPayments.toString());
 
         assertAll(() -> {
-            assertEquals(0d, premiumPayments.getNight());
-            assertEquals(12d, premiumPayments.getWeekend());
-            assertEquals(0d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(0d, premiumPayments.night());
+            assertEquals(12d, premiumPayments.weekend());
+            assertEquals(0d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -98,13 +90,11 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
-
         assertAll(() -> {
-            assertEquals(8d, premiumPayments.getNight());
-            assertEquals(7d, premiumPayments.getWeekend());
-            assertEquals(5d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(8d, premiumPayments.night());
+            assertEquals(7d, premiumPayments.weekend());
+            assertEquals(5d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -114,13 +104,11 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
-
         assertAll(() -> {
-            assertEquals(8d, premiumPayments.getNight());
-            assertEquals(12d, premiumPayments.getWeekend());
-            assertEquals(0d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(8d, premiumPayments.night());
+            assertEquals(12d, premiumPayments.weekend());
+            assertEquals(0d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -130,13 +118,11 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
-
         assertAll(() -> {
-            assertEquals(8d, premiumPayments.getNight());
-            assertEquals(5d, premiumPayments.getWeekend());
-            assertEquals(0d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(8d, premiumPayments.night());
+            assertEquals(5d, premiumPayments.weekend());
+            assertEquals(0d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 
@@ -147,13 +133,11 @@ class DefaultPremiumPaymentsCounterTest {
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
-        log.debug(premiumPayments.toString());
-
         assertAll(() -> {
-            assertEquals(7.5d, premiumPayments.getNight());
-            assertEquals(2.75d, premiumPayments.getWeekend());
-            assertEquals(20.75d, premiumPayments.getHoliday());
-            assertEquals(0d, premiumPayments.getOvertime());
+            assertEquals(7.5d, premiumPayments.night());
+            assertEquals(2.75d, premiumPayments.weekend());
+            assertEquals(20.75d, premiumPayments.holiday());
+            assertEquals(0d, premiumPayments.overtime());
         });
     }
 }

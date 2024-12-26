@@ -19,10 +19,12 @@ public class DefaultPremiumPaymentsCounter implements PremiumPaymentsCounter {
     @Override
     public PremiumPayments calculate(Shift shift) {
         final PremiumPayments premiumPayments = shift.getPremiumPayments();
-        premiumPayments.setNight(getNightHoursV2(shift));
-        premiumPayments.setWeekend(getWeekendHours(shift));
-        premiumPayments.setHoliday(getHolidayHours(shift));
-        return premiumPayments;
+        return new PremiumPayments(
+                getNightHoursV2(shift),
+                getWeekendHours(shift),
+                getHolidayHours(shift),
+                premiumPayments.overtime()
+        );
     }
 
     /**
