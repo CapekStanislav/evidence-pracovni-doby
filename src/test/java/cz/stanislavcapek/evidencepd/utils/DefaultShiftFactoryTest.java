@@ -1,9 +1,8 @@
 package cz.stanislavcapek.evidencepd.utils;
 
+import cz.stanislavcapek.evidencepd.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.shift.Shift;
 import cz.stanislavcapek.evidencepd.shift.TypeOfShiftTwelveHours;
-import cz.stanislavcapek.evidencepd.shift.DefaultShiftFactory;
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-    @Log4j2
 class DefaultShiftFactoryTest {
 
     private static final LocalDate DATE = LocalDate.of(2020, 10, 5);

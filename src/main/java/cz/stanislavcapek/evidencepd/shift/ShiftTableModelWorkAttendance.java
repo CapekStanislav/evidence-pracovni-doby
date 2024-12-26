@@ -7,7 +7,6 @@ import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.servants.ShiftTimeAdjuster;
 import cz.stanislavcapek.evidencepd.utils.Rounder;
 import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
-import lombok.ToString;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
@@ -19,7 +18,6 @@ import java.util.Map;
  * @author Stanislav Čapek
  */
 @JsonIgnoreProperties({"rowCount", "columnCount", "tableModelListeners"})
-@ToString
 public class ShiftTableModelWorkAttendance extends AbstractTableModel implements WorkAttendance {
 
 

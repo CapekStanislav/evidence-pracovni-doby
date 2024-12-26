@@ -8,8 +8,6 @@ import cz.stanislavcapek.evidencepd.utils.Constraint;
 import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
 import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.workattendance.exception.WorkAttendanceNotFoundException;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -30,14 +28,11 @@ import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
  * @author Stanislav Čapek
  * @version 1.0
  */
-@EqualsAndHashCode
-@ToString
+
 public class ShiftPlan {
 
-    @ToString.Exclude
     private final XSSFWorkbook workbook;
     private final WorkingTimeFund.TypeOfWeeklyWorkingTime typeOfWeeklyWorkingTime;
-    @ToString.Exclude
     private final Map<Integer, Map<Integer, WorkAttendance>> shiftsInYear = new TreeMap<>();
     private Set<Integer> employeeIds;
     private final Constraint<Integer> monthNumberConstraint = MonthNumberConstraint.getInstance();

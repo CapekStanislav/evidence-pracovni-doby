@@ -8,7 +8,6 @@ import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.servants.ShiftTimeAdjuster;
 import cz.stanislavcapek.evidencepd.utils.Rounder;
 import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
-import lombok.ToString;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +21,6 @@ import java.util.*;
  * @author Stanislav Čapek
  */
 @JsonIgnoreProperties({"rowCount", "columnCount", "tableModelListeners"})
-@ToString
 public class OverTimeTableModelWorkAttendance extends AbstractTableModel implements WorkAttendance {
 
     private final String[] columnNames = {"den", "od", "do", "typ", "odpr. hodin", "noční", "víkend", "svátek"};

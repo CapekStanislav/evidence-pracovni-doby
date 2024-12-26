@@ -32,7 +32,6 @@ dependencies {
     api 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.2'
     api 'org.springframework.boot:spring-boot-starter:2.3.4.RELEASE'
-    implementation 'org.projectlombok:lombok:1.18.12'
 
     implementation 'com.github.jiconfont:jiconfont-swing:1.0.1'
     implementation 'com.github.jiconfont:jiconfont-elusive:2.0.3'

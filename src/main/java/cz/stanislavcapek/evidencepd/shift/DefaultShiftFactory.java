@@ -1,7 +1,5 @@
 package cz.stanislavcapek.evidencepd.shift;
 
-import lombok.EqualsAndHashCode;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,7 +9,6 @@ import java.time.LocalTime;
  *
  * @author Stanislav Čapek
  */
-@EqualsAndHashCode
 public class DefaultShiftFactory implements ShiftFactory {
 
 
