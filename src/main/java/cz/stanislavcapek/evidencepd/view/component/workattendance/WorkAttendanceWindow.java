@@ -3,8 +3,8 @@ package cz.stanislavcapek.evidencepd.view.component.workattendance;
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.shift.Shift;
-import cz.stanislavcapek.evidencepd.workattendance.*;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
+import cz.stanislavcapek.evidencepd.workattendance.*;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -14,7 +14,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -39,16 +42,18 @@ public class WorkAttendanceWindow extends JFrame {
     private final JScrollPane contentPane = new JScrollPane();
     private final JMenu menuEmployees = new JMenu("Zaměstnanci");
     private boolean isSaved = false;
+    private WorkAttendancePanelFactory workAttendancePanelFactory;
 
-    public WorkAttendanceWindow(ShiftPlan shiftPlan, int month) {
+    public WorkAttendanceWindow(ShiftPlan shiftPlan, int month, WorkAttendancePanelFactory workAttendancePanelFactory) {
         super();
+        this.workAttendancePanelFactory = workAttendancePanelFactory;
         pnlEmployeeList.clear();
         pnlEmployeeList.addAll(
                 shiftPlan.getEmployeeIds()
                         .stream()
                         .filter(id -> shiftPlan.isEmployee(id, month))
                         .map(id -> getEvidencePanel(shiftPlan, month, id))
-                        .collect(Collectors.toList())
+                        .toList()
         );
 
         initClass();
@@ -88,7 +93,7 @@ public class WorkAttendanceWindow extends JFrame {
     }
 
     private WorkAttendancePanel getEvidencePanel(ShiftPlan shiftPlan, int month, int id) {
-        return new WorkAttendancePanel(
+        return workAttendancePanelFactory.create(
                 shiftPlan.getWorkAttendance(month, id),
                 shiftPlan.getWorkAttendanceOvertime(month, id));
     }
@@ -154,9 +159,6 @@ public class WorkAttendanceWindow extends JFrame {
         }
     }
 
-    /**
-     * @param date
-     */
     private void loadState(LocalDate date) {
         final int year = date.getYear();
         final int month = date.getMonthValue();
@@ -190,7 +192,7 @@ public class WorkAttendanceWindow extends JFrame {
         WorkAttendance regular = new DefaultWorkAttendance(workAttendanceWithOvertimes);
         WorkAttendance overtimes = extractOvertimesWorkAttendance(workAttendanceWithOvertimes);
         pnlEmployeeList.add(
-                new WorkAttendancePanel(regular, overtimes)
+                workAttendancePanelFactory.create(regular, overtimes)
         );
     }
 

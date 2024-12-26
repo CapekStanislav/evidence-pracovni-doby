@@ -36,6 +36,7 @@ class WorkAttendancePanel extends JPanel {
     private final WorkAttendance shiftsWorkAttendance;
     private final WorkAttendance overtimesWorkAttendance;
     private final OverTimeTableModelWorkAttendance overTimeTableModelRecord;
+    private final DocumentCreatingTaskFactory documentCreatingTaskFactory;
     private final ShiftTableModelWorkAttendance shiftTableModelRecord;
     private final JButton btnAdd;
     private final JButton btnRemove;
@@ -56,9 +57,10 @@ class WorkAttendancePanel extends JPanel {
     private final double workingTimeFund;
     private final int year;
 
-    public WorkAttendancePanel(WorkAttendance shiftsWorkAttendance, WorkAttendance overtimesWorkAttendance) {
+    public WorkAttendancePanel(WorkAttendance shiftsWorkAttendance, WorkAttendance overtimesWorkAttendance, DocumentCreatingTaskFactory documentCreatingTaskFactory) {
         shiftTableModelRecord = new ShiftTableModelWorkAttendance(shiftsWorkAttendance);
         overTimeTableModelRecord = new OverTimeTableModelWorkAttendance(overtimesWorkAttendance);
+        this.documentCreatingTaskFactory = documentCreatingTaskFactory;
         this.shiftsWorkAttendance = shiftTableModelRecord;
         this.overtimesWorkAttendance = overTimeTableModelRecord;
 
@@ -416,7 +418,7 @@ class WorkAttendancePanel extends JPanel {
                 shiftsWorkAttendance,
                 overTimeTableModelRecord
         );
-        final DocumentCreatingTask task = new DocumentCreatingTask(
+        final DocumentCreatingTask task = documentCreatingTaskFactory.create(
                 shiftsWorkAttendanceDocument, overTimeWorkAttendanceDocument);
         return task.doInBackground();
     }

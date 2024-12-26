@@ -1,14 +1,10 @@
 package cz.stanislavcapek.evidencepd;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import cz.stanislavcapek.evidencepd.view.MainWindow;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import java.awt.EventQueue;
+import java.awt.*;
 
 /**
  * An instance of class {@code Main}
@@ -16,15 +12,13 @@ import java.awt.EventQueue;
  * @author Stanislav Čapek
  * @version 1.0
  */
-@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        final ConfigurableApplicationContext ctx = new SpringApplicationBuilder(Main.class)
-                .headless(false)
-                .run(args);
+        Injector injector = Guice.createInjector(new MainModule());
+
         EventQueue.invokeLater(() -> {
-            final MainWindow bean = ctx.getBean(MainWindow.class);
-            bean.setVisible(true);
+            MainWindow mainWindow = injector.getInstance(MainWindow.class);
+            mainWindow.setVisible(true);
         });
     }
 

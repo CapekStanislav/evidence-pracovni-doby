@@ -1,22 +1,20 @@
 package cz.stanislavcapek.evidencepd.view;
 
+import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
+import cz.stanislavcapek.evidencepd.view.component.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.view.component.TemplateLoaderAction;
 import cz.stanislavcapek.evidencepd.view.component.WorkAttendanceLoadPanel;
 import cz.stanislavcapek.evidencepd.view.component.WorkAttendanceTemplatePanel;
-import cz.stanislavcapek.evidencepd.view.component.EmployeeListPanel;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
-import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -28,11 +26,10 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Hlavní okno aplikace.
+ * Main application window
  *
- * @author Stanislav Čapek
+ * @author Stanislav Capek
  */
-@Component
 public class MainWindow extends JFrame {
     public static final String TITLE = "Správa evidence pracovní doby";
     private final Path employeeListFile = Paths.get("seznamZamestnancu.json");
@@ -40,10 +37,8 @@ public class MainWindow extends JFrame {
     private final Action closeAction;
     private final EmployeesDao employeesDao = new EmployeesDao();
 
-    /**
-     * Konstruktor bez parametru
-     */
-    public MainWindow() {
+    @Inject
+    public MainWindow(WorkAttendanceLoadPanel workAttendanceLoadPanel) {
         super(TITLE);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         int height = 400;
@@ -63,7 +58,6 @@ public class MainWindow extends JFrame {
 
         JPanel contentPane = new JPanel(new BorderLayout());
 
-        final WorkAttendanceLoadPanel workAttendanceLoadPanel = new WorkAttendanceLoadPanel();
         final JPanel zamestnancuTab = new EmployeeListPanel();
         final JPanel sablonaRokTab = new WorkAttendanceTemplatePanel();
 

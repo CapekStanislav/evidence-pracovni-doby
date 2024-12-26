@@ -5,18 +5,18 @@
  */
 package cz.stanislavcapek.evidencepd.view.component;
 
-import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindow;
+import cz.stanislavcapek.evidencepd.model.Month;
+import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceHistoryPanel;
+import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindow;
+import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindowFactory;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
 import javax.swing.*;
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -45,6 +45,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private final EmployeeListModel employeeListModel;
     private final JComboBox<Month> cmbMonths;
     private final JPanel pnlRecordFromTemplate;
+    private final WorkAttendanceWindowFactory workAttendanceWindowFactory;
 
     private ShiftPlan shiftPlan;
     private WorkAttendanceWindow window;
@@ -52,8 +53,9 @@ public class WorkAttendanceLoadPanel extends JPanel {
     /**
      * konstruktor bez parametru.
      */
-    public WorkAttendanceLoadPanel() {
+    public WorkAttendanceLoadPanel(WorkAttendanceWindowFactory workAttendanceWindowFactory) {
         super();
+        this.workAttendanceWindowFactory = workAttendanceWindowFactory;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 40, 0));
 
@@ -154,7 +156,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private void showRecordFromTemplateWindow(ActionEvent e) {
         final String selectedItemName = cmbMonths.getSelectedItem().toString();
         final Month month = Month.valueOf(selectedItemName);
-        final WorkAttendanceWindow window = new WorkAttendanceWindow(
+        final WorkAttendanceWindow window = workAttendanceWindowFactory.create(
                 shiftPlan,
                 Month.getNumberByName(month.getName())
         );

@@ -1,21 +1,22 @@
 package cz.stanislavcapek.evidencepd.pdf;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.DayOfWeek;
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @author Stanislav Čapek
  */
-@Component
+@Singleton
 public class WorkingTimeRecordPdfFactory {
     private static final float PADDING = 50f;
     private static final PDRectangle A4 = PDRectangle.A4;
@@ -37,19 +38,24 @@ public class WorkingTimeRecordPdfFactory {
     private static final int FONT_SIZE_NORMAL = 12;
     private static final int FONT_SIZE_LARGE = 16;
     private static final String TITLE = "Evidence pracovní doby";
+    private static final Logger log = LogManager.getLogger(WorkingTimeRecordPdfFactory.class);
 
     private static LocalDate period;
     private static PDFont normalFont;
     private static PDFont boldFont;
 
-    private static Resource calibriFontResource;
-    private static Resource calibribFontResource;
+    private final FontResourceLoader fontLoader;
 
-    public static PDDocument createRecordPDDocument(WorkAttendanceDocument model) throws IOException {
+    @Inject
+    public WorkingTimeRecordPdfFactory(FontResourceLoader fontLoader) {
+        this.fontLoader = fontLoader;
+    }
+
+    public PDDocument createRecordPDDocument(WorkAttendanceDocument model) throws IOException {
         return createRecordPDDocument(model, TITLE);
     }
 
-    public static PDDocument createRecordPDDocument(
+    public PDDocument createRecordPDDocument(
             WorkAttendanceDocument model, String title) throws IOException {
         period = model.getDate(0);
         final float daySize = 40;
@@ -65,12 +71,16 @@ public class WorkingTimeRecordPdfFactory {
 
         // load font
         if (normalFont == null || boldFont == null) {
-            try (final InputStream inputStream = calibriFontResource.getInputStream()) {
+            try (final InputStream inputStream = fontLoader.loadCalibriFont()) {
                 normalFont = PDType0Font.load(document, inputStream, true);
+            } catch (RuntimeException e) {
+                log.error("An exception occurs while loading font", e);
             }
 
-            try (InputStream inputStream = calibribFontResource.getInputStream()) {
+            try (InputStream inputStream = fontLoader.loadCalibribFont()) {
                 boldFont = PDType0Font.load(document, inputStream, true);
+            } catch (RuntimeException e) {
+                log.error("An exception occurs while loading font", e);
             }
         }
 
@@ -285,15 +295,5 @@ public class WorkingTimeRecordPdfFactory {
         );
 
         return builder.build();
-    }
-
-    @Value("classpath:fonts/calibri.ttf")
-    public void setCalibriFontResource(Resource calibriFontResource) {
-        WorkingTimeRecordPdfFactory.calibriFontResource = calibriFontResource;
-    }
-
-    @Value("classpath:fonts/calibrib.ttf")
-    public void setCalibribFontResource(Resource calibribFontResource) {
-        WorkingTimeRecordPdfFactory.calibribFontResource = calibribFontResource;
     }
 }
