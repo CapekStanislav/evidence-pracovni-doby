@@ -1,12 +1,18 @@
 package cz.stanislavcapek.evidencepd.shift;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * An instance of class {@code WorkingTime}
  */
 public class WorkingTime {
+    @JsonProperty("length")
     private double length;
+    @JsonProperty("workedOut")
     private double workedOut;
+    @JsonProperty("notWorkedOut")
     private double notWorkedOut;
+    @JsonProperty("holiday")
     private double holiday;
 
     public WorkingTime(double length,
