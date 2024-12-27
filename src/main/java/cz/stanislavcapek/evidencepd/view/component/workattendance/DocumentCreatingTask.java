@@ -22,17 +22,16 @@ public class DocumentCreatingTask extends SwingWorker<PDDocument, Integer> {
     protected PDDocument doInBackground() throws Exception {
         final PDDocument document = new PDDocument();
 
-        try (PDDocument shiftDoc = pdfFactory
-                .createRecordPDDocument(shifts)) {
-            document.addPage(shiftDoc.getPage(0));
-        }
+        final PDDocument shiftDoc = pdfFactory
+                .createRecordPDDocument(shifts);
+        document.addPage(shiftDoc.getPage(0));
 
         if (overtimes.getRowCount() > 0) {
-            try (final PDDocument overtimeDoc = pdfFactory
-                    .createRecordPDDocument(overtimes, "Evidence přesčasů")) {
-                document.addPage(overtimeDoc.getPage(0));
-            }
+            final PDDocument overtimeDoc = pdfFactory
+                    .createRecordPDDocument(overtimes, "Evidence přesčasů");
+            document.addPage(overtimeDoc.getPage(0));
         }
+
         return document;
     }
 
