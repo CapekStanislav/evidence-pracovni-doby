@@ -2,9 +2,13 @@ package cz.stanislavcapek.evidencepd.employee;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
+@ExtendWith(MockitoExtension.class)
 class EmployeeListModelTest {
 
     private static final Employee employee1 = new Employee(1, "First", "Employee");
@@ -13,7 +17,7 @@ class EmployeeListModelTest {
 
     @BeforeAll
     static void beforeAll() {
-        instance = EmployeeListModel.getInstance();
+        instance = mock();
         fillEmployeeListModel(instance);
     }
 

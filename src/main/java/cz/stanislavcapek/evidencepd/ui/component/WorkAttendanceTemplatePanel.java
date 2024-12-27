@@ -43,12 +43,10 @@ public class WorkAttendanceTemplatePanel extends JPanel {
     private final JViewport viewport;
     private final List<Employee> selectedEmployeeList;
 
-    /**
-     * Konstruktor bez parametru.
-     */
-    public WorkAttendanceTemplatePanel() {
+    
+    public WorkAttendanceTemplatePanel(EmployeeListModel employeeListModel) {
         super(true);
-        this.employeeListModel = EmployeeListModel.getInstance();
+        this.employeeListModel = employeeListModel;
         selectedEmployeeList = new ArrayList<>();
 
         // JPanel padding //

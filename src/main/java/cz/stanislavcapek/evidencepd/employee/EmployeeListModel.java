@@ -5,8 +5,11 @@
  */
 package cz.stanislavcapek.evidencepd.employee;
 
-import javax.swing.AbstractListModel;
-import java.util.*;
+import javax.swing.*;
+import javax.swing.event.ListDataListener;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Utility třída pro práci se seznamem zaměstnanců. Jedná se o návrhový vzor Singlton, takže jde vytvořit pouze jednu
@@ -14,27 +17,11 @@ import java.util.*;
  *
  * @author Stanislav Čapek
  */
-public class EmployeeListModel extends AbstractListModel {
-    private static EmployeeListModel instance;
+public class EmployeeListModel extends AbstractListModel<Employee> {
     private final List<Employee> employeeList;
 
-    /**
-     * Privátní konstruktor bez parametru. Návrhový model Singlton.
-     */
-    private EmployeeListModel() {
+    EmployeeListModel() {
         this.employeeList = new ArrayList<>();
-    }
-
-    /**
-     * Metoda pro získání instance EmployeeListModel.
-     *
-     * @return EmployeeListModel
-     */
-    public static EmployeeListModel getInstance() {
-        if (instance == null) {
-            instance = new EmployeeListModel();
-        }
-        return instance;
     }
 
     /**
@@ -62,14 +49,12 @@ public class EmployeeListModel extends AbstractListModel {
      * Metoda pro odebrání zaměstnance (strážníka) ze seznamu.
      *
      * @param employee Employee
-     * @return {@code true} - došlo k odebrání
      */
-    public boolean removeEmployee(Employee employee) {
+    public void removeEmployee(Employee employee) {
         int index = employeeList.indexOf(employee);
-        boolean result = employeeList.remove(employee);
+        employeeList.remove(employee);
         sortById();
         fireIntervalRemoved(this, index, index);
-        return result;
     }
 
     /**
@@ -78,13 +63,12 @@ public class EmployeeListModel extends AbstractListModel {
      *
      * @return {@code true} - došlo k vymazaní
      */
-    public boolean clearList() {
+    public void clearList() {
         int index1 = employeeList.size() - 1;
-        boolean result = employeeList.removeAll(employeeList);
+        employeeList.clear();
         if (index1 >= 0) {
             fireIntervalRemoved(this, 0, index1);
         }
-        return result;
     }
 
     /**
@@ -112,7 +96,7 @@ public class EmployeeListModel extends AbstractListModel {
     }
 
     /**
-     * Upozorní {@link javax.swing.event.ListDataListener} na změnu v seznamu.
+     * Upozorní {@link ListDataListener} na změnu v seznamu.
      */
     public void fireModelChanged() {
         super.fireContentsChanged(this, 0, 0);
@@ -140,21 +124,12 @@ public class EmployeeListModel extends AbstractListModel {
     }
 
     /**
-     * Vrátí kopii aktuálního stavu seznamu zaměstnanců jako pole {@link Employee}.
-     *
-     * @return kopie aktuálního stavu seznamu
-     */
-    public Employee[] toArray() {
-        return employeeList.toArray(new Employee[getSize()]);
-    }
-
-    /**
      * Vrátí kopii aktuální stavu seznamu zaměstnanců jako seznam {@link Employee}
      *
      * @return
      */
     public List<Employee> getEmployeeList() {
-        return new ArrayList<>(employeeList);
+        return List.copyOf(employeeList);
     }
 
     /**

@@ -1,10 +1,10 @@
 package cz.stanislavcapek.evidencepd.ui;
 
 import com.google.inject.Inject;
-import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
+import cz.stanislavcapek.evidencepd.employee.EmployeeService;
+import cz.stanislavcapek.evidencepd.ui.action.ActionFactory;
 import cz.stanislavcapek.evidencepd.ui.component.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.ui.component.TemplateLoaderAction;
 import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceLoadPanel;
@@ -20,9 +20,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -32,14 +29,23 @@ import java.util.List;
  */
 public class MainWindow extends JFrame {
     public static final String TITLE = "Správa evidence pracovní doby";
-    private final Path employeeListFile = Paths.get("seznamZamestnancu.json");
-    private final Path employeeListFilePath = ConfigPaths.EMPLOYEES_PATH.resolve(employeeListFile);
+
     private final Action closeAction;
-    private final EmployeesDao employeesDao = new EmployeesDao();
+    private final EmployeeService employeeService;
+    private final EmployeeListModel employeeListModel;
 
     @Inject
-    public MainWindow(WorkAttendanceLoadPanel workAttendanceLoadPanel) {
+    public MainWindow(
+            WorkAttendanceLoadPanel workAttendanceLoadPanel,
+            ActionFactory actionFactory,
+            EmployeeService employeeService,
+            EmployeeListModel employeeListModel,
+            EmployeeListPanel employeeListPanel,
+            WorkAttendanceTemplatePanel workAttendanceTemplatePanel
+    ) {
         super(TITLE);
+        this.employeeService = employeeService;
+        this.employeeListModel = employeeListModel;
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         int height = 400;
         int width = 500;
@@ -49,47 +55,43 @@ public class MainWindow extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
-        try {
-            List<Employee> employeeList = employeesDao.load(employeeListFilePath);
-            initEmployeeListModel(employeeList);
-        } catch (RuntimeException | IOException e) {
+        List<Employee> employeeList = employeeService.load();
+        if (employeeList.isEmpty()) {
             findEmployeeListFile();
         }
+        initEmployeeListModel(employeeList);
 
         JPanel contentPane = new JPanel(new BorderLayout());
-
-        final JPanel zamestnancuTab = new EmployeeListPanel();
-        final JPanel sablonaRokTab = new WorkAttendanceTemplatePanel();
 
         final JPanel cards = new JPanel(new CardLayout());
 
         final String evidenceString = "evidence";
         cards.add(workAttendanceLoadPanel, evidenceString);
         final String seznamString = "seznam";
-        cards.add(zamestnancuTab, seznamString);
+        cards.add(employeeListPanel, seznamString);
         final String sablonaString = "sablona";
-        cards.add(sablonaRokTab, sablonaString);
+        cards.add(workAttendanceTemplatePanel, sablonaString);
 
 //        Actions
         IconFontSwing.register(Elusive.getIconFont());
         int iSizeSmall = 12;
         int iSizeLarge = 16;
 
-        closeAction = new CloseAction("Zavřít", "Ukončit program", KeyEvent.VK_Z);
+        closeAction = actionFactory.createCloseApp("Zavřít", "Ukončit program", KeyEvent.VK_Z);
 
-        Action genEvidenceAction = new ZobrazeniAgendyAction("Gener. evidence",
+        Action genEvidenceAction = actionFactory.createShowAgend("Gener. evidence",
                 "Generování evidence",
                 KeyEvent.VK_G, evidenceString, cards);
         genEvidenceAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.TIME, iSizeSmall));
         genEvidenceAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.TIME, iSizeLarge));
 
-        Action zobrSeznamAction = new ZobrazeniAgendyAction("Seznam zaměstnanců",
+        Action zobrSeznamAction = actionFactory.createShowAgend("Seznam zaměstnanců",
                 "Zobrazit seznam zaměstnanců",
                 KeyEvent.VK_S, seznamString, cards);
         zobrSeznamAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.ADDRESS_BOOK, iSizeSmall));
         zobrSeznamAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.ADDRESS_BOOK, iSizeLarge));
 
-        Action sablonaAction = new ZobrazeniAgendyAction("Šablona plánu",
+        Action sablonaAction = actionFactory.createShowAgend("Šablona plánu",
                 "Generování šablony pro zadaný rok",
                 KeyEvent.VK_B, sablonaString, cards);
         sablonaAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.FILE_NEW, iSizeSmall));
@@ -131,7 +133,7 @@ public class MainWindow extends JFrame {
         );
         menuFile.add(nacistItem);
 
-        menuFile.add(new UlozeniSeznamuAction(
+        menuFile.add(actionFactory.createSaveEmployees(this,
                 "Uložit seznam",
                 "Uložit seznam zaměstnanců",
                 KeyEvent.VK_S));
@@ -171,7 +173,6 @@ public class MainWindow extends JFrame {
      * @param list seznam zaměstnanců
      */
     private void initEmployeeListModel(List<Employee> list) {
-        EmployeeListModel employeeListModel = EmployeeListModel.getInstance();
         employeeListModel.clearList();
         list.forEach(employeeListModel::addEmployee);
     }
@@ -186,17 +187,14 @@ public class MainWindow extends JFrame {
 
             if (chooser.showOpenDialog(this) == JOptionPane.YES_OPTION) {
                 final File selectedFile = chooser.getSelectedFile();
-                try {
-                    final List<Employee> employeeList = employeesDao.load(selectedFile.toPath());
-                    initEmployeeListModel(employeeList);
-                } catch (IOException e) {
+                final List<Employee> employeeList = employeeService.load(selectedFile.toPath());
+                if (employeeList.isEmpty()) {
                     findEmployeeListFile();
-                    e.printStackTrace();
+                } else {
+                    initEmployeeListModel(employeeList);
                 }
             }
-
         }
-
     }
 
     private JFileChooser getChooserForJsonFiles() {
@@ -223,135 +221,6 @@ public class MainWindow extends JFrame {
                 null,
                 option,
                 option[0]);
-    }
-
-    /**
-     * AKCE - zobrazení agendy pomocí ToolBaru
-     */
-    private static class ZobrazeniAgendyAction extends AbstractAction {
-
-        private final JPanel content;
-
-        ZobrazeniAgendyAction(String name, String popis, int mnemonic, String command, JPanel content) {
-            super(name);
-            this.content = content;
-            putValue(Action.SHORT_DESCRIPTION, popis);
-            putValue(Action.MNEMONIC_KEY, mnemonic);
-            putValue(Action.ACTION_COMMAND_KEY, command);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            ((CardLayout) content.getLayout()).show(content, e.getActionCommand());
-        }
-    }
-
-    /**
-     * AKCE - uzavření okna
-     */
-    private class CloseAction extends AbstractAction {
-
-        CloseAction(String name, String popis, int mnemonic) {
-            super(name);
-            IconFontSwing.register(Elusive.getIconFont());
-            final Elusive closeIcon = Elusive.OFF;
-            Icon closeSmall = IconFontSwing.buildIcon(closeIcon, 16);
-            Icon closeLarge = IconFontSwing.buildIcon(closeIcon, 24);
-
-            putValue(Action.SHORT_DESCRIPTION, popis);
-            putValue(Action.MNEMONIC_KEY, mnemonic);
-            putValue(Action.SMALL_ICON, closeSmall);
-            putValue(Action.LARGE_ICON_KEY, closeLarge);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Object[] anoNe = {"Ano", "Ne"};
-            int odpoved = JOptionPane.showOptionDialog(null,
-                    "Opravdu si přejete ukončit program? \n \n",
-                    "Ukončit program?",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, anoNe, anoNe[1]);
-            if (odpoved == JOptionPane.OK_OPTION) {
-                try {
-                    employeesDao.save(employeeListFilePath, EmployeeListModel.getInstance().getEmployeeList());
-                    System.exit(0);
-                } catch (IOException e1) {
-                    System.exit(0);
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private class UlozeniSeznamuAction extends AbstractAction {
-
-        UlozeniSeznamuAction(String name, String popis, int mnemonic) {
-            super(name);
-            IconFontSwing.register(Elusive.getIconFont());
-            Elusive save = Elusive.DOWNLOAD_ALT;
-            Icon saveIconSmall = IconFontSwing.buildIcon(save, 12);
-            Icon savIconLarge = IconFontSwing.buildIcon(save, 16);
-            putValue(Action.SHORT_DESCRIPTION, popis);
-            putValue(MNEMONIC_KEY, mnemonic);
-            putValue(SMALL_ICON, saveIconSmall);
-            putValue(LARGE_ICON_KEY, savIconLarge);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            final JFileChooser fileChooser = new JFileChooser();
-            final String userDir = System.getProperty("user.dir");
-            final File pathToUserDir = new File(userDir);
-            fileChooser.setCurrentDirectory(pathToUserDir);
-            fileChooser.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
-            fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-            final File preFile = new File("seznam zamestancu");
-            fileChooser.setSelectedFile(preFile);
-
-            boolean hotovo = false;
-            while (!hotovo) {
-                final int volba = fileChooser.showSaveDialog(MainWindow.this);
-                if (volba == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-
-                    final String suffix = ".json";
-                    if (!selectedFile.getName().toLowerCase().contains(suffix)) {
-                        selectedFile = new File(selectedFile.getAbsolutePath() + suffix);
-                    }
-
-                    int overwrite = 0;
-                    if (selectedFile.exists()) {
-                        overwrite = JOptionPane.showConfirmDialog(MainWindow.this,
-                                "Soubor již existuje! Chcete ho přepsat?",
-                                "Existujicí soubor",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE);
-                    }
-
-                    if (overwrite == 0) {
-                        try {
-                            employeesDao.save(
-                                    Paths.get(selectedFile.toURI()),
-                                    EmployeeListModel.getInstance().getEmployeeList()
-                            );
-                            hotovo = true;
-                        } catch (Exception ex) {
-                            showErrorMessageDialog();
-                        }
-                    }
-
-                } else {
-                    hotovo = true;
-                }
-            }
-        }
-
-        private void showErrorMessageDialog() {
-            JOptionPane.showMessageDialog(MainWindow.this,
-                    "Nepodařilo se uložit soubor.",
-                    "Chyba při ukládání", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
 

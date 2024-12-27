@@ -1,7 +1,9 @@
 package cz.stanislavcapek.evidencepd.employee;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An instance of class {@code Employee}
@@ -16,7 +18,12 @@ public class Employee {
     private String firstName;
     private String lastName;
 
-    public Employee(int id, String firstName, String lastName) {
+    @JsonCreator
+    public Employee(
+            @JsonProperty("id") int id,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName
+    ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

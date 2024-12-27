@@ -8,13 +8,13 @@ package cz.stanislavcapek.evidencepd.ui.component;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
+import cz.stanislavcapek.evidencepd.employee.EmployeeService;
 import cz.stanislavcapek.evidencepd.ui.component.utils.EmployeeListCellRenderer;
-import cz.stanislavcapek.evidencepd.ui.component.utils.EmptyStringInputVerifier;
-import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
 import jiconfont.IconCode;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -22,11 +22,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -39,26 +37,27 @@ import java.util.List;
  */
 public class EmployeeListPanel extends JPanel {
 
+    private static final Logger log = LogManager.getLogger(EmployeeListPanel.class);
+
     private final EmployeeListModel employeeListModel;
     private final JList<Employee> employeeJList;
     private final JTextField txtId, txtFirstName, txtLastName;
     private final JButton btnAdd;
     private final JButton btnRemove;
     private final Action removeAction;
-    private final Action editAciton;
+    private final Action editAction;
+    private final EmployeeService employeeService;
 
-    /**
-     * Konstruktor bez parametru.
-     */
-    public EmployeeListPanel() {
+    public EmployeeListPanel(EmployeeService employeeService, EmployeeListModel employeeListModel) {
         super(true);
+        this.employeeService = employeeService;
+        this.employeeListModel = employeeListModel;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.employeeListModel = EmployeeListModel.getInstance();
 
         // action creating
         Action pridejAction = new AddAction("Přidej", "Přidá nového zaměstnance", KeyEvent.VK_P);
         removeAction = new RemoveAction("Odeber", "Odebere vybraného zaměstnance", KeyEvent.VK_O);
-        editAciton = new EditAction("Uprav", "Upraví vybraného zaměstnance", KeyEvent.VK_U);
+        editAction = new EditAction("Uprav", "Upraví vybraného zaměstnance", KeyEvent.VK_U);
         Action nactiAction = new LoadingAction("Načti", "Načíst nový seznam zaměstnance", KeyEvent.VK_N);
 
         // JPanel paddning //
@@ -169,7 +168,7 @@ public class EmployeeListPanel extends JPanel {
         setEnableDisableOdeber(employeeListModel.getSize());
         panel.add(btnRemove);
 
-        JButton btnEdit = new JButton(editAciton);
+        JButton btnEdit = new JButton(editAction);
         panel.add(btnEdit);
 
         JButton btn = new JButton(nactiAction);
@@ -207,18 +206,18 @@ public class EmployeeListPanel extends JPanel {
 
         if (choice == JFileChooser.APPROVE_OPTION) {
             Path file = Paths.get(chooser.getSelectedFile().getAbsolutePath());
-            EmployeesDao io = new EmployeesDao();
 
             try {
-                List<Employee> employeeList = io.load(file);
+                List<Employee> employeeList = employeeService.load(file);
 
                 employeeListModel.clearList();
                 employeeList.forEach(employeeListModel::addEmployee);
 
                 showLoadingResultDialog(true);
-            } catch (IOException e) {
+
+            } catch (RuntimeException e) {
+                log.error("Loading employees failed.", e);
                 showLoadingResultDialog(false);
-                e.printStackTrace();
             }
         }
     }
@@ -461,7 +460,7 @@ public class EmployeeListPanel extends JPanel {
     private class ContextMenuJList extends JPopupMenu {
         ContextMenuJList() {
             super();
-            add(editAciton);
+            add(editAction);
             add(removeAction);
         }
     }

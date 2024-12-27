@@ -50,16 +50,17 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private ShiftPlan shiftPlan;
     private WorkAttendanceWindow window;
 
-    /**
-     * konstruktor bez parametru.
-     */
-    public WorkAttendanceLoadPanel(WorkAttendanceWindowFactory workAttendanceWindowFactory) {
+
+    public WorkAttendanceLoadPanel(
+            WorkAttendanceWindowFactory workAttendanceWindowFactory,
+            EmployeeListModel employeeListModel
+    ) {
         super();
         this.workAttendanceWindowFactory = workAttendanceWindowFactory;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 40, 0));
 
-        this.employeeListModel = EmployeeListModel.getInstance();
+        this.employeeListModel = employeeListModel;
 
         cmbMonths = new JComboBox<>(Month.values());
         cmbMonths.setRenderer((list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getName()));
