@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.stanislavcapek.evidencepd.view.component;
+package cz.stanislavcapek.evidencepd.ui.component;
 
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
-import cz.stanislavcapek.evidencepd.view.component.utils.EmployeeListCellRenderer;
-import cz.stanislavcapek.evidencepd.view.component.utils.EmptyStringInputVerifier;
-import cz.stanislavcapek.evidencepd.view.component.utils.IntegerInputVerifier;
+import cz.stanislavcapek.evidencepd.ui.component.utils.EmployeeListCellRenderer;
+import cz.stanislavcapek.evidencepd.ui.component.utils.EmptyStringInputVerifier;
+import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
 import jiconfont.IconCode;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;

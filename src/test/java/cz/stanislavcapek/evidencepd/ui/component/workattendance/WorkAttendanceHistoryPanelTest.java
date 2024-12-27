@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.workattendance;
+package cz.stanislavcapek.evidencepd.ui.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import org.junit.jupiter.api.Test;

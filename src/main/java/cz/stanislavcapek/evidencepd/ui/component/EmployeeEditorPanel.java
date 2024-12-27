@@ -1,7 +1,7 @@
-package cz.stanislavcapek.evidencepd.view.component;
+package cz.stanislavcapek.evidencepd.ui.component;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
-import cz.stanislavcapek.evidencepd.view.component.utils.EmptyStringInputVerifier;
+import cz.stanislavcapek.evidencepd.ui.component.utils.EmptyStringInputVerifier;
 
 import javax.swing.*;
 import java.awt.Dimension;
@@ -37,7 +37,7 @@ class EmployeeEditorPanel extends JPanel {
                     return true;
                 } else {
                     String message = "Políčko musí být vyplněno";
-                    JOptionPane.showMessageDialog(EmployeeEditorPanel.this,message);
+                    JOptionPane.showMessageDialog(EmployeeEditorPanel.this, message);
                     return false;
                 }
             }

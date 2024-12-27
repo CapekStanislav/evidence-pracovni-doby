@@ -1,14 +1,14 @@
-package cz.stanislavcapek.evidencepd.view;
+package cz.stanislavcapek.evidencepd.ui;
 
 import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeesDao;
-import cz.stanislavcapek.evidencepd.view.component.EmployeeListPanel;
-import cz.stanislavcapek.evidencepd.view.component.TemplateLoaderAction;
-import cz.stanislavcapek.evidencepd.view.component.WorkAttendanceLoadPanel;
-import cz.stanislavcapek.evidencepd.view.component.WorkAttendanceTemplatePanel;
+import cz.stanislavcapek.evidencepd.ui.component.EmployeeListPanel;
+import cz.stanislavcapek.evidencepd.ui.component.TemplateLoaderAction;
+import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceLoadPanel;
+import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceTemplatePanel;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 

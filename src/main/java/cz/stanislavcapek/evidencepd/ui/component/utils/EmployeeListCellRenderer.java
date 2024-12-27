@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.utils;
+package cz.stanislavcapek.evidencepd.ui.component.utils;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 

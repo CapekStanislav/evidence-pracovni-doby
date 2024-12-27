@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component;
+package cz.stanislavcapek.evidencepd.ui.component;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;

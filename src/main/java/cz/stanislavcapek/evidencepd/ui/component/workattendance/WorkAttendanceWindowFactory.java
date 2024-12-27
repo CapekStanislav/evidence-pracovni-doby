@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.workattendance;
+package cz.stanislavcapek.evidencepd.ui.component.workattendance;
 
 import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;

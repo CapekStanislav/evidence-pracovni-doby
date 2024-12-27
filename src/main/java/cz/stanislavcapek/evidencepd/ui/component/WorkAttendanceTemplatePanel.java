@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.stanislavcapek.evidencepd.view.component;
+package cz.stanislavcapek.evidencepd.ui.component;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
 import cz.stanislavcapek.evidencepd.shiftplan.XlsxTemplateFactory;
-import cz.stanislavcapek.evidencepd.view.component.utils.IntegerInputVerifier;
+import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.stanislavcapek.evidencepd.view.component;
+package cz.stanislavcapek.evidencepd.ui.component;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
-import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceHistoryPanel;
-import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindow;
-import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindowFactory;
+import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceHistoryPanel;
+import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindow;
+import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindowFactory;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 

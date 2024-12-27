@@ -1,8 +1,8 @@
-package cz.stanislavcapek.evidencepd.view.component;
+package cz.stanislavcapek.evidencepd.ui.component;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import cz.stanislavcapek.evidencepd.view.component.workattendance.WorkAttendanceWindowFactory;
+import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindowFactory;
 
 public class WorkAttendanceLoadPanelProvider implements Provider<WorkAttendanceLoadPanel> {
 

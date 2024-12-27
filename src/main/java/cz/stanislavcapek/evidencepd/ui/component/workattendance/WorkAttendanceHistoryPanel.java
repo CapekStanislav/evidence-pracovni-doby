@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.view.component.workattendance;
+package cz.stanislavcapek.evidencepd.ui.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 
@@ -35,7 +35,7 @@ public class WorkAttendanceHistoryPanel extends JPanel {
             fileNames = loadFileNames(ConfigPaths.RECORDS_PATH);
         } catch (IOException e) {
             fileNames = Collections.emptyList();
-       }
+        }
 
         final JList<String> recordList = new JList<>(fileNames.toArray(String[]::new));
         final JScrollPane jScrollPane = new JScrollPane();

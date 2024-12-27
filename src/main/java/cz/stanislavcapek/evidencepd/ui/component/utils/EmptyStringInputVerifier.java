@@ -1,8 +1,7 @@
-package cz.stanislavcapek.evidencepd.view.component.utils;
+package cz.stanislavcapek.evidencepd.ui.component.utils;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
 
