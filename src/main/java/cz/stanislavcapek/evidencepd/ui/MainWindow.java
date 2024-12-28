@@ -5,10 +5,11 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeeService;
 import cz.stanislavcapek.evidencepd.ui.action.ActionFactory;
-import cz.stanislavcapek.evidencepd.ui.component.EmployeeListPanel;
-import cz.stanislavcapek.evidencepd.ui.component.TemplateLoaderAction;
 import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceLoadPanel;
-import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceTemplatePanel;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
+import cz.stanislavcapek.evidencepd.ui.component.template.WorkAttendanceTemplatePanel;
+import cz.stanislavcapek.evidencepd.ui.component.workattendance.ShiftPlanLoadAction;
+import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -41,7 +42,8 @@ public class MainWindow extends JFrame {
             EmployeeService employeeService,
             EmployeeListModel employeeListModel,
             EmployeeListPanel employeeListPanel,
-            WorkAttendanceTemplatePanel workAttendanceTemplatePanel
+            WorkAttendanceTemplatePanel workAttendanceTemplatePanel,
+            TemplateController templateController
     ) {
         super(TITLE);
         this.employeeService = employeeService;
@@ -65,12 +67,12 @@ public class MainWindow extends JFrame {
 
         final JPanel cards = new JPanel(new CardLayout());
 
-        final String evidenceString = "evidence";
-        cards.add(workAttendanceLoadPanel, evidenceString);
-        final String seznamString = "seznam";
-        cards.add(employeeListPanel, seznamString);
-        final String sablonaString = "sablona";
-        cards.add(workAttendanceTemplatePanel, sablonaString);
+        final String evidenceTitle = "evidence";
+        cards.add(workAttendanceLoadPanel, evidenceTitle);
+        final String listTitle = "seznam";
+        cards.add(employeeListPanel, listTitle);
+        final String templateTitle = "šablona";
+        cards.add(workAttendanceTemplatePanel, templateTitle);
 
 //        Actions
         IconFontSwing.register(Elusive.getIconFont());
@@ -81,19 +83,19 @@ public class MainWindow extends JFrame {
 
         Action genEvidenceAction = actionFactory.createShowAgend("Gener. evidence",
                 "Generování evidence",
-                KeyEvent.VK_G, evidenceString, cards);
+                KeyEvent.VK_G, evidenceTitle, cards);
         genEvidenceAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.TIME, iSizeSmall));
         genEvidenceAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.TIME, iSizeLarge));
 
         Action zobrSeznamAction = actionFactory.createShowAgend("Seznam zaměstnanců",
                 "Zobrazit seznam zaměstnanců",
-                KeyEvent.VK_S, seznamString, cards);
+                KeyEvent.VK_S, listTitle, cards);
         zobrSeznamAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.ADDRESS_BOOK, iSizeSmall));
         zobrSeznamAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.ADDRESS_BOOK, iSizeLarge));
 
         Action sablonaAction = actionFactory.createShowAgend("Šablona plánu",
                 "Generování šablony pro zadaný rok",
-                KeyEvent.VK_B, sablonaString, cards);
+                KeyEvent.VK_B, templateTitle, cards);
         sablonaAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.FILE_NEW, iSizeSmall));
         sablonaAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.FILE_NEW, iSizeLarge));
 
@@ -114,8 +116,8 @@ public class MainWindow extends JFrame {
 
         JMenu menuFile = new JMenu("Soubor");
 
-        final TemplateLoaderAction templateLoaderAction = new TemplateLoaderAction("Načíst šablonu");
-        final JMenuItem nacistItem = new JMenuItem(templateLoaderAction);
+        final ShiftPlanLoadAction shiftPlanLoadAction = new ShiftPlanLoadAction("Načíst šablonu", templateController);
+        final JMenuItem nacistItem = new JMenuItem(shiftPlanLoadAction);
         nacistItem.addPropertyChangeListener(
                 "loaded",
                 evt -> {
@@ -126,7 +128,7 @@ public class MainWindow extends JFrame {
                                     genEvidenceAction.getValue(Action.ACTION_COMMAND_KEY).toString()
                             )
                     );
-                    workAttendanceLoadPanel.validateLoadedTemplate(templateLoaderAction, evt);
+                    workAttendanceLoadPanel.validateLoadedTemplate(shiftPlanLoadAction, evt);
 
                 }
 

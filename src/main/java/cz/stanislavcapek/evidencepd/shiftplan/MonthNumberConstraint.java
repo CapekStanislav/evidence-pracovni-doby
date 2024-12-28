@@ -1,6 +1,7 @@
 package cz.stanislavcapek.evidencepd.shiftplan;
 
 import cz.stanislavcapek.evidencepd.model.Month;
+import cz.stanislavcapek.evidencepd.shiftplan.exception.InvalidMonthNumberException;
 import cz.stanislavcapek.evidencepd.utils.Constraint;
 
 /**

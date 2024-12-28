@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.shiftplan;
+package cz.stanislavcapek.evidencepd.shiftplan.exception;
 
 /**
  * An instance of class {@code InvalidFormatXslxExeption}

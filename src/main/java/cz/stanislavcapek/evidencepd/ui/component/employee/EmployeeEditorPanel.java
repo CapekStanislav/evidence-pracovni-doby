@@ -1,10 +1,10 @@
-package cz.stanislavcapek.evidencepd.ui.component;
+package cz.stanislavcapek.evidencepd.ui.component.employee;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.ui.component.utils.EmptyStringInputVerifier;
 
 import javax.swing.*;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
  *
  * @author Stanislav Čapek
  */
-class EmployeeEditorPanel extends JPanel {
+public class EmployeeEditorPanel extends JPanel {
 
     private final JTextField txtFirstName;
     private final JTextField txtLastName;
@@ -25,7 +25,7 @@ class EmployeeEditorPanel extends JPanel {
      *
      * @param employee zaměstnanec k úpravě
      */
-    EmployeeEditorPanel(Employee employee) {
+    public EmployeeEditorPanel(Employee employee) {
         newEmployee = new Employee(employee.getId(),
                 employee.getFirstName(),
                 employee.getLastName());
@@ -87,7 +87,7 @@ class EmployeeEditorPanel extends JPanel {
      *
      * @return {@link Employee} upravený zaměstnanec
      */
-    Employee getNewEmployee() {
+    public Employee getNewEmployee() {
         return newEmployee;
     }
 

@@ -9,9 +9,12 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeEditorPanel;
+import cz.stanislavcapek.evidencepd.ui.component.workattendance.ShiftPlanLoadAction;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceHistoryPanel;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindow;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindowFactory;
+import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -46,6 +49,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private final JComboBox<Month> cmbMonths;
     private final JPanel pnlRecordFromTemplate;
     private final WorkAttendanceWindowFactory workAttendanceWindowFactory;
+    private final TemplateController templateController;
 
     private ShiftPlan shiftPlan;
     private WorkAttendanceWindow window;
@@ -53,10 +57,12 @@ public class WorkAttendanceLoadPanel extends JPanel {
 
     public WorkAttendanceLoadPanel(
             WorkAttendanceWindowFactory workAttendanceWindowFactory,
+            TemplateController templateController,
             EmployeeListModel employeeListModel
     ) {
         super();
         this.workAttendanceWindowFactory = workAttendanceWindowFactory;
+        this.templateController = templateController;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 40, 0));
 
@@ -103,7 +109,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
         panel.add(Box.createVerticalStrut(10));
         panel.add(lblLoadValidation);
 
-        final TemplateLoaderAction action = new TemplateLoaderAction("Načíst šablonu");
+        final ShiftPlanLoadAction action = new ShiftPlanLoadAction("Načíst šablonu", templateController);
         btnLoad.setAction(action);
         btnLoad.addPropertyChangeListener(
                 "loaded",
@@ -123,7 +129,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
         return panel;
     }
 
-    public void validateLoadedTemplate(TemplateLoaderAction action, PropertyChangeEvent evt) {
+    public void validateLoadedTemplate(ShiftPlanLoadAction action, PropertyChangeEvent evt) {
         IconFontSwing.register(Elusive.getIconFont());
         final int fontSize = 12;
         Icon goodIcon = IconFontSwing.buildIcon(Elusive.OK, fontSize, Color.GREEN);

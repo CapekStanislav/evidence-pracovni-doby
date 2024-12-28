@@ -1,6 +1,7 @@
 package cz.stanislavcapek.evidencepd.shiftplan;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 
@@ -20,8 +21,6 @@ public class XlsxDao implements Dao<XSSFWorkbook> {
     public void save(Path path, XSSFWorkbook object) throws IOException {
         try (FileOutputStream out = new FileOutputStream(path.toFile())) {
             object.write(out);
-        } catch (IOException e) {
-            throw new IOException("Nepodařilo se uložit soubor: " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -30,8 +29,8 @@ public class XlsxDao implements Dao<XSSFWorkbook> {
         XSSFWorkbook workbook = null;
         try {
             workbook = XSSFWorkbookFactory.createWorkbook(path.toFile(), true);
-        } catch (Exception e) {
-            throw new IOException("Nepodařilo se načíst soubor. Cesta k souboru " + path, e);
+        } catch (InvalidFormatException e) {
+            throw new IOException(e);
         } finally {
             if (workbook != null) {
                 workbook.close();

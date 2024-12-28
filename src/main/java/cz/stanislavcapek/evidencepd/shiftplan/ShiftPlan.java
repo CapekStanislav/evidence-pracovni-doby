@@ -4,6 +4,7 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.shift.Shift;
+import cz.stanislavcapek.evidencepd.shiftplan.exception.InvalidMonthNumberException;
 import cz.stanislavcapek.evidencepd.utils.Constraint;
 import cz.stanislavcapek.evidencepd.workattendance.DefaultWorkAttendance;
 import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;

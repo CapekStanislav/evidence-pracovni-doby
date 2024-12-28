@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.stanislavcapek.evidencepd.ui.component;
+package cz.stanislavcapek.evidencepd.ui.component.template;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
-import cz.stanislavcapek.evidencepd.shiftplan.XlsxTemplateFactory;
 import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,7 +19,6 @@ import javax.swing.event.ListDataListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 /**
  * GUI Generování šablony pro zadaný ROK. Výstupní formát je excelový soubor xlsx.
@@ -39,14 +35,14 @@ import java.util.concurrent.ExecutionException;
 public class WorkAttendanceTemplatePanel extends JPanel {
     private final JButton btnGenerate;
     private final JTextField txtYear;
-    private final EmployeeListModel employeeListModel;
     private final JViewport viewport;
     private final List<Employee> selectedEmployeeList;
+    private final TemplateController controller;
 
-    
-    public WorkAttendanceTemplatePanel(EmployeeListModel employeeListModel) {
+
+    public WorkAttendanceTemplatePanel(TemplateController controller) {
         super(true);
-        this.employeeListModel = employeeListModel;
+        this.controller = controller;
         selectedEmployeeList = new ArrayList<>();
 
         // JPanel padding //
@@ -120,7 +116,7 @@ public class WorkAttendanceTemplatePanel extends JPanel {
 
         this.add(Box.createVerticalGlue());
 
-        employeeListModel.addListDataListener(new ListDataListener() {
+        controller.addListDataListener(new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent e) {
                 sp.setViewportView(createCheckBoxedList());
@@ -148,7 +144,7 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         for (int i = 0; i < comp.length; i++) {
             JCheckBox box = (JCheckBox) comp[i];
             if (box.isSelected()) {
-                selectedEmployeeList.add(employeeListModel.getElementAt(i));
+                selectedEmployeeList.add(controller.getEmployeeAt(i));
             }
         }
     }
@@ -170,8 +166,8 @@ public class WorkAttendanceTemplatePanel extends JPanel {
 
         // first row //
         JCheckBox box;
-        for (int i = 0; i < employeeListModel.getSize(); i++) {
-            Employee employee = employeeListModel.getElementAt(i);
+        for (int i = 0; i < controller.getEmployeeCount(); i++) {
+            Employee employee = controller.getEmployeeAt(i);
             box = new JCheckBox(employee.getId() + " " + employee.getFullName());
             box.setSelected(true);
             panel.add(box, dpg);
@@ -211,14 +207,12 @@ public class WorkAttendanceTemplatePanel extends JPanel {
             updateSelectedEmployeeList();
 
             // create side task
-            TemplateCreatingTask task = new TemplateCreatingTask(enteredPath);
-
             if (Files.exists(enteredPath)) {
                 if (showFileAlreadyExistDialog() != JOptionPane.YES_OPTION) {
                     return;
                 }
             }
-            disableGenerateBtnAndExecute(task);
+            disableGenerateBtnAndExecute(enteredPath);
         }
     }
 
@@ -249,10 +243,15 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         return toResolve;
     }
 
-    private void disableGenerateBtnAndExecute(TemplateCreatingTask task) {
+    private void disableGenerateBtnAndExecute(Path selectedPath) {
         btnGenerate.setEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        task.execute();
+        controller.createTemplate(
+                selectedPath,
+                selectedEmployeeList,
+                Integer.parseInt(txtYear.getText()),
+                this::onTemplateCreateDone
+        );
     }
 
     private JFileChooser getFileChooserTemplateFile(int year) {
@@ -267,6 +266,14 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         chooser.setSelectedFile(defFileName.toFile());
 
         return chooser;
+    }
+
+    void onTemplateCreateDone(boolean success) {
+        SwingUtilities.invokeLater(() -> {
+            btnGenerate.setEnabled(true);
+            setCursor(null);
+            showSavingResultDialog(success);
+        });
     }
 
     /**
@@ -284,42 +291,4 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         }
     }
 
-    /**
-     * Vnitřní třída, která vytvoří podpůrné vlákno a uloží vygenerovanou šablonu.
-     */
-    private class TemplateCreatingTask extends SwingWorker<Boolean, Void> {
-        private Path path;
-        private XlsxDao io;
-
-        TemplateCreatingTask(Path path) {
-            this.path = path;
-            this.io = new XlsxDao();
-        }
-
-
-        @Override
-        protected Boolean doInBackground() throws Exception {
-            XSSFWorkbook workbook = XlsxTemplateFactory.create(selectedEmployeeList, Integer.parseInt(txtYear.getText()));
-            try {
-                io.save(path, workbook);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
-        }
-
-        @Override
-        protected void done() {
-            try {
-                final Boolean success = get();
-                btnGenerate.setEnabled(true);
-                setCursor(null);
-                showSavingResultDialog(success);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
 }

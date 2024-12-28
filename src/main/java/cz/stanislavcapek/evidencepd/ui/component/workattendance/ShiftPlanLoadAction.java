@@ -1,34 +1,29 @@
-package cz.stanislavcapek.evidencepd.ui.component;
+package cz.stanislavcapek.evidencepd.ui.component.workattendance;
 
-import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
-import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.nio.file.Path;
 
 /**
  * Instance třídy {@code TemplateLoaderAction}
  *
  * @author Stanislav Čapek
  */
-public class TemplateLoaderAction extends AbstractAction {
+public class ShiftPlanLoadAction extends AbstractAction {
 
-    private JFileChooser fileChooser = new JFileChooser();
+    private final TemplateController controller;
+    private final JFileChooser fileChooser = new JFileChooser();
     private ShiftPlan shiftPlan;
     // TODO: 01.03.2020 dodělat ikonky
 
-    public TemplateLoaderAction(String name) {
+    public ShiftPlanLoadAction(String name, TemplateController controller) {
         super(name);
+        this.controller = controller;
         putValue(
                 Action.SHORT_DESCRIPTION,
                 "Vyhledejte a načtěte excelovou šablonu."
@@ -75,9 +70,11 @@ public class TemplateLoaderAction extends AbstractAction {
 
         if (response == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            final Dao<XSSFWorkbook> io = new XlsxDao();
-            XSSFWorkbook workbook = io.load(Path.of(file.toURI()));
-            return new ShiftPlan(workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS);
+            try {
+                return controller.loadShiftPlan(file.toPath());
+            } catch (Exception e) {
+                return null;
+            }
         }
         return null;
     }
