@@ -15,18 +15,18 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class TemplateController {
+public class ShiftPlanController {
 
-    private static final Logger log = LogManager.getLogger(TemplateController.class);
+    private static final Logger log = LogManager.getLogger(ShiftPlanController.class);
 
     private final EmployeeListModel employeeListModel;
     private final ShiftPlanService shiftPlanService;
     private final TemplateCreatingTaskFactory creatingTaskFactory;
 
     @Inject
-    public TemplateController(EmployeeListModel employeeListModel,
-                              ShiftPlanService shiftPlanService,
-                              TemplateCreatingTaskFactory creatingTaskFactory) {
+    public ShiftPlanController(EmployeeListModel employeeListModel,
+                               ShiftPlanService shiftPlanService,
+                               TemplateCreatingTaskFactory creatingTaskFactory) {
         this.employeeListModel = employeeListModel;
         this.shiftPlanService = shiftPlanService;
         this.creatingTaskFactory = creatingTaskFactory;

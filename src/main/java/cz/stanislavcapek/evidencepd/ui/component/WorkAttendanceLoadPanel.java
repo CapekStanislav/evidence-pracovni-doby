@@ -14,7 +14,7 @@ import cz.stanislavcapek.evidencepd.ui.component.workattendance.ShiftPlanLoadAct
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceHistoryPanel;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindow;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindowFactory;
-import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
+import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -49,7 +49,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private final JComboBox<Month> cmbMonths;
     private final JPanel pnlRecordFromTemplate;
     private final WorkAttendanceWindowFactory workAttendanceWindowFactory;
-    private final TemplateController templateController;
+    private final ShiftPlanController shiftPlanController;
 
     private ShiftPlan shiftPlan;
     private WorkAttendanceWindow window;
@@ -57,12 +57,12 @@ public class WorkAttendanceLoadPanel extends JPanel {
 
     public WorkAttendanceLoadPanel(
             WorkAttendanceWindowFactory workAttendanceWindowFactory,
-            TemplateController templateController,
+            ShiftPlanController shiftPlanController,
             EmployeeListModel employeeListModel
     ) {
         super();
         this.workAttendanceWindowFactory = workAttendanceWindowFactory;
-        this.templateController = templateController;
+        this.shiftPlanController = shiftPlanController;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 40, 0));
 
@@ -109,7 +109,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
         panel.add(Box.createVerticalStrut(10));
         panel.add(lblLoadValidation);
 
-        final ShiftPlanLoadAction action = new ShiftPlanLoadAction("Načíst šablonu", templateController);
+        final ShiftPlanLoadAction action = new ShiftPlanLoadAction("Načíst šablonu", shiftPlanController);
         btnLoad.setAction(action);
         btnLoad.addPropertyChangeListener(
                 "loaded",

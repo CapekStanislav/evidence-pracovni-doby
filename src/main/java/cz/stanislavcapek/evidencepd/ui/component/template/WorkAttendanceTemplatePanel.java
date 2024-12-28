@@ -8,7 +8,7 @@ package cz.stanislavcapek.evidencepd.ui.component.template;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
-import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
+import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -37,10 +37,10 @@ public class WorkAttendanceTemplatePanel extends JPanel {
     private final JTextField txtYear;
     private final JViewport viewport;
     private final List<Employee> selectedEmployeeList;
-    private final TemplateController controller;
+    private final ShiftPlanController controller;
 
 
-    public WorkAttendanceTemplatePanel(TemplateController controller) {
+    public WorkAttendanceTemplatePanel(ShiftPlanController controller) {
         super(true);
         this.controller = controller;
         selectedEmployeeList = new ArrayList<>();

@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.ui.component.workattendance;
 
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
-import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
+import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,12 +16,12 @@ import java.io.File;
  */
 public class ShiftPlanLoadAction extends AbstractAction {
 
-    private final TemplateController controller;
+    private final ShiftPlanController controller;
     private final JFileChooser fileChooser = new JFileChooser();
     private ShiftPlan shiftPlan;
     // TODO: 01.03.2020 dodělat ikonky
 
-    public ShiftPlanLoadAction(String name, TemplateController controller) {
+    public ShiftPlanLoadAction(String name, ShiftPlanController controller) {
         super(name);
         this.controller = controller;
         putValue(

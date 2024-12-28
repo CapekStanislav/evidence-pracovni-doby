@@ -9,7 +9,7 @@ import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceLoadPanel;
 import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.ui.component.template.WorkAttendanceTemplatePanel;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.ShiftPlanLoadAction;
-import cz.stanislavcapek.evidencepd.ui.controller.TemplateController;
+import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
             EmployeeListModel employeeListModel,
             EmployeeListPanel employeeListPanel,
             WorkAttendanceTemplatePanel workAttendanceTemplatePanel,
-            TemplateController templateController
+            ShiftPlanController shiftPlanController
     ) {
         super(TITLE);
         this.employeeService = employeeService;
@@ -116,7 +116,7 @@ public class MainWindow extends JFrame {
 
         JMenu menuFile = new JMenu("Soubor");
 
-        final ShiftPlanLoadAction shiftPlanLoadAction = new ShiftPlanLoadAction("Načíst šablonu", templateController);
+        final ShiftPlanLoadAction shiftPlanLoadAction = new ShiftPlanLoadAction("Načíst šablonu", shiftPlanController);
         final JMenuItem nacistItem = new JMenuItem(shiftPlanLoadAction);
         nacistItem.addPropertyChangeListener(
                 "loaded",
