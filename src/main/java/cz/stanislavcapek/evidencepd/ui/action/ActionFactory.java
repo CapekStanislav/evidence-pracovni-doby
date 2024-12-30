@@ -22,8 +22,8 @@ public class ActionFactory {
         return new SaveEmployeeListAction(window, name, desc, mnemonic, employeeService, employeeListModel);
     }
 
-    public ShowAgendAction createShowAgend(String name, String desc, int mnemonic, String command, JPanel content) {
-        return new ShowAgendAction(name, desc, mnemonic, command, content);
+    public DisplayCardAction createDisplayCard(String name, String desc, int mnemonic, String command, JPanel content) {
+        return new DisplayCardAction(name, desc, mnemonic, command, content);
     }
 
     public CloseAppAction createCloseApp(String name, String desc, int mnemonic) {

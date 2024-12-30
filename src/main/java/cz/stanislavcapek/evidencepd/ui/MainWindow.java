@@ -81,7 +81,7 @@ public class MainWindow extends JFrame {
 
         closeAction = actionFactory.createCloseApp("Zavřít", "Ukončit program", KeyEvent.VK_Z);
 
-        Action genEvidenceAction = actionFactory.createShowAgend("Gener. evidence",
+        Action genEvidenceAction = actionFactory.createDisplayCard("Gener. evidence",
                 "Generování evidence",
                 KeyEvent.VK_G, evidenceTitle, cards);
         genEvidenceAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.TIME, iSizeSmall));

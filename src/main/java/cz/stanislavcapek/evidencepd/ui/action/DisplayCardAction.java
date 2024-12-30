@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class ShowAgendAction extends AbstractAction {
+public class DisplayCardAction extends AbstractAction {
 
-    private final JPanel content;
+    private final JPanel parent;
 
-    public ShowAgendAction(String name, String desc, int mnemonic, String command, JPanel content) {
+    public DisplayCardAction(String name, String desc, int mnemonic, String command, JPanel parent) {
         super(name);
-        this.content = content;
+        this.parent = parent;
         putValue(Action.SHORT_DESCRIPTION, desc);
         putValue(Action.MNEMONIC_KEY, mnemonic);
         putValue(Action.ACTION_COMMAND_KEY, command);
@@ -18,6 +18,6 @@ public class ShowAgendAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ((CardLayout) content.getLayout()).show(content, e.getActionCommand());
+        ((CardLayout) parent.getLayout()).show(parent, e.getActionCommand());
     }
 }
