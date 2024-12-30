@@ -3,63 +3,60 @@ package cz.stanislavcapek.evidencepd.ui.controller;
 import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.employee.EmployeeService;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeSizeChangedListeners;
 
 import javax.annotation.Nullable;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeController {
 
-    private final EmployeeListModel employeeListModel;
-    private final EmployeeService employeeService;
+    private final EmployeeListModel model;
+    private final List<EmployeeSizeChangedListeners> sizeChangedListeners = new ArrayList<>();
 
     @Inject
-    public EmployeeController(EmployeeListModel employeeListModel, EmployeeService employeeService) {
-        this.employeeListModel = employeeListModel;
-        this.employeeService = employeeService;
+    public EmployeeController(EmployeeListModel model) {
+        this.model = model;
     }
 
-    public EmployeeListModel getEmployeeListModel() {
-        return employeeListModel;
+    public void addSizeChangedListener(EmployeeSizeChangedListeners listener) {
+        sizeChangedListeners.add(listener);
     }
 
-    public void loadFromFile(Path file) {
-        List<Employee> employees = employeeService.load(file);
-        employeeListModel.clearList();
-        employees.forEach(employeeListModel::addEmployee);
+    public EmployeeListModel getModel() {
+        return model;
     }
 
     public boolean addEmployee(Employee employee) {
-        return employeeListModel.addEmployee(employee);
-    }
-
-    public int getEmployeeCount() {
-        return employeeListModel.getSize();
-    }
-
-    public Employee getEmployeeAt(int index) {
-        return employeeListModel.getElementAt(index);
+        boolean added = model.addEmployee(employee);
+        fireModelSizeChanged();
+        return added;
     }
 
     public void removeEmployee(Employee employee) {
-        employeeListModel.removeEmployee(employee);
+        model.removeEmployee(employee);
+        fireModelSizeChanged();
     }
 
     public void updateEmployee(int id, @Nullable String firstName, @Nullable String lastName) {
-        Employee employee = employeeListModel.searchById(id);
-        if (employee == null) {
-            return;
-        }
+        model.updateEmployee(id, firstName, lastName);
+    }
 
-        if (firstName != null) {
-            employee.setFirstName(firstName);
-        }
+    public int getEmployeeCount() {
+        return model.getSize();
+    }
 
-        if (lastName != null) {
-            employee.setLastName(lastName);
-        }
+    public Employee getEmployeeAt(int index) {
+        return model.getElementAt(index);
+    }
 
-        employeeListModel.fireModelChanged();
+    public void loadModel(Path location) {
+        model.load(location);
+        fireModelSizeChanged();
+    }
+
+    private void fireModelSizeChanged() {
+        sizeChangedListeners.forEach(l -> l.sizeChanged(model.getSize()));
     }
 }

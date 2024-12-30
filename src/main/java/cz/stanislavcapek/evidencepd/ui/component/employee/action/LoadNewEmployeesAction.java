@@ -47,9 +47,9 @@ public class LoadNewEmployeesAction extends AbstractAction {
         int choice = chooser.showOpenDialog(panel);
 
         if (choice == JFileChooser.APPROVE_OPTION) {
-            Path file = Paths.get(chooser.getSelectedFile().getAbsolutePath());
+            Path location = Paths.get(chooser.getSelectedFile().getAbsolutePath());
             try {
-                controller.loadFromFile(file);
+                controller.loadModel(location);
                 showLoadingResultDialog(true);
             } catch (RuntimeException e) {
                 showLoadingResultDialog(false);

@@ -5,8 +5,9 @@
  */
 package cz.stanislavcapek.evidencepd.employee;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -63,6 +64,24 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
         fireIntervalRemoved(this, index, index);
     }
 
+    public void updateEmployee(int id, @Nullable String firstName, @Nullable String lastName) {
+        Employee employee = searchById(id);
+        int index = employeeList.indexOf(employee);
+        if (employee == null) {
+            return;
+        }
+
+        if (firstName != null) {
+            employee.setFirstName(firstName);
+        }
+
+        if (lastName != null) {
+            employee.setLastName(lastName);
+        }
+
+        fireContentsChanged(this, index, index);
+    }
+
     /**
      * Metoda vymaže SEZNAM zaměstnanců. Pozor, jedná se o jedinou instanci, dojde tedy k vymazání všech odkazů
      * na jednotlivé zaměstnance.
@@ -88,7 +107,8 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
     public Employee searchById(int id) {
         return employeeList.stream()
                 .filter(employee -> employee.getId() == id)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -100,13 +120,6 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
     public boolean containsEmployee(int id) {
         return employeeList.stream()
                 .anyMatch(employee -> employee.getId() == id);
-    }
-
-    /**
-     * Upozorní {@link ListDataListener} na změnu v seznamu.
-     */
-    public void fireModelChanged() {
-        super.fireContentsChanged(this, 0, 0);
     }
 
     /**
@@ -148,6 +161,19 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
 
     public boolean isSaved() {
         return saved;
+    }
+
+    public void load(Path location) {
+        service.load(location);
+    }
+
+    public void load() {
+        service.load();
+    }
+
+    public void save(Path location) {
+        service.save(location, List.copyOf(employeeList));
+        saved = true;
     }
 
     public void save() {

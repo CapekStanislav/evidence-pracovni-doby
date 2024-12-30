@@ -5,9 +5,7 @@
  */
 package cz.stanislavcapek.evidencepd.ui.component.employee;
 
-
 import cz.stanislavcapek.evidencepd.employee.Employee;
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.ui.component.employee.action.AddEmployeeAction;
 import cz.stanislavcapek.evidencepd.ui.component.employee.action.EditEmployeeAction;
 import cz.stanislavcapek.evidencepd.ui.component.employee.action.LoadNewEmployeesAction;
@@ -21,17 +19,15 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import java.awt.*;
 
 /**
  * GUI pro práci se seznamem strážníků. Umožňuje vytvářet nového zaměstnance, mazat nebo upravovat zaměstnance a
- * načíst externí soubor XML se seznamem zaměstnanců.
+ * načíst externí soubor JSON se seznamem zaměstnanců.
  *
  * @author Stanislav Čapek
  */
-public class EmployeeListPanel extends JPanel {
+public class EmployeeListPanel extends JPanel implements EmployeeSizeChangedListeners {
     private final JList<Employee> employeeJList;
     private final JTextField txtId, txtFirstName, txtLastName;
     private final JButton btnAdd;
@@ -67,7 +63,6 @@ public class EmployeeListPanel extends JPanel {
         pnlEmployee.setLayout(new BoxLayout(pnlEmployee, BoxLayout.PAGE_AXIS));
         pnlEmployee.setBorder(new TitledBorder("Nový zaměstnanec"));
 
-
         // general setting //
         JPanel panel = new JPanel();
         Border border5x5 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -82,13 +77,11 @@ public class EmployeeListPanel extends JPanel {
 
         panel.add(Box.createHorizontalGlue());
 
-
         txtId = new JTextField(sizeOfTextField);
         txtId.setMaximumSize(txtId.getPreferredSize());
         txtId.setHorizontalAlignment(JTextField.LEFT);
         panel.add(txtId);
         pnlEmployee.add(panel);
-
 
         // second row //
         panel = new JPanel();
@@ -128,9 +121,7 @@ public class EmployeeListPanel extends JPanel {
 
         // second row - employee list //
 
-
-        EmployeeListModel employeeListModel = employeeController.getEmployeeListModel();
-        this.employeeJList = new JList<>(employeeListModel);
+        this.employeeJList = new JList<>(employeeController.getModel());
         this.employeeJList.setCellRenderer(new EmployeeListCellRenderer());
         //LIST.setFixedCellWidth(150);
         employeeJList.setVisibleRowCount(6);
@@ -158,7 +149,7 @@ public class EmployeeListPanel extends JPanel {
         panel.add(btnAdd);
 
         btnRemove = new JButton(removeAction);
-        setEnableDisableRemoveButton(employeeListModel.getSize());
+        // setEnableRemoveButton(employeeController.getEmployeeCount()); FIXME might not needed
         panel.add(btnRemove);
 
         JButton btnEdit = new JButton(editAction);
@@ -172,56 +163,16 @@ public class EmployeeListPanel extends JPanel {
         wrapPanel.add(Box.createVerticalGlue());
         this.add(wrapPanel);
 
-        employeeListModel.addListDataListener(new ListDataListener() {
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                setEnableDisableRemoveButton(employeeListModel.getSize());
-            }
-
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-                setEnableDisableRemoveButton(employeeListModel.getSize());
-            }
-
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-                setEnableDisableRemoveButton(employeeListModel.getSize());
-            }
-        });
+        employeeController.addSizeChangedListener(this);
     }
 
-    /**
-     * Ukáže dialogové okno, které ukáže co je ještě třeba vyplnit.
-     *
-     * @param id       boolean
-     * @param jmeno    boolean
-     * @param prijmeni boolean
-     */
-    private void showNeededFieldsDialog(boolean id, boolean jmeno, boolean prijmeni) {
-        String zprava = "";
-        if (!id) {
-            zprava += "Služební číslo je buď prázdné nebo neobsahuje číslo \n";
-        }
-        if (!jmeno) {
-            zprava += "Jméno nesmí být prázdné \n";
-        }
-        if (!prijmeni) {
-            zprava += "Příjmení nesmí být prázdné \n";
-        }
-        JOptionPane.showMessageDialog(btnAdd,
-                "Vyskytla se chyba při zadání u těchto položek: \n"
-                        + zprava,
-                "Nesprávné údaje",
-                JOptionPane.INFORMATION_MESSAGE);
+    @Override
+    public void sizeChanged(int size) {
+        setEnableRemoveButton(size > 0);
     }
 
-    /**
-     * Zneplatnění tlačítka odeber, když není co odebírat. Seznam je prázdný.
-     *
-     * @param size velikost seznamu
-     */
-    private void setEnableDisableRemoveButton(int size) {
-        btnRemove.setEnabled(size > 0);
+    public void setEnableRemoveButton(boolean enabled) {
+        btnRemove.setEnabled(enabled);
     }
 
     public String getId() {
@@ -257,9 +208,9 @@ public class EmployeeListPanel extends JPanel {
         };
         final InputVerifier integerInputVerifier = new IntegerInputVerifier();
 
-        return stringInputVerifier.shouldYieldFocus(txtFirstName, null) &&
-                stringInputVerifier.shouldYieldFocus(txtLastName, null) &&
-                integerInputVerifier.shouldYieldFocus(txtId, null);
+        return integerInputVerifier.shouldYieldFocus(txtId, null) &&
+                stringInputVerifier.shouldYieldFocus(txtFirstName, null) &&
+                stringInputVerifier.shouldYieldFocus(txtLastName, null);
     }
 
     public void showExistingEmployeeDialog() {
