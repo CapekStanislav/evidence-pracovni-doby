@@ -1,6 +1,7 @@
-package cz.stanislavcapek.evidencepd.ui.component.employee;
+package cz.stanislavcapek.evidencepd.ui.component.employee.action;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.ui.controller.EmployeeController;
 import jiconfont.IconCode;
 import jiconfont.icons.elusive.Elusive;
@@ -13,12 +14,12 @@ import java.awt.event.KeyEvent;
 /**
  * Action remove the employee
  */
-class RemoveEmployeeAction extends AbstractAction {
+public class RemoveEmployeeAction extends AbstractAction {
 
     private final EmployeeListPanel panel;
     private final EmployeeController controller;
 
-    RemoveEmployeeAction(EmployeeListPanel panel, EmployeeController controller) {
+    public RemoveEmployeeAction(EmployeeListPanel panel, EmployeeController controller) {
         super("Odeber");
         this.panel = panel;
         this.controller = controller;

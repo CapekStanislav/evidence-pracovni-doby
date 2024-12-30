@@ -1,5 +1,6 @@
-package cz.stanislavcapek.evidencepd.ui.component.employee;
+package cz.stanislavcapek.evidencepd.ui.component.employee.action;
 
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.ui.controller.EmployeeController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
@@ -13,12 +14,12 @@ import java.nio.file.Paths;
 /**
  * Action load employees
  */
-class LoadEmployeesAction extends AbstractAction {
+public class LoadEmployeesAction extends AbstractAction {
 
     private final EmployeeListPanel panel;
     private final EmployeeController controller;
 
-    LoadEmployeesAction(EmployeeListPanel panel, EmployeeController controller) {
+    public LoadEmployeesAction(EmployeeListPanel panel, EmployeeController controller) {
         super("Načti");
         this.panel = panel;
         this.controller = controller;

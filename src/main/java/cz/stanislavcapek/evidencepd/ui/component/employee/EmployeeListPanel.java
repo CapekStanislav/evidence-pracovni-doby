@@ -8,6 +8,10 @@ package cz.stanislavcapek.evidencepd.ui.component.employee;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
+import cz.stanislavcapek.evidencepd.ui.component.employee.action.AddEmployeeAction;
+import cz.stanislavcapek.evidencepd.ui.component.employee.action.EditEmployeeAction;
+import cz.stanislavcapek.evidencepd.ui.component.employee.action.LoadEmployeesAction;
+import cz.stanislavcapek.evidencepd.ui.component.employee.action.RemoveEmployeeAction;
 import cz.stanislavcapek.evidencepd.ui.component.utils.EmployeeListCellRenderer;
 import cz.stanislavcapek.evidencepd.ui.component.utils.EmptyStringInputVerifier;
 import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
@@ -220,25 +224,25 @@ public class EmployeeListPanel extends JPanel {
         btnRemove.setEnabled(size > 0);
     }
 
-    String getId() {
+    public String getId() {
         return txtId.getText();
     }
 
-    String getFirstName() {
+    public String getFirstName() {
         return txtFirstName.getText();
     }
 
-    String getLastName() {
+    public String getLastName() {
         return txtLastName.getText();
     }
 
-    void resetEmployeeForm() {
+    public void resetEmployeeForm() {
         txtId.setText("");
         txtFirstName.setText("");
         txtLastName.setText("");
     }
 
-    boolean isAllFilled() {
+    public boolean isAllFilled() {
         final InputVerifier stringInputVerifier = new EmptyStringInputVerifier() {
             @Override
             public boolean shouldYieldFocus(JComponent source, JComponent target) {
@@ -258,16 +262,16 @@ public class EmployeeListPanel extends JPanel {
                 integerInputVerifier.shouldYieldFocus(txtId, null);
     }
 
-    void showExistingEmployeeDialog() {
+    public void showExistingEmployeeDialog() {
         JOptionPane.showMessageDialog(btnAdd, "Strážník nebyl přidán! Již existuje strážník " +
                 "se stejným služebním číslem \n", "Nelze přidat strážníka", JOptionPane.ERROR_MESSAGE);
     }
 
-    int getSelectedIndex() {
+    public int getSelectedIndex() {
         return employeeJList.getSelectedIndex();
     }
 
-    int showRemovalConfirmationDialog(int indexToRemove) {
+    public int showRemovalConfirmationDialog(int indexToRemove) {
         Object[] anoNe = {"Ano", "Ne"};
         final String message = "Opravdu odebrat: " +
                 employeeController.getEmployeeAt(indexToRemove).getFullName();
@@ -278,7 +282,7 @@ public class EmployeeListPanel extends JPanel {
                 JOptionPane.QUESTION_MESSAGE, null, anoNe, anoNe[1]);
     }
 
-    void setRemoveButtonEnabled(boolean enabled) {
+    public void setRemoveButtonEnabled(boolean enabled) {
         btnRemove.setEnabled(enabled);
     }
 

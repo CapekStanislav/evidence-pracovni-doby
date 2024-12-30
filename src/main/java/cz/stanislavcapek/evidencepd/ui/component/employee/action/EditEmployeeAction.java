@@ -1,6 +1,8 @@
-package cz.stanislavcapek.evidencepd.ui.component.employee;
+package cz.stanislavcapek.evidencepd.ui.component.employee.action;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeEditorPanel;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.ui.controller.EmployeeController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
@@ -12,12 +14,12 @@ import java.awt.event.KeyEvent;
 /**
  * Action edit en existing employee
  */
-class EditEmployeeAction extends AbstractAction {
+public class EditEmployeeAction extends AbstractAction {
 
     private final EmployeeListPanel panel;
     private final EmployeeController controller;
 
-    EditEmployeeAction(EmployeeListPanel panel, EmployeeController controller) {
+    public EditEmployeeAction(EmployeeListPanel panel, EmployeeController controller) {
         super("Uprav");
         this.panel = panel;
         this.controller = controller;
