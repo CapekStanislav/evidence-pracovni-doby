@@ -5,7 +5,7 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeeService;
 import cz.stanislavcapek.evidencepd.ui.action.ActionFactory;
-import cz.stanislavcapek.evidencepd.ui.component.WorkAttendanceLoadPanel;
+import cz.stanislavcapek.evidencepd.ui.component.LoadShiftPlanPanel;
 import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
 import cz.stanislavcapek.evidencepd.ui.component.template.WorkAttendanceTemplatePanel;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.ShiftPlanLoadAction;
@@ -29,7 +29,14 @@ import java.util.List;
  * @author Stanislav Capek
  */
 public class MainWindow extends JFrame {
+    private enum Cards {
+        LOAD_SHIFT_PLAN,
+        EMPLOYEES,
+        WORKATTENDANCE_TEMPLATE
+    }
+
     public static final String TITLE = "Správa evidence pracovní doby";
+    public static final Dimension WINDOW_DIMENSION = new Dimension(500, 400);
 
     private final Action closeAction;
     private final EmployeeService employeeService;
@@ -37,7 +44,7 @@ public class MainWindow extends JFrame {
 
     @Inject
     public MainWindow(
-            WorkAttendanceLoadPanel workAttendanceLoadPanel,
+            LoadShiftPlanPanel loadShiftPlanPanel,
             ActionFactory actionFactory,
             EmployeeService employeeService,
             EmployeeListModel employeeListModel,
@@ -49,11 +56,8 @@ public class MainWindow extends JFrame {
         this.employeeService = employeeService;
         this.employeeListModel = employeeListModel;
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        int height = 400;
-        int width = 500;
-        Dimension size = new Dimension(width, height);
-        this.setMinimumSize(size);
-        this.setPreferredSize(size);
+        this.setMinimumSize(WINDOW_DIMENSION);
+        this.setPreferredSize(WINDOW_DIMENSION);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
@@ -67,12 +71,9 @@ public class MainWindow extends JFrame {
 
         final JPanel cards = new JPanel(new CardLayout());
 
-        final String evidenceTitle = "evidence";
-        cards.add(workAttendanceLoadPanel, evidenceTitle);
-        final String listTitle = "seznam";
-        cards.add(employeeListPanel, listTitle);
-        final String templateTitle = "šablona";
-        cards.add(workAttendanceTemplatePanel, templateTitle);
+        cards.add(loadShiftPlanPanel, Cards.LOAD_SHIFT_PLAN.name());
+        cards.add(employeeListPanel, Cards.EMPLOYEES.name());
+        cards.add(workAttendanceTemplatePanel, Cards.WORKATTENDANCE_TEMPLATE.name());
 
 //        Actions
         IconFontSwing.register(Elusive.getIconFont());
@@ -83,19 +84,19 @@ public class MainWindow extends JFrame {
 
         Action genEvidenceAction = actionFactory.createDisplayCard("Gener. evidence",
                 "Generování evidence",
-                KeyEvent.VK_G, evidenceTitle, cards);
+                KeyEvent.VK_G, Cards.LOAD_SHIFT_PLAN.name(), cards);
         genEvidenceAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.TIME, iSizeSmall));
         genEvidenceAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.TIME, iSizeLarge));
 
-        Action zobrSeznamAction = actionFactory.createShowAgend("Seznam zaměstnanců",
+        Action zobrSeznamAction = actionFactory.createDisplayCard("Seznam zaměstnanců",
                 "Zobrazit seznam zaměstnanců",
-                KeyEvent.VK_S, listTitle, cards);
+                KeyEvent.VK_S, Cards.EMPLOYEES.name(), cards);
         zobrSeznamAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.ADDRESS_BOOK, iSizeSmall));
         zobrSeznamAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.ADDRESS_BOOK, iSizeLarge));
 
-        Action sablonaAction = actionFactory.createShowAgend("Šablona plánu",
+        Action sablonaAction = actionFactory.createDisplayCard("Šablona plánu",
                 "Generování šablony pro zadaný rok",
-                KeyEvent.VK_B, templateTitle, cards);
+                KeyEvent.VK_B, Cards.WORKATTENDANCE_TEMPLATE.name(), cards);
         sablonaAction.putValue(Action.SMALL_ICON, IconFontSwing.buildIcon(Elusive.FILE_NEW, iSizeSmall));
         sablonaAction.putValue(Action.LARGE_ICON_KEY, IconFontSwing.buildIcon(Elusive.FILE_NEW, iSizeLarge));
 
@@ -128,7 +129,7 @@ public class MainWindow extends JFrame {
                                     genEvidenceAction.getValue(Action.ACTION_COMMAND_KEY).toString()
                             )
                     );
-                    workAttendanceLoadPanel.validateLoadedTemplate(shiftPlanLoadAction, evt);
+                    loadShiftPlanPanel.validateLoadedTemplate(shiftPlanLoadAction, evt);
 
                 }
 

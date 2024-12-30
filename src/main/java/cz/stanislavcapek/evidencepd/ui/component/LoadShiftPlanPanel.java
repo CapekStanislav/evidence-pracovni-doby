@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  *
  * @author Stanislav Čapek
  */
-public class WorkAttendanceLoadPanel extends JPanel {
+public class LoadShiftPlanPanel extends JPanel {
     private final JLabel lblLoadValidation = new JLabel();
     private final JButton btnLoad = new JButton();
     private final JButton btnShow = new JButton("Otevřít");
@@ -55,7 +55,7 @@ public class WorkAttendanceLoadPanel extends JPanel {
     private WorkAttendanceWindow window;
 
 
-    public WorkAttendanceLoadPanel(
+    public LoadShiftPlanPanel(
             WorkAttendanceWindowFactory workAttendanceWindowFactory,
             ShiftPlanController shiftPlanController,
             EmployeeListModel employeeListModel

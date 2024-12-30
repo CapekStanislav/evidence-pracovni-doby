@@ -6,14 +6,14 @@ import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.WorkAttendanceWindowFactory;
 import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 
-public class WorkAttendanceLoadPanelProvider implements Provider<WorkAttendanceLoadPanel> {
+public class LoadShiftPlanPanelProvider implements Provider<LoadShiftPlanPanel> {
 
     private final WorkAttendanceWindowFactory workAttendanceWindowFactory;
     private final EmployeeListModel employeeListModel;
     private final ShiftPlanController shiftPlanController;
 
     @Inject
-    public WorkAttendanceLoadPanelProvider(
+    public LoadShiftPlanPanelProvider(
             WorkAttendanceWindowFactory workAttendanceWindowFactory,
             EmployeeListModel employeeListModel,
             ShiftPlanController shiftPlanController
@@ -24,7 +24,7 @@ public class WorkAttendanceLoadPanelProvider implements Provider<WorkAttendanceL
     }
 
     @Override
-    public WorkAttendanceLoadPanel get() {
-        return new WorkAttendanceLoadPanel(workAttendanceWindowFactory, shiftPlanController, employeeListModel);
+    public LoadShiftPlanPanel get() {
+        return new LoadShiftPlanPanel(workAttendanceWindowFactory, shiftPlanController, employeeListModel);
     }
 }
