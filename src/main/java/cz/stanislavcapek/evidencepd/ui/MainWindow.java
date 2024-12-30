@@ -132,11 +132,10 @@ public class MainWindow extends JFrame {
                     loadShiftPlanPanel.validateLoadedTemplate(shiftPlanLoadAction, evt);
 
                 }
-
         );
         menuFile.add(nacistItem);
 
-        menuFile.add(actionFactory.createSaveEmployees(this,
+        menuFile.add(actionFactory.createSaveEmployees(
                 "Uložit seznam",
                 "Uložit seznam zaměstnanců",
                 KeyEvent.VK_S));

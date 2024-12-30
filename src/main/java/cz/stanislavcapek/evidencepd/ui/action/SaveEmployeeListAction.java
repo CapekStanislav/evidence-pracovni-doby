@@ -2,7 +2,6 @@ package cz.stanislavcapek.evidencepd.ui.action;
 
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.employee.EmployeeService;
-import cz.stanislavcapek.evidencepd.ui.MainWindow;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -14,12 +13,10 @@ import java.nio.file.Paths;
 
 public class SaveEmployeeListAction extends AbstractAction {
 
-    private final MainWindow mainWindow;
     private final EmployeeService employeeService;
     private final EmployeeListModel employeeListModel;
 
     SaveEmployeeListAction(
-            MainWindow mainWindow,
             String name,
             String desc,
             int mnemonic,
@@ -27,7 +24,6 @@ public class SaveEmployeeListAction extends AbstractAction {
             EmployeeListModel employeeListModel
     ) {
         super(name);
-        this.mainWindow = mainWindow;
         this.employeeService = employeeService;
         this.employeeListModel = employeeListModel;
         IconFontSwing.register(Elusive.getIconFont());
@@ -42,6 +38,7 @@ public class SaveEmployeeListAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        JComponent source = (JComponent) e.getSource();
         final JFileChooser fileChooser = new JFileChooser();
         final String userDir = System.getProperty("user.dir");
         final File pathToUserDir = new File(userDir);
@@ -53,7 +50,7 @@ public class SaveEmployeeListAction extends AbstractAction {
 
         boolean done = false;
         while (!done) {
-            final int choice = fileChooser.showSaveDialog(mainWindow);
+            final int choice = fileChooser.showSaveDialog(source);
             if (choice == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
 
@@ -64,7 +61,7 @@ public class SaveEmployeeListAction extends AbstractAction {
 
                 int overwrite = 0;
                 if (selectedFile.exists()) {
-                    overwrite = JOptionPane.showConfirmDialog(mainWindow,
+                    overwrite = JOptionPane.showConfirmDialog(source,
                             "Soubor již existuje! Chcete ho přepsat?",
                             "Existujicí soubor",
                             JOptionPane.YES_NO_OPTION,
@@ -79,7 +76,7 @@ public class SaveEmployeeListAction extends AbstractAction {
                         );
                         done = true;
                     } catch (Exception ex) {
-                        showErrorMessageDialog();
+                        showErrorMessageDialog(source);
                     }
                 }
 
@@ -89,8 +86,8 @@ public class SaveEmployeeListAction extends AbstractAction {
         }
     }
 
-    private void showErrorMessageDialog() {
-        JOptionPane.showMessageDialog(mainWindow,
+    private void showErrorMessageDialog(JComponent source) {
+        JOptionPane.showMessageDialog(source,
                 "Nepodařilo se uložit soubor.",
                 "Chyba při ukládání", JOptionPane.ERROR_MESSAGE);
     }

@@ -36,7 +36,6 @@ public class ShiftPlanLoadAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
 
         JComponent source = (JComponent) e.getSource();
-
         try {
             shiftPlan = loadWorkAttendancePlan(source);
             if (shiftPlan != null) {
