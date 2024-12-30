@@ -1,27 +1,24 @@
 package cz.stanislavcapek.evidencepd.ui;
 
 import com.google.inject.Inject;
-import cz.stanislavcapek.evidencepd.employee.Employee;
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.employee.EmployeeService;
 import cz.stanislavcapek.evidencepd.ui.action.ActionFactory;
 import cz.stanislavcapek.evidencepd.ui.component.LoadShiftPlanPanel;
 import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
+import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeesLoader;
 import cz.stanislavcapek.evidencepd.ui.component.template.WorkAttendanceTemplatePanel;
 import cz.stanislavcapek.evidencepd.ui.component.workattendance.ShiftPlanLoadAction;
 import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.util.List;
 
 /**
  * Main application window
@@ -29,6 +26,8 @@ import java.util.List;
  * @author Stanislav Capek
  */
 public class MainWindow extends JFrame {
+    private static final Logger log = LogManager.getLogger(MainWindow.class);
+
     private enum Cards {
         LOAD_SHIFT_PLAN,
         EMPLOYEES,
@@ -39,33 +38,24 @@ public class MainWindow extends JFrame {
     public static final Dimension WINDOW_DIMENSION = new Dimension(500, 400);
 
     private final Action closeAction;
-    private final EmployeeService employeeService;
-    private final EmployeeListModel employeeListModel;
 
     @Inject
     public MainWindow(
             LoadShiftPlanPanel loadShiftPlanPanel,
             ActionFactory actionFactory,
-            EmployeeService employeeService,
-            EmployeeListModel employeeListModel,
+            EmployeesLoader employeesLoader,
             EmployeeListPanel employeeListPanel,
             WorkAttendanceTemplatePanel workAttendanceTemplatePanel,
             ShiftPlanController shiftPlanController
     ) {
         super(TITLE);
-        this.employeeService = employeeService;
-        this.employeeListModel = employeeListModel;
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setMinimumSize(WINDOW_DIMENSION);
         this.setPreferredSize(WINDOW_DIMENSION);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
-        List<Employee> employeeList = employeeService.load();
-        if (employeeList.isEmpty()) {
-            findEmployeeListFile();
-        }
-        initEmployeeListModel(employeeList);
+        employeesLoader.tryLoadEmployees();
 
         JPanel contentPane = new JPanel(new BorderLayout());
 
@@ -168,62 +158,4 @@ public class MainWindow extends JFrame {
 
         this.pack();
     }
-
-    /**
-     * Načte do instance {@link EmployeeListModel} nově načtené zaměstnance
-     *
-     * @param list seznam zaměstnanců
-     */
-    private void initEmployeeListModel(List<Employee> list) {
-        employeeListModel.clearList();
-        list.forEach(employeeListModel::addEmployee);
-    }
-
-    /**
-     * Umožní uživateli nalézt soubor obsahující seznam zaměstnanců ručně.
-     */
-    private void findEmployeeListFile() {
-
-        if (showListNotFoundDialog() == JOptionPane.YES_OPTION) {
-            final JFileChooser chooser = getChooserForJsonFiles();
-
-            if (chooser.showOpenDialog(this) == JOptionPane.YES_OPTION) {
-                final File selectedFile = chooser.getSelectedFile();
-                final List<Employee> employeeList = employeeService.load(selectedFile.toPath());
-                if (employeeList.isEmpty()) {
-                    findEmployeeListFile();
-                } else {
-                    initEmployeeListModel(employeeList);
-                }
-            }
-        }
-    }
-
-    private JFileChooser getChooserForJsonFiles() {
-        JFileChooser chooser = new JFileChooser();
-        final FileNameExtensionFilter jsonFilter = new FileNameExtensionFilter("JSON (*.json)", "json");
-        chooser.setFileFilter(jsonFilter);
-        chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        chooser.setApproveButtonText("otevřít");
-        return chooser;
-    }
-
-    private int showListNotFoundDialog() {
-        Object[] option = {"Ano", "Pokračovat"};
-        final String message = "Nepodařilo se nalézt seznam zaměstnanců. \n \n" +
-                "Vyhledat seznam ručně?";
-        final String title = "Chyba při načtení souboru";
-
-        return JOptionPane.showOptionDialog(
-                this,
-                message,
-                title,
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                option,
-                option[0]);
-    }
-
-
 }

@@ -14,12 +14,12 @@ import java.nio.file.Paths;
 /**
  * Action load employees
  */
-public class LoadEmployeesAction extends AbstractAction {
+public class LoadNewEmployeesAction extends AbstractAction {
 
     private final EmployeeListPanel panel;
     private final EmployeeController controller;
 
-    public LoadEmployeesAction(EmployeeListPanel panel, EmployeeController controller) {
+    public LoadNewEmployeesAction(EmployeeListPanel panel, EmployeeController controller) {
         super("Načti");
         this.panel = panel;
         this.controller = controller;

@@ -10,7 +10,7 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.ui.component.employee.action.AddEmployeeAction;
 import cz.stanislavcapek.evidencepd.ui.component.employee.action.EditEmployeeAction;
-import cz.stanislavcapek.evidencepd.ui.component.employee.action.LoadEmployeesAction;
+import cz.stanislavcapek.evidencepd.ui.component.employee.action.LoadNewEmployeesAction;
 import cz.stanislavcapek.evidencepd.ui.component.employee.action.RemoveEmployeeAction;
 import cz.stanislavcapek.evidencepd.ui.component.utils.EmployeeListCellRenderer;
 import cz.stanislavcapek.evidencepd.ui.component.utils.EmptyStringInputVerifier;
@@ -49,7 +49,7 @@ public class EmployeeListPanel extends JPanel {
         Action addAction = new AddEmployeeAction(this, employeeController);
         removeAction = new RemoveEmployeeAction(this, employeeController);
         editAction = new EditEmployeeAction(this, employeeController);
-        Action loadEmployeesAction = new LoadEmployeesAction(this, employeeController);
+        Action loadEmployeesAction = new LoadNewEmployeesAction(this, employeeController);
 
 
         // JPanel paddning //
