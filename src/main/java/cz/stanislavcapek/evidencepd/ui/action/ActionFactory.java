@@ -1,21 +1,21 @@
 package cz.stanislavcapek.evidencepd.ui.action;
 
 import com.google.inject.Inject;
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
+import cz.stanislavcapek.evidencepd.ui.controller.EmployeeController;
 
 import javax.swing.*;
 
 public class ActionFactory {
 
-    private final EmployeeListModel employeeListModel;
+    private final EmployeeController employeeController;
 
     @Inject
-    public ActionFactory(EmployeeListModel employeeListModel) {
-        this.employeeListModel = employeeListModel;
+    public ActionFactory(EmployeeController employeeController) {
+        this.employeeController = employeeController;
     }
 
     public SaveEmployeeListAction createSaveEmployees(String name, String desc, int mnemonic) {
-        return new SaveEmployeeListAction(name, desc, mnemonic, employeeListModel);
+        return new SaveEmployeeListAction(name, desc, mnemonic, employeeController);
     }
 
     public DisplayCardAction createDisplayCard(String name, String desc, int mnemonic, String command, JPanel content) {
@@ -23,6 +23,6 @@ public class ActionFactory {
     }
 
     public CloseAppAction createCloseApp(String name, String desc, int mnemonic) {
-        return new CloseAppAction(name, desc, mnemonic);
+        return new CloseAppAction(name, desc, mnemonic, employeeController);
     }
 }

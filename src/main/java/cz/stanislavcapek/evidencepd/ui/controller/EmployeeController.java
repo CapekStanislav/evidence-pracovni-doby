@@ -56,6 +56,18 @@ public class EmployeeController {
         fireModelSizeChanged();
     }
 
+    public void saveModel() {
+        model.save();
+    }
+
+    public void saveModel(Path location) {
+        model.save(location);
+    }
+
+    public boolean isModelSaved() {
+        return model.isSaved();
+    }
+
     private void fireModelSizeChanged() {
         sizeChangedListeners.forEach(l -> l.sizeChanged(model.getSize()));
     }

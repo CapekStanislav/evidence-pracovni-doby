@@ -169,6 +169,7 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
 
     public void load() {
         service.load();
+        saved = true;
     }
 
     public void save(Path location) {

@@ -1,6 +1,6 @@
 package cz.stanislavcapek.evidencepd.ui.action;
 
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
+import cz.stanislavcapek.evidencepd.ui.controller.EmployeeController;
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
@@ -12,16 +12,16 @@ import java.nio.file.Paths;
 
 public class SaveEmployeeListAction extends AbstractAction {
 
-    private final EmployeeListModel model;
+    private final EmployeeController controller;
 
     SaveEmployeeListAction(
             String name,
             String desc,
             int mnemonic,
-            EmployeeListModel model
+            EmployeeController controller
     ) {
         super(name);
-        this.model = model;
+        this.controller = controller;
         IconFontSwing.register(Elusive.getIconFont());
         Elusive save = Elusive.DOWNLOAD_ALT;
         Icon saveIconSmall = IconFontSwing.buildIcon(save, 12);
@@ -66,7 +66,7 @@ public class SaveEmployeeListAction extends AbstractAction {
 
                 if (overwrite == 0) {
                     try {
-                        model.save(Paths.get(selectedFile.toURI()));
+                        controller.saveModel(Paths.get(selectedFile.toURI()));
                         done = true;
                     } catch (Exception ex) {
                         showErrorMessageDialog(source);
