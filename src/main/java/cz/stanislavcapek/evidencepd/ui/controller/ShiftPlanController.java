@@ -5,12 +5,13 @@ import cz.stanislavcapek.evidencepd.employee.Employee;
 import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlanService;
+import cz.stanislavcapek.evidencepd.ui.component.template.EmployeeListDataListener;
+import cz.stanislavcapek.evidencepd.ui.component.template.EmployeeModelChangedListener;
 import cz.stanislavcapek.evidencepd.ui.component.template.TemplateCreatingTaskFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,26 +23,22 @@ public class ShiftPlanController {
     private final EmployeeListModel employeeListModel;
     private final ShiftPlanService shiftPlanService;
     private final TemplateCreatingTaskFactory creatingTaskFactory;
+    private final EmployeeListDataListener modelChangedListener;
 
     @Inject
     public ShiftPlanController(EmployeeListModel employeeListModel,
                                ShiftPlanService shiftPlanService,
-                               TemplateCreatingTaskFactory creatingTaskFactory) {
+                               TemplateCreatingTaskFactory creatingTaskFactory
+    ) {
         this.employeeListModel = employeeListModel;
         this.shiftPlanService = shiftPlanService;
         this.creatingTaskFactory = creatingTaskFactory;
+        modelChangedListener = new EmployeeListDataListener();
+        employeeListModel.addListDataListener(modelChangedListener);
     }
 
-    public Employee getEmployeeAt(int index) {
-        return employeeListModel.getElementAt(index);
-    }
-
-    public void addListDataListener(ListDataListener listener) {
-        employeeListModel.addListDataListener(listener);
-    }
-
-    public int getEmployeeCount() {
-        return employeeListModel.getSize();
+    public void addModelChangeListener(EmployeeModelChangedListener listener) {
+        modelChangedListener.addModelChangeListener(listener);
     }
 
     public void createTemplate(Path path, List<Employee> selectedEmployees, int year, Consumer<Boolean> resultCallback) {

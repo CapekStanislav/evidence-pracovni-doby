@@ -6,7 +6,6 @@
 package cz.stanislavcapek.evidencepd.ui.component.template;
 
 import cz.stanislavcapek.evidencepd.employee.Employee;
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.ui.component.utils.IntegerInputVerifier;
 import cz.stanislavcapek.evidencepd.ui.controller.ShiftPlanController;
 
@@ -14,7 +13,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -35,7 +33,6 @@ import java.util.Set;
 public class WorkAttendanceTemplatePanel extends JPanel {
     private final JButton btnGenerate;
     private final JTextField txtYear;
-    private final JViewport viewport;
     private final List<Employee> selectedEmployeeList;
     private final ShiftPlanController controller;
 
@@ -92,12 +89,10 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         wrapPanel.setLayout(new BoxLayout(wrapPanel, BoxLayout.LINE_AXIS));
         wrapPanel.setBorder(borderLeftAndRight);
 
-        JScrollPane sp = new JScrollPane();
-        sp.setViewportView(createCheckBoxedList());
-        viewport = sp.getViewport();
-        sp.setWheelScrollingEnabled(true);
-        sp.setBorder(new TitledBorder("Výběr strážníků"));
-        wrapPanel.add(sp);
+        JScrollPane employeeScrollPane = new JScrollPane();
+        employeeScrollPane.setWheelScrollingEnabled(true);
+        employeeScrollPane.setBorder(new TitledBorder("Výběr strážníků"));
+        wrapPanel.add(employeeScrollPane);
         this.add(wrapPanel);
 
         // last row
@@ -115,38 +110,7 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         this.add(wrapPanel);
 
         this.add(Box.createVerticalGlue());
-
-        controller.addListDataListener(new ListDataListener() {
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                sp.setViewportView(createCheckBoxedList());
-            }
-
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-                sp.setViewportView(createCheckBoxedList());
-            }
-
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-                sp.setViewportView(createCheckBoxedList());
-            }
-        });
-
-    }
-
-    /**
-     * Podpůrná metoda, která synchronizuje {@link EmployeeListModel} s vybranými (zaškrtnutými) zaměstnanci.
-     */
-    private void updateSelectedEmployeeList() {
-        selectedEmployeeList.clear();
-        Component[] comp = ((JPanel) viewport.getView()).getComponents();
-        for (int i = 0; i < comp.length; i++) {
-            JCheckBox box = (JCheckBox) comp[i];
-            if (box.isSelected()) {
-                selectedEmployeeList.add(controller.getEmployeeAt(i));
-            }
-        }
+        controller.addModelChangeListener(employees -> employeeScrollPane.setViewportView(createCheckBoxedList(employees)));
     }
 
     /**
@@ -154,7 +118,7 @@ public class WorkAttendanceTemplatePanel extends JPanel {
      *
      * @return CheckBox seznam
      */
-    private JPanel createCheckBoxedList() {
+    private JPanel createCheckBoxedList(List<Employee> employees) {
         JPanel panel = new JPanel(new GridBagLayout(), true);
         GridBagConstraints dpg = new GridBagConstraints();
 
@@ -165,14 +129,24 @@ public class WorkAttendanceTemplatePanel extends JPanel {
         dpg.anchor = GridBagConstraints.LINE_START;
 
         // first row //
-        JCheckBox box;
-        for (int i = 0; i < controller.getEmployeeCount(); i++) {
-            Employee employee = controller.getEmployeeAt(i);
+        selectedEmployeeList.clear();
+        employees.forEach(employee -> {
+            JCheckBox box;
             box = new JCheckBox(employee.getId() + " " + employee.getFullName());
             box.setSelected(true);
+            selectedEmployeeList.add(employee);
+            box.addItemListener(itemEvent -> {
+                JCheckBox currentBox = ((JCheckBox) itemEvent.getItem());
+                if (currentBox.isSelected()) {
+                    selectedEmployeeList.add(employee);
+                } else {
+                    selectedEmployeeList.remove(employee);
+                }
+            });
             panel.add(box, dpg);
             dpg.gridy++;
-        }
+        });
+
         return panel;
     }
 
@@ -202,9 +176,6 @@ public class WorkAttendanceTemplatePanel extends JPanel {
             Path enteredPath = Paths.get(chooser.getSelectedFile().getPath());
 
             enteredPath = resolveFileExtension(enteredPath);
-
-            // update selected employee list by their checked
-            updateSelectedEmployeeList();
 
             // create side task
             if (Files.exists(enteredPath)) {
@@ -290,5 +261,4 @@ public class WorkAttendanceTemplatePanel extends JPanel {
                     , "Chyba při generování šablony", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 }
