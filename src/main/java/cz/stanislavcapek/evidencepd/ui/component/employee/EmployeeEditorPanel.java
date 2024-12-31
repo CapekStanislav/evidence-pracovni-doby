@@ -18,13 +18,8 @@ public class EmployeeEditorPanel extends JPanel {
 
     private final JTextField txtFirstName;
     private final JTextField txtLastName;
-    private Employee newEmployee;
+    private final Employee newEmployee;
 
-    /**
-     * Konstruktor
-     *
-     * @param employee zaměstnanec k úpravě
-     */
     public EmployeeEditorPanel(Employee employee) {
         newEmployee = new Employee(employee.getId(),
                 employee.getFirstName(),
@@ -81,12 +76,7 @@ public class EmployeeEditorPanel extends JPanel {
 
         this.add(panel);
     }
-
-    /**
-     * Vrátí nově upraveného zaměstnance.
-     *
-     * @return {@link Employee} upravený zaměstnanec
-     */
+    
     public Employee getNewEmployee() {
         return newEmployee;
     }
