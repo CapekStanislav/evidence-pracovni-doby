@@ -1,9 +1,9 @@
 package cz.stanislavcapek.evidencepd.dao;
 
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendance;
-import cz.stanislavcapek.evidencepd.workattendance.WorkAttendanceDao;
-import cz.stanislavcapek.evidencepd.shiftplan.ShiftPlan;
-import cz.stanislavcapek.evidencepd.shiftplan.XlsxDao;
+import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
+import cz.stanislavcapek.evidencepd.service.template.XlsxDao;
+import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;
+import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendanceDao;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

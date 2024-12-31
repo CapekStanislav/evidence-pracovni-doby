@@ -1,5 +1,6 @@
 package cz.stanislavcapek.evidencepd.utils;
 
+import cz.stanislavcapek.evidencepd.service.utils.Constraint;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +37,7 @@ class ConstraintTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> intConstraint.orThrow(19)
-                );
+        );
     }
 
     @Test
@@ -46,6 +47,6 @@ class ConstraintTest {
                 integer -> new IllegalArgumentException(String.valueOf(integer))
         );
 
-       assertDoesNotThrow(() -> intConstraint.orThrow(5));
+        assertDoesNotThrow(() -> intConstraint.orThrow(5));
     }
 }

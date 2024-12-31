@@ -1,5 +1,7 @@
 package cz.stanislavcapek.evidencepd.employee;
 
+import cz.stanislavcapek.evidencepd.domain.employee.Employee;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

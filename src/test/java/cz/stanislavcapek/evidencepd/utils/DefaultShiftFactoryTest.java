@@ -1,8 +1,8 @@
 package cz.stanislavcapek.evidencepd.utils;
 
-import cz.stanislavcapek.evidencepd.shift.DefaultShiftFactory;
-import cz.stanislavcapek.evidencepd.shift.Shift;
-import cz.stanislavcapek.evidencepd.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

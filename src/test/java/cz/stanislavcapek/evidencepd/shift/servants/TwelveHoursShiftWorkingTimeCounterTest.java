@@ -1,6 +1,8 @@
 package cz.stanislavcapek.evidencepd.shift.servants;
 
-import cz.stanislavcapek.evidencepd.shift.*;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.*;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.TwelveHoursShiftWorkingTimeCounter;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.WorkingTimeCounter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

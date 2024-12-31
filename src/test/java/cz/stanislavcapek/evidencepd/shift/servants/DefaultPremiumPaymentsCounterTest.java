@@ -1,6 +1,10 @@
 package cz.stanislavcapek.evidencepd.shift.servants;
 
-import cz.stanislavcapek.evidencepd.shift.*;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.*;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.DefaultPremiumPaymentsCounter;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.PremiumPaymentsCounter;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.TwelveHoursShiftWorkingTimeCounter;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.WorkingTimeCounter;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

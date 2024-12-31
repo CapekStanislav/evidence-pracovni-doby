@@ -1,14 +1,16 @@
 package cz.stanislavcapek.evidencepd.shift.servants;
 
-import cz.stanislavcapek.evidencepd.shift.Shift;
-import cz.stanislavcapek.evidencepd.shift.TypeOfShiftTwelveHours;
-import cz.stanislavcapek.evidencepd.shift.DefaultShiftFactory;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.ShiftTimeAdjuster;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ShiftTimeAdjusterTest {
 

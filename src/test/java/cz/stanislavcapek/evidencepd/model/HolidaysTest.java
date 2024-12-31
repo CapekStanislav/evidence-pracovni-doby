@@ -1,6 +1,6 @@
 package cz.stanislavcapek.evidencepd.model;
 
-import cz.stanislavcapek.evidencepd.holiday.Holidays;
+import cz.stanislavcapek.evidencepd.service.holiday.Holidays;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

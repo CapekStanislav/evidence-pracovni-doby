@@ -1,14 +1,14 @@
 package cz.stanislavcapek.evidencepd;
 
 import com.google.inject.AbstractModule;
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.employee.EmployeeListModelProvider;
-import cz.stanislavcapek.evidencepd.ui.component.LoadShiftPlanPanel;
-import cz.stanislavcapek.evidencepd.ui.component.LoadShiftPlanPanelProvider;
-import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanel;
-import cz.stanislavcapek.evidencepd.ui.component.employee.EmployeeListPanelProvider;
-import cz.stanislavcapek.evidencepd.ui.component.template.WorkAttendanceTemplatePanel;
-import cz.stanislavcapek.evidencepd.ui.component.template.WorkAttendanceTemplatePanelProvider;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModelProvider;
+import cz.stanislavcapek.evidencepd.swingui.view.employee.EmployeeListPanel;
+import cz.stanislavcapek.evidencepd.swingui.view.employee.EmployeeListPanelProvider;
+import cz.stanislavcapek.evidencepd.swingui.view.shiftplan.LoadShiftPlanPanel;
+import cz.stanislavcapek.evidencepd.swingui.view.shiftplan.LoadShiftPlanPanelProvider;
+import cz.stanislavcapek.evidencepd.swingui.view.template.WorkAttendanceTemplatePanel;
+import cz.stanislavcapek.evidencepd.swingui.view.template.WorkAttendanceTemplatePanelProvider;
 
 public class MainModule extends AbstractModule {
 

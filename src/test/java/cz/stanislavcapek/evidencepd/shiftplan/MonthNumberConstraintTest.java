@@ -1,7 +1,8 @@
 package cz.stanislavcapek.evidencepd.shiftplan;
 
-import cz.stanislavcapek.evidencepd.shiftplan.exception.InvalidMonthNumberException;
-import cz.stanislavcapek.evidencepd.utils.Constraint;
+import cz.stanislavcapek.evidencepd.service.shiftplan.MonthNumberConstraint;
+import cz.stanislavcapek.evidencepd.service.shiftplan.exception.InvalidMonthNumberException;
+import cz.stanislavcapek.evidencepd.service.utils.Constraint;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,6 +1,8 @@
 package cz.stanislavcapek.evidencepd.employee;
 
 import cz.stanislavcapek.evidencepd.dao.Dao;
+import cz.stanislavcapek.evidencepd.domain.employee.Employee;
+import cz.stanislavcapek.evidencepd.service.employee.EmployeesDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

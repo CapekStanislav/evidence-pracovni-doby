@@ -2,7 +2,7 @@ package cz.stanislavcapek.evidencepd;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import cz.stanislavcapek.evidencepd.ui.MainWindow;
+import cz.stanislavcapek.evidencepd.swingui.view.MainWindow;
 
 import java.awt.*;
 
