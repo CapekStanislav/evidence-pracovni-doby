@@ -49,7 +49,7 @@ public class LoadNewEmployeesAction extends AbstractAction {
         if (choice == JFileChooser.APPROVE_OPTION) {
             Path location = Paths.get(chooser.getSelectedFile().getAbsolutePath());
             try {
-                controller.loadModel(location);
+                controller.loadModel(location, this::showFileIsEmptyDialog);
                 showLoadingResultDialog(true);
             } catch (RuntimeException e) {
                 showLoadingResultDialog(false);
@@ -71,5 +71,24 @@ public class LoadNewEmployeesAction extends AbstractAction {
                             "Při načítání došlo k neočekávané chybě"
                     , "Chyba při načítání", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private int showFileIsEmptyDialog() {
+        Object[] option = {"Vyhledat", "Pokračovat"};
+        final String message = """
+                Načtený seznam zaměstnanců je prázdný.\s
+                \s
+                Vyhledat seznam ručně nebo pokračovat?""";
+        final String title = "Seznam zaměstnanců je prázdný";
+
+        return JOptionPane.showOptionDialog(
+                null,
+                message,
+                title,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                option,
+                option[0]);
     }
 }

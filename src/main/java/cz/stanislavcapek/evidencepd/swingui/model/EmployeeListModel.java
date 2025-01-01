@@ -161,12 +161,18 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
         return service.isSaved(employeeList);
     }
 
-    public void load(Path location) {
-        service.load(location);
+    public List<Employee> load(Path location) {
+        return service.load(location);
+
     }
 
-    public void load() {
-        service.load();
+    public List<Employee> load() {
+        return service.load();
+    }
+
+    public void initEmployeeListModel(List<Employee> list) {
+        employeeList.clear();
+        employeeList.addAll(list);
     }
 
     public void save(Path location) {

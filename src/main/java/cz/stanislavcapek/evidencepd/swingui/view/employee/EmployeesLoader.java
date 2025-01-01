@@ -1,74 +1,51 @@
 package cz.stanislavcapek.evidencepd.swingui.view.employee;
 
 import com.google.inject.Inject;
-import cz.stanislavcapek.evidencepd.domain.employee.Employee;
-import cz.stanislavcapek.evidencepd.service.employee.EmployeeService;
-import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
+import cz.stanislavcapek.evidencepd.swingui.controller.EmployeeController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 public class EmployeesLoader {
 
     private static final Logger log = LogManager.getLogger(EmployeesLoader.class);
-    private final EmployeeService service;
-    private final EmployeeListModel employeeListModel;
+
+    private final EmployeeController controller;
     private boolean defaultLocation = true;
 
-
     @Inject
-    public EmployeesLoader(EmployeeService service, EmployeeListModel employeeListModel) {
-        this.service = service;
-        this.employeeListModel = employeeListModel;
+    public EmployeesLoader(EmployeeController controller) {
+        this.controller = controller;
     }
 
     public void tryLoadEmployees() {
         boolean done = false;
         while (!done) {
             try {
-                List<Employee> employees = findEmployeeListFile(defaultLocation);
-                done = initEmployeeListModel(employees);
+                done = findEmployeeListFile(defaultLocation);
             } catch (RuntimeException e) {
-                log.error("Unable to load employees from default location.", e);
+                log.error("Loading employees from a file failed.", e);
                 done = showFileExceptionDialog();
             }
         }
     }
 
-    private boolean initEmployeeListModel(List<Employee> list) {
-        if (list.isEmpty()) {
-            if (showFileIsEmptyDialog() == JOptionPane.NO_OPTION) {
-                employeeListModel.clearList();
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        employeeListModel.clearList();
-        list.forEach(employeeListModel::addEmployee);
-        return true;
-    }
-
-    private List<Employee> findEmployeeListFile(boolean defLoc) {
+    private boolean findEmployeeListFile(boolean defLoc) {
         if (defLoc) {
             defaultLocation = false;
-            return service.load();
+            return controller.loadModel(null, this::showFileIsEmptyDialog);
         }
 
         final JFileChooser chooser = getChooserForJsonFiles();
 
         if (chooser.showOpenDialog(null) == JOptionPane.YES_OPTION) {
             final File selectedFile = chooser.getSelectedFile();
-            return service.load(selectedFile.toPath());
+            return controller.loadModel(selectedFile.toPath(), this::showFileIsEmptyDialog);
         }
-
-        return Collections.emptyList();
+        return true;
     }
 
     private JFileChooser getChooserForJsonFiles() {

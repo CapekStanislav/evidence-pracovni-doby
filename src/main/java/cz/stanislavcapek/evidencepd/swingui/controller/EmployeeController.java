@@ -6,9 +6,11 @@ import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
 import cz.stanislavcapek.evidencepd.swingui.view.employee.EmployeeSizeChangedListeners;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntSupplier;
 
 public class EmployeeController {
 
@@ -51,9 +53,19 @@ public class EmployeeController {
         return model.getElementAt(index);
     }
 
-    public void loadModel(Path location) {
-        model.load(location);
+    public boolean loadModel(@Nullable Path location, IntSupplier noEmployeesListener) {
+
+        List<Employee> employees = location == null
+                ? model.load()
+                : model.load(location);
+
+        // Employee file is empty and user wants to search again
+        if (employees.isEmpty() && noEmployeesListener.getAsInt() == JOptionPane.YES_OPTION) {
+            return false;
+        }
+        model.initEmployeeListModel(employees);
         fireModelSizeChanged();
+        return true;
     }
 
     public void saveModel() {
