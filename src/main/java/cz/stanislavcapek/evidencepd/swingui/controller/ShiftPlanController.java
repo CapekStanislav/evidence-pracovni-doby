@@ -14,12 +14,15 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ShiftPlanController {
 
     private static final Logger log = LogManager.getLogger(ShiftPlanController.class);
 
+    private final EmployeeListModel employeeListModel;
     private final ShiftPlanService shiftPlanService;
     private final EmployeeListDataListener modelChangedListener;
 
@@ -27,6 +30,7 @@ public class ShiftPlanController {
     public ShiftPlanController(EmployeeListModel employeeListModel,
                                ShiftPlanService shiftPlanService
     ) {
+        this.employeeListModel = employeeListModel;
         this.shiftPlanService = shiftPlanService;
         modelChangedListener = new EmployeeListDataListener();
         employeeListModel.addListDataListener(modelChangedListener);
@@ -58,5 +62,14 @@ public class ShiftPlanController {
 
     public ShiftPlan loadShiftPlan(Path path) {
         return shiftPlanService.loadShiftPlan(path);
+    }
+
+    public List<Employee> getMissingEmployees(ShiftPlan shiftPlan) {
+        Set<Integer> employeeIds = shiftPlan.getEmployeeIds();
+
+        return employeeIds.stream()
+                .filter(Predicate.not(employeeListModel::containsEmployee))
+                .map(shiftPlan::getEmployee)
+                .toList();
     }
 }

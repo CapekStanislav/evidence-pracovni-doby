@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.swingui.view.workattendance;
+package cz.stanislavcapek.evidencepd.swingui.view.shiftplan;
 
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.swingui.controller.ShiftPlanController;
@@ -9,24 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-/**
- * Instance třídy {@code TemplateLoaderAction}
- *
- * @author Stanislav Čapek
- */
 public class ShiftPlanLoadAction extends AbstractAction {
 
     private final ShiftPlanController controller;
     private final JFileChooser fileChooser = new JFileChooser();
     private ShiftPlan shiftPlan;
-    // TODO: 01.03.2020 dodělat ikonky
+    // TODO: 01.03.2020 add icons
 
     public ShiftPlanLoadAction(String name, ShiftPlanController controller) {
         super(name);
         this.controller = controller;
         putValue(
                 Action.SHORT_DESCRIPTION,
-                "Vyhledejte a načtěte excelovou šablonu."
+                "Vyhledejte a načtěte plán služeb"
         );
         putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
         setupFileChooser();
@@ -41,7 +36,7 @@ public class ShiftPlanLoadAction extends AbstractAction {
             if (shiftPlan != null) {
                 source.firePropertyChange("loaded", false, true);
             } else {
-                throw new Exception("Nepodařilo načíst šablonu");
+                throw new Exception("Nepodařilo načíst plán služeb");
             }
         } catch (Exception ex) {
             source.firePropertyChange("loaded", true, false);
@@ -57,7 +52,7 @@ public class ShiftPlanLoadAction extends AbstractAction {
     private void setupFileChooser() {
         fileChooser.setFileFilter(new FileNameExtensionFilter("Excel (*.xlsx)", "xlsx"));
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        fileChooser.setApproveButtonText("Otevřít");
+        fileChooser.setApproveButtonText("Načíst");
         fileChooser.setDialogTitle("Načíst plán směn");
     }
 

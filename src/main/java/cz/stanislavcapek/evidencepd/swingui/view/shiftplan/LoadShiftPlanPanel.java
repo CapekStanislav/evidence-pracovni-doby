@@ -8,10 +8,8 @@ package cz.stanislavcapek.evidencepd.swingui.view.shiftplan;
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
+import cz.stanislavcapek.evidencepd.swingui.controller.EmployeeController;
 import cz.stanislavcapek.evidencepd.swingui.controller.ShiftPlanController;
-import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.swingui.view.employee.EmployeeEditorPanel;
-import cz.stanislavcapek.evidencepd.swingui.view.workattendance.ShiftPlanLoadAction;
 import cz.stanislavcapek.evidencepd.swingui.view.workattendance.WorkAttendanceHistoryPanel;
 import cz.stanislavcapek.evidencepd.swingui.view.workattendance.WorkAttendanceWindow;
 import cz.stanislavcapek.evidencepd.swingui.view.workattendance.WorkAttendanceWindowFactory;
@@ -24,12 +22,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * GUI Generování evidence pracovní doby. Umožňuje načíst excelový soubor
@@ -45,28 +40,26 @@ public class LoadShiftPlanPanel extends JPanel {
     private final JLabel lblLoadValidation = new JLabel();
     private final JButton btnLoad = new JButton();
     private final JButton btnShow = new JButton("Otevřít");
-    private final EmployeeListModel employeeListModel;
     private final JComboBox<Month> cmbMonths;
     private final JPanel pnlRecordFromTemplate;
     private final WorkAttendanceWindowFactory workAttendanceWindowFactory;
     private final ShiftPlanController shiftPlanController;
+    private final EmployeeController employeeController;
 
     private ShiftPlan shiftPlan;
-    private WorkAttendanceWindow window;
-
+    private WorkAttendanceWindow workAttendanceWindow;
 
     public LoadShiftPlanPanel(
             WorkAttendanceWindowFactory workAttendanceWindowFactory,
             ShiftPlanController shiftPlanController,
-            EmployeeListModel employeeListModel
+            EmployeeController employeeController
     ) {
         super();
         this.workAttendanceWindowFactory = workAttendanceWindowFactory;
         this.shiftPlanController = shiftPlanController;
+        this.employeeController = employeeController;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 40, 0));
-
-        this.employeeListModel = employeeListModel;
 
         cmbMonths = new JComboBox<>(Month.values());
         cmbMonths.setRenderer((list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getName()));
@@ -94,7 +87,6 @@ public class LoadShiftPlanPanel extends JPanel {
                 .toArray(Month[]::new);
 
     }
-
 
 //    private instance methods
 
@@ -140,9 +132,9 @@ public class LoadShiftPlanPanel extends JPanel {
             lblLoadValidation.setText(txt);
             lblLoadValidation.setIcon(goodIcon);
             pnlRecordFromTemplate.setVisible(true);
-            final Set<Integer> ids = compareLists();
-            if (!ids.isEmpty()) {
-                showPossibilityAddEmployeesDialog(ids);
+            final List<Employee> employees = shiftPlanController.getMissingEmployees(shiftPlan);
+            if (!employees.isEmpty()) {
+                new FoundNewEmployeesDialog(employees, employeeController).show();
             }
             cmbMonths.setModel(new DefaultComboBoxModel<>(getFilteredMonths(shiftPlan)));
         } else {
@@ -179,99 +171,19 @@ public class LoadShiftPlanPanel extends JPanel {
     }
 
     private void showWorkAttendanceWindow(WorkAttendanceWindow window) {
-        if (this.window != null) {
+        if (this.workAttendanceWindow != null) {
             JOptionPane.showMessageDialog(
                     this,
                     "Již je jedno okno s evidencí otevřené. Nelze otevřít další. Nejprve zavřete aktuální okno."
-
             );
             return;
         }
-        this.window = window;
         window.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                updateWindowStatus(e);
+                workAttendanceWindow = null;
             }
         });
         window.setVisible(true);
     }
-
-    private void updateWindowStatus(WindowEvent event) {
-        this.window = null;
-    }
-
-    /**
-     * Metoda zobrazí upozornění, že existují v načteném plánu směn zaměstnanci, kteří nejsou
-     * ještě součástí lokálních dat.
-     *
-     * @param ids množnina ID zaměstnanců
-     */
-    private void showPossibilityAddEmployeesDialog(Set<Integer> ids) {
-//        final int length = ids.size();
-        List<JPanel> panels = new ArrayList<>();
-        for (Integer id : ids) {
-            JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
-            final String fullName = shiftPlan.getEmployee(id).getFullName();
-            final String[] split = fullName.split(" ");
-            final Employee employee = new Employee(id, split[0], split[1]);
-            panel.setBorder(BorderFactory.createEmptyBorder(5, 50, 5, 50));
-            panel.add(new JLabel(employee.getFullName()));
-            panel.add(Box.createHorizontalGlue());
-            final JButton btnAdd = new JButton("přidej");
-            panel.add(btnAdd);
-            final JButton btnEditAndAdd = new JButton("uprav a přidej");
-            panel.add(btnEditAndAdd);
-
-            btnEditAndAdd.addActionListener(e -> {
-                EmployeeEditorPanel edit = new EmployeeEditorPanel(employee);
-                Object[] options = {"Ulož", "Zruš"};
-                int volba = JOptionPane.showOptionDialog(null, edit, "Editace zaměstnance", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
-                if (volba == 0) {
-                    Employee upraveny = edit.getNewEmployee();
-                    employee.setFirstName(upraveny.getFirstName());
-                    employee.setLastName(upraveny.getLastName());
-                    employeeListModel.addEmployee(employee);
-                    btnAdd.setEnabled(false);
-                    btnEditAndAdd.setEnabled(false);
-                }
-            });
-            btnAdd.addActionListener(e -> {
-                employeeListModel.addEmployee(employee);
-                btnAdd.setEnabled(false);
-                btnEditAndAdd.setEnabled(false);
-            });
-
-            panels.add(panel);
-        }
-
-        JPanel contentPane = new JPanel();
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-        JPanel panel = new JPanel();
-        final JLabel label = new JLabel(
-                "V plánu služeb se vyskytují zaměstnanci,kteří ještě nejsou součástí seznamu.");
-        panel.add(label);
-        contentPane.add(panel);
-        panels.forEach(contentPane::add);
-
-        JOptionPane.showMessageDialog(null, contentPane,
-                "Nalezeni nový zaměstnanci",
-                JOptionPane.PLAIN_MESSAGE);
-    }
-
-    /**
-     * Vrátí množinu ID, které jsou v plánu směn, ale nejsou v načteném
-     * seznamu v aplikaci.
-     *
-     * @return množinu ID, které nejsou v aplikaci
-     */
-    private Set<Integer> compareLists() {
-        final Set<Integer> employeeIds = shiftPlan.getEmployeeIds();
-        return employeeIds.stream()
-                .filter(Predicate.not(employeeListModel::containsEmployee))
-                .collect(Collectors.toSet());
-    }
-
 }
