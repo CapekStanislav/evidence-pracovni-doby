@@ -11,11 +11,13 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
 
 public class EmployeeService {
 
     private static final Logger log = LogManager.getLogger(EmployeeService.class);
+
     private final Path employeeListFile = Paths.get("seznamZamestnancu.json");
     private final Path employeeListFilePath = ConfigPaths.EMPLOYEES_PATH.resolve(employeeListFile);
 
@@ -50,4 +52,16 @@ public class EmployeeService {
         }
     }
 
+    public boolean isSaved(List<Employee> employees) {
+        try {
+            List<Employee> loadedEmployees = load();
+            if (employees.size() == loadedEmployees.size()) {
+                return new HashSet<>(loadedEmployees).containsAll(employees);
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Unable to decide if employees are saved. Returning false.", e);
+            return false;
+        }
+    }
 }

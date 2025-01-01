@@ -24,12 +24,10 @@ import java.util.List;
 public class EmployeeListModel extends AbstractListModel<Employee> {
     private final List<Employee> employeeList;
     private final EmployeeService service;
-    private boolean saved;
 
     EmployeeListModel(EmployeeService service) {
         this.service = service;
         this.employeeList = new ArrayList<>();
-        saved = false;
     }
 
     /**
@@ -48,7 +46,6 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
         if (searchById(employee.getId()) == null) {
             result = employeeList.add(employee);
             sortById();
-            saved = false;
             fireIntervalAdded(this, index, index);
         }
         return result;
@@ -63,7 +60,6 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
         int index = employeeList.indexOf(employee);
         employeeList.remove(employee);
         sortById();
-        saved = false;
         fireIntervalRemoved(this, index, index);
     }
 
@@ -95,7 +91,6 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
         int index1 = employeeList.size() - 1;
         employeeList.clear();
         if (index1 >= 0) {
-            saved = false;
             fireIntervalRemoved(this, 0, index1);
         }
     }
@@ -163,7 +158,7 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
     }
 
     public boolean isSaved() {
-        return saved;
+        return service.isSaved(employeeList);
     }
 
     public void load(Path location) {
@@ -172,16 +167,13 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
 
     public void load() {
         service.load();
-        saved = true;
     }
 
     public void save(Path location) {
         service.save(location, List.copyOf(employeeList));
-        saved = true;
     }
 
     public void save() {
         service.save(List.copyOf(employeeList));
-        saved = true;
     }
 }
