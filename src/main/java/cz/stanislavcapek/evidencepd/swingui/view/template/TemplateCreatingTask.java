@@ -23,7 +23,7 @@ public class TemplateCreatingTask extends SwingWorker<Boolean, Void> {
     private final int year;
     private final ShiftPlanService service;
 
-    TemplateCreatingTask(
+    public TemplateCreatingTask(
             Path path,
             List<Employee> selectedEmployees,
             int year,

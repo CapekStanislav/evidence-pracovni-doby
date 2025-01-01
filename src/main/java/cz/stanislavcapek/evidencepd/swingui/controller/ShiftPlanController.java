@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlanService;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListDataListener;
 import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.swingui.view.template.EmployeeListDataListener;
-import cz.stanislavcapek.evidencepd.swingui.view.template.EmployeeModelChangedListener;
-import cz.stanislavcapek.evidencepd.swingui.view.template.TemplateCreatingTaskFactory;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeModelChangedListener;
+import cz.stanislavcapek.evidencepd.swingui.view.template.TemplateCreatingTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,19 +20,14 @@ public class ShiftPlanController {
 
     private static final Logger log = LogManager.getLogger(ShiftPlanController.class);
 
-    private final EmployeeListModel employeeListModel;
     private final ShiftPlanService shiftPlanService;
-    private final TemplateCreatingTaskFactory creatingTaskFactory;
     private final EmployeeListDataListener modelChangedListener;
 
     @Inject
     public ShiftPlanController(EmployeeListModel employeeListModel,
-                               ShiftPlanService shiftPlanService,
-                               TemplateCreatingTaskFactory creatingTaskFactory
+                               ShiftPlanService shiftPlanService
     ) {
-        this.employeeListModel = employeeListModel;
         this.shiftPlanService = shiftPlanService;
-        this.creatingTaskFactory = creatingTaskFactory;
         modelChangedListener = new EmployeeListDataListener();
         employeeListModel.addListDataListener(modelChangedListener);
     }
@@ -42,7 +37,7 @@ public class ShiftPlanController {
     }
 
     public void createTemplate(Path path, List<Employee> selectedEmployees, int year, Consumer<Boolean> resultCallback) {
-        SwingWorker<Boolean, Void> templateCreatingTask = creatingTaskFactory.create(path, selectedEmployees, year);
+        SwingWorker<Boolean, Void> templateCreatingTask = new TemplateCreatingTask(path, selectedEmployees, year, shiftPlanService);
 
         templateCreatingTask.addPropertyChangeListener(evt -> {
             if ("state".equals(evt.getPropertyName()) &&

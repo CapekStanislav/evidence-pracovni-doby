@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.swingui.view.template;
+package cz.stanislavcapek.evidencepd.swingui.model;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 

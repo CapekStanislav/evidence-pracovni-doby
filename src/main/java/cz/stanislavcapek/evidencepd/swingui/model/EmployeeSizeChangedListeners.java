@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.swingui.view.employee;
+package cz.stanislavcapek.evidencepd.swingui.model;
 
 @FunctionalInterface
 public interface EmployeeSizeChangedListeners {

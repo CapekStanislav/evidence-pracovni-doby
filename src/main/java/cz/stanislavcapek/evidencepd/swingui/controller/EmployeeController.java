@@ -3,7 +3,7 @@ package cz.stanislavcapek.evidencepd.swingui.controller;
 import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
-import cz.stanislavcapek.evidencepd.swingui.view.employee.EmployeeSizeChangedListeners;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeSizeChangedListeners;
 
 import javax.annotation.Nullable;
 import javax.swing.*;

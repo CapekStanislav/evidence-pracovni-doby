@@ -1,6 +1,4 @@
-package cz.stanislavcapek.evidencepd.swingui.view.template;
-
-import cz.stanislavcapek.evidencepd.swingui.model.EmployeeListModel;
+package cz.stanislavcapek.evidencepd.swingui.model;
 
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;

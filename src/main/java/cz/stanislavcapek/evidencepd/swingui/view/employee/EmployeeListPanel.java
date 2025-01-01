@@ -7,6 +7,7 @@ package cz.stanislavcapek.evidencepd.swingui.view.employee;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.swingui.controller.EmployeeController;
+import cz.stanislavcapek.evidencepd.swingui.model.EmployeeSizeChangedListeners;
 import cz.stanislavcapek.evidencepd.swingui.view.employee.action.AddEmployeeAction;
 import cz.stanislavcapek.evidencepd.swingui.view.employee.action.EditEmployeeAction;
 import cz.stanislavcapek.evidencepd.swingui.view.employee.action.LoadNewEmployeesAction;
