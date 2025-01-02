@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Třída představuje reprezentaci přesčasových směn konkrétního zaměstnance ve stanoveném měsíci.
- * Ty jsou načteny ze šablony, resp. z {@link ShiftPlan} z předem určené sekce.
+ * Ty jsou načteny ze šablony, resp. z {@link DefaultShiftPlan} z předem určené sekce.
  *
  * @author Stanislav Čapek
  */

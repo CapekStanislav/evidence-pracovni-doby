@@ -4,7 +4,8 @@ import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
-import cz.stanislavcapek.evidencepd.service.workattendance.*;
+import cz.stanislavcapek.evidencepd.service.workattendance.DefaultWorkAttendance;
+import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendanceWithOvertimeDao;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;

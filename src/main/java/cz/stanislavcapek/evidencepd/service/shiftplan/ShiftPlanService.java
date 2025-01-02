@@ -29,7 +29,7 @@ public class ShiftPlanService {
     public ShiftPlan loadShiftPlan(Path path) {
         try {
             XSSFWorkbook workbook = dao.load(path);
-            return new ShiftPlan(workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS);
+            return new DefaultShiftPlan(workbook, WorkingTimeFund.TypeOfWeeklyWorkingTime.MULTISHIFT_CONTINUOUS);
         } catch (Exception e) {
             throw new LoadShiftPlanFailed(path, e);
         }

@@ -1,5 +1,6 @@
 package cz.stanislavcapek.evidencepd.dao;
 
+import cz.stanislavcapek.evidencepd.service.shiftplan.DefaultShiftPlan;
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.service.template.XlsxDao;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;
@@ -24,7 +25,7 @@ class WorkAttendanceDaoTest {
     static void beforeAll() throws IOException {
         Dao<XSSFWorkbook> io = new XlsxDao();
         XSSFWorkbook workbook = io.load(Path.of("src/test/resources/test_4_straznici.xlsx"));
-        PLAN = new ShiftPlan(workbook, MULTISHIFT_CONTINUOUS);
+        PLAN = new DefaultShiftPlan(workbook, MULTISHIFT_CONTINUOUS);
     }
 
     @Test
