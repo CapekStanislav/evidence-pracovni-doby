@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants;
 
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
-import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TwelveHourShiftType;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.WorkingTime;
 
 import java.time.Duration;
@@ -18,20 +18,20 @@ public class TwelveHoursShiftWorkingTimeCounter implements WorkingTimeCounter {
     /**
      * @param shift směna pro kterou se pracovní doba počítá
      * @return vypočtená pracovní doba
-     * @throws IllegalStateException pro neznámý typ směn {@link TypeOfShiftTwelveHours}
+     * @throws IllegalStateException pro neznámý typ směn {@link TwelveHourShiftType}
      */
     @Override
     public WorkingTime calulate(Shift shift) {
         final WorkingTime workingTime = shift.getWorkingHours();
         final LocalDateTime start = shift.getStart();
         final LocalDateTime end = shift.getEnd();
-        final TypeOfShiftTwelveHours typeOfShiftTwelveHours = shift.getTypeOfShiftTwelveHours();
+        final TwelveHourShiftType twelveHourShiftType = shift.getTypeOfShiftTwelveHours();
 
         final Duration length = Duration.between(start, end).abs();
         final double inHours = length.toMinutes() / 60d;
         workingTime.setLength(inHours);
 
-        switch (typeOfShiftTwelveHours) {
+        switch (twelveHourShiftType) {
             case TRAINING:
                 setWorkingTime(workingTime, 7.5d, 0d, 0d);
                 break;
@@ -54,7 +54,7 @@ public class TwelveHoursShiftWorkingTimeCounter implements WorkingTimeCounter {
                 setWorkingTime(workingTime, 0d, 0d, 0d);
                 break;
             default:
-                throw new IllegalStateException("Neznámý typ směny: " + typeOfShiftTwelveHours);
+                throw new IllegalStateException("Neznámý typ směny: " + twelveHourShiftType);
         }
 
         return workingTime;

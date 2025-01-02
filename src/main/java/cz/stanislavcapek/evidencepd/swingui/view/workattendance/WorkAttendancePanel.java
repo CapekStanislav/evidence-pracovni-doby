@@ -94,7 +94,7 @@ class WorkAttendancePanel extends JPanel {
                 final Object origValue = this.getModel().getValueAt(row, column);
                 if (!origValue.equals(aValue)) {
                     final Object value = shiftTableModelRecord.getValueAt(row, column);
-                    if (value != TypeOfShiftTwelveHours.NONE && column != 3) {
+                    if (value != TwelveHourShiftType.NONE && column != 3) {
                         super.setValueAt(aValue, row, column);
                         return;
                     }
@@ -115,7 +115,7 @@ class WorkAttendancePanel extends JPanel {
 
 
         // custom cell editor
-        final JComboBox<TypeOfShiftTwelveHours> cmbTypeOfShift = new JComboBox<>(TypeOfShiftTwelveHours.values());
+        final JComboBox<TwelveHourShiftType> cmbTypeOfShift = new JComboBox<>(TwelveHourShiftType.values());
         final DefaultCellEditor cmbCellEditor = new DefaultCellEditor(cmbTypeOfShift);
         tableShift.getColumnModel().getColumn(3).setCellEditor(cmbCellEditor);
         tableShift.setFillsViewportHeight(true);

@@ -14,20 +14,20 @@ public class Shift {
     private LocalDateTime end;
     private WorkingTime workingHours;
     private PremiumPayments premiumPayments;
-    private TypeOfShiftTwelveHours typeOfShiftTwelveHours;
+    private TwelveHourShiftType twelveHourShiftType;
 
     public Shift(
             LocalDateTime start,
             LocalDateTime end,
             WorkingTime workingHours,
             PremiumPayments premiumPayments,
-            TypeOfShiftTwelveHours typeOfShiftTwelveHours
+            TwelveHourShiftType twelveHourShiftType
     ) {
         this.start = start;
         this.end = end;
         this.workingHours = workingHours;
         this.premiumPayments = premiumPayments;
-        this.typeOfShiftTwelveHours = typeOfShiftTwelveHours;
+        this.twelveHourShiftType = twelveHourShiftType;
     }
 
     public LocalDateTime getStart() {
@@ -62,11 +62,11 @@ public class Shift {
         this.premiumPayments = premiumPayments;
     }
 
-    public TypeOfShiftTwelveHours getTypeOfShiftTwelveHours() {
-        return typeOfShiftTwelveHours;
+    public TwelveHourShiftType getTypeOfShiftTwelveHours() {
+        return twelveHourShiftType;
     }
 
-    public void setTypeOfShiftTwelveHours(TypeOfShiftTwelveHours typeOfShiftTwelveHours) {
-        this.typeOfShiftTwelveHours = typeOfShiftTwelveHours;
+    public void setTypeOfShiftTwelveHours(TwelveHourShiftType twelveHourShiftType) {
+        this.twelveHourShiftType = twelveHourShiftType;
     }
 }

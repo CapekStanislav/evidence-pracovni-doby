@@ -52,7 +52,7 @@ public class ShiftTableModelWorkAttendance extends AbstractTableModel implements
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         final Shift shift = shifts.get(++rowIndex);
-        if (shift.getTypeOfShiftTwelveHours() == TypeOfShiftTwelveHours.NONE && columnIndex != 0) {
+        if (shift.getTypeOfShiftTwelveHours() == TwelveHourShiftType.NONE && columnIndex != 0) {
             return "";
         }
         switch (columnIndex) {
@@ -114,12 +114,12 @@ public class ShiftTableModelWorkAttendance extends AbstractTableModel implements
                 break;
 
             case 3:
-                if (!(aValue instanceof TypeOfShiftTwelveHours)) {
+                if (!(aValue instanceof TwelveHourShiftType)) {
                     throw new IllegalStateException("Typ směny musí být třídy TypeOfShiftTwelveHours");
                 }
                 final DefaultShiftFactory shiftFactory = new DefaultShiftFactory();
                 shiftFactory.setPeriod(datum);
-                final Shift newShift = shiftFactory.createShift(datum, ((TypeOfShiftTwelveHours) aValue));
+                final Shift newShift = shiftFactory.createShift(datum, ((TwelveHourShiftType) aValue));
                 shifts.replace(day, newShift);
                 break;
         }
@@ -167,7 +167,7 @@ public class ShiftTableModelWorkAttendance extends AbstractTableModel implements
     }
 
     private String getTime(Shift shift, Time timeTyp) {
-        if (shift.getTypeOfShiftTwelveHours() == TypeOfShiftTwelveHours.NONE) {
+        if (shift.getTypeOfShiftTwelveHours() == TwelveHourShiftType.NONE) {
             return "";
         }
         switch (timeTyp) {

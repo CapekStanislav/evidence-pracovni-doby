@@ -22,13 +22,13 @@ public interface ShiftFactory {
 
     /**
      * Vytvoří novou instanci {@link Shift} dle zadaného datumu a typu směny.
-     * Délka a záčátek směny se odvíjí od {@link TypeOfShiftTwelveHours}.
+     * Délka a záčátek směny se odvíjí od {@link TwelveHourShiftType}.
      *
-     * @param date                   date začátku směny
-     * @param typeOfShiftTwelveHours typ požadované směny
+     * @param date                date začátku směny
+     * @param twelveHourShiftType typ požadované směny
      * @return nová směna
      */
-    Shift createShift(LocalDate date, TypeOfShiftTwelveHours typeOfShiftTwelveHours);
+    Shift createShift(LocalDate date, TwelveHourShiftType twelveHourShiftType);
 
 
     /**
@@ -37,10 +37,10 @@ public interface ShiftFactory {
      *
      * @param start začátek směny
      * @param end   konec směny
-     * @param typ   {@link TypeOfShiftTwelveHours} důležitý pro další výpočty
+     * @param typ   {@link TwelveHourShiftType} důležitý pro další výpočty
      * @return nová směna
      */
-    Shift createShift(LocalDateTime start, LocalDateTime end, TypeOfShiftTwelveHours typ);
+    Shift createShift(LocalDateTime start, LocalDateTime end, TwelveHourShiftType typ);
 
     /**
      * Vytvoří novou instanci {@link Shift} dle zadaného začátku se zadanou

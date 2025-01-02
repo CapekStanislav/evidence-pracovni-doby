@@ -46,7 +46,7 @@ class DefaultPremiumPaymentsCounterTest {
 
     @Test
     void nocniVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_STREDA, TypeOfShiftTwelveHours.NIGHT);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_STREDA, TwelveHourShiftType.NIGHT);
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
@@ -90,7 +90,7 @@ class DefaultPremiumPaymentsCounterTest {
 
     @Test
     void nocniVPatekASvatek() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.NIGHT);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.NIGHT);
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
@@ -104,7 +104,7 @@ class DefaultPremiumPaymentsCounterTest {
 
     @Test
     void nocniOVikendu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_SOBOTA, TypeOfShiftTwelveHours.NIGHT);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_SOBOTA, TwelveHourShiftType.NIGHT);
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
@@ -118,7 +118,7 @@ class DefaultPremiumPaymentsCounterTest {
 
     @Test
     void nocniVNedeli() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_NEDELE, TypeOfShiftTwelveHours.NIGHT);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_NEDELE, TwelveHourShiftType.NIGHT);
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 
@@ -133,7 +133,7 @@ class DefaultPremiumPaymentsCounterTest {
     @Test
     void dlouhaSmena23hodin() {
         final Shift shift = TOVARNA_NA_SMENY
-                .createShift(DEN_PATEK.atTime(3, 15), DEN_SOBOTA.atTime(2, 45), TypeOfShiftTwelveHours.DAY);
+                .createShift(DEN_PATEK.atTime(3, 15), DEN_SOBOTA.atTime(2, 45), TwelveHourShiftType.DAY);
         shift.setWorkingHours(POCITADLO_PRACOVNI_DOBY.calulate(shift));
         final PremiumPayments premiumPayments = POCITADLO_PRIPLATKU.calculate(shift);
 

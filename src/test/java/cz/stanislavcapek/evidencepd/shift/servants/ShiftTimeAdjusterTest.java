@@ -2,7 +2,7 @@ package cz.stanislavcapek.evidencepd.shift.servants;
 
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
-import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TwelveHourShiftType;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.ShiftTimeAdjuster;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class ShiftTimeAdjusterTest {
     void nastaveniZacatkuBehemJednohoDne() {
         final LocalDate datum = LocalDate.of(2020, 10, 19);
         final Shift shift = new DefaultShiftFactory()
-                .createShift(datum, TypeOfShiftTwelveHours.DAY);
+                .createShift(datum, TwelveHourShiftType.DAY);
         String time = "1:00";
 
         final Shift novaShift = ShiftTimeAdjuster.adjustTime(shift, time, ShiftTimeAdjuster.TimeType.START);
@@ -33,7 +33,7 @@ class ShiftTimeAdjusterTest {
     void nastaveniKonceBehemJednohoDne() {
         final LocalDate datum = LocalDate.of(2020, 10, 19);
         final Shift shift = new DefaultShiftFactory()
-                .createShift(datum, TypeOfShiftTwelveHours.DAY);
+                .createShift(datum, TwelveHourShiftType.DAY);
         String time = "12:12";
 
         final Shift novaShift = ShiftTimeAdjuster.adjustTime(shift, time, ShiftTimeAdjuster.TimeType.END);
@@ -48,7 +48,7 @@ class ShiftTimeAdjusterTest {
     void nastaveniKonceSPresahemDoDalsihoDne() {
         final LocalDate datum = LocalDate.of(2020, 10, 19);
         final Shift shift = new DefaultShiftFactory()
-                .createShift(datum, TypeOfShiftTwelveHours.DAY);
+                .createShift(datum, TwelveHourShiftType.DAY);
         String time = "3:20";
 
         final Shift novaShift = ShiftTimeAdjuster.adjustTime(shift, time, ShiftTimeAdjuster.TimeType.END);

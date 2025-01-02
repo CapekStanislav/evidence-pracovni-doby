@@ -4,7 +4,7 @@ import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.ShiftFactory;
-import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TwelveHourShiftType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -149,7 +149,7 @@ class ShiftsByMonth {
         for (int i = 3; i < numDaysInMonth + 3; i++) {
             String shiftType = wholeRow.get(i);
             if (shiftType != null) {
-                TypeOfShiftTwelveHours type = parseTypeOfShift(shiftType);
+                TwelveHourShiftType type = parseTypeOfShift(shiftType);
                 if (type != null) {
                     shifts.add(factory.createShift(start, type));
                 } else {
@@ -159,7 +159,7 @@ class ShiftsByMonth {
                                 start,
                                 length));
                     } catch (NumberFormatException e) {
-                        shifts.add(factory.createShift(start, TypeOfShiftTwelveHours.NONE));
+                        shifts.add(factory.createShift(start, TwelveHourShiftType.NONE));
                     }
                 }
             }
@@ -180,31 +180,31 @@ class ShiftsByMonth {
     }
 
     /**
-     * Pomocná metoda namapuje zkratky ze šablony na {@link TypeOfShiftTwelveHours}.
+     * Pomocná metoda namapuje zkratky ze šablony na {@link TwelveHourShiftType}.
      *
      * @param type textová reprezentace druhu směny z plánu služeb
      * @return vrací {@code null} pokud neodpovídá výčtu
      */
-    private TypeOfShiftTwelveHours parseTypeOfShift(String type) {
-        TypeOfShiftTwelveHours shiftType;
+    private TwelveHourShiftType parseTypeOfShift(String type) {
+        TwelveHourShiftType shiftType;
         switch (type.toLowerCase()) {
             case "d":
-                shiftType = TypeOfShiftTwelveHours.DAY;
+                shiftType = TwelveHourShiftType.DAY;
                 break;
             case "n":
-                shiftType = TypeOfShiftTwelveHours.NIGHT;
+                shiftType = TwelveHourShiftType.NIGHT;
                 break;
             case "řd":
-                shiftType = TypeOfShiftTwelveHours.HOLIDAY;
+                shiftType = TwelveHourShiftType.HOLIDAY;
                 break;
             case "pd":
-                shiftType = TypeOfShiftTwelveHours.HALF_HOLIDAY;
+                shiftType = TwelveHourShiftType.HALF_HOLIDAY;
                 break;
             case "zv":
-                shiftType = TypeOfShiftTwelveHours.SICK_DAY;
+                shiftType = TwelveHourShiftType.SICK_DAY;
                 break;
             case "pn":
-                shiftType = TypeOfShiftTwelveHours.INABILITY;
+                shiftType = TwelveHourShiftType.INABILITY;
                 break;
             default:
                 shiftType = null;

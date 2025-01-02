@@ -11,7 +11,6 @@ import java.time.LocalTime;
  */
 public class DefaultShiftFactory implements ShiftFactory {
 
-
     private static final LocalTime SEVEN_HOUR = LocalTime.of(7, 0);
     private static final LocalTime TWELVE_HOUR = LocalTime.of(19, 0);
 
@@ -97,22 +96,22 @@ public class DefaultShiftFactory implements ShiftFactory {
      */
     @Override
     public Shift createShift(LocalDate date) {
-        return createShift(date, TypeOfShiftTwelveHours.DAY);
+        return createShift(date, TwelveHourShiftType.DAY);
     }
 
     /**
      * Vytvoří novou instanci {@link Shift} dle zadaného datumu a typu směny.
-     * Délka a záčátek směny se odvíjí od {@link TypeOfShiftTwelveHours}.
+     * Délka a záčátek směny se odvíjí od {@link TwelveHourShiftType}.
      *
-     * @param date                   datum začátku směny
-     * @param typeOfShiftTwelveHours typ požadované směny
+     * @param date                datum začátku směny
+     * @param twelveHourShiftType typ požadované směny
      * @return nová směna
      */
     @Override
-    public Shift createShift(LocalDate date, TypeOfShiftTwelveHours typeOfShiftTwelveHours) {
+    public Shift createShift(LocalDate date, TwelveHourShiftType twelveHourShiftType) {
         LocalDateTime start;
         LocalDateTime end;
-        switch (typeOfShiftTwelveHours) {
+        switch (twelveHourShiftType) {
             case DAY:
             case HOLIDAY:
             case SICK_DAY:
@@ -138,17 +137,17 @@ public class DefaultShiftFactory implements ShiftFactory {
                         startAndEnd,
                         new WorkingTime(0, 0, 0, 0),
                         new PremiumPayments(0, 0, 0, 0),
-                        TypeOfShiftTwelveHours.NONE
+                        TwelveHourShiftType.NONE
                 );
                 return shift;
             default:
                 throw new RuntimeException("Chyba při vytváření směny. Neznámý typ směny.");
         }
-        return createShift(start, end, typeOfShiftTwelveHours);
+        return createShift(start, end, twelveHourShiftType);
     }
 
     @Override
-    public Shift createShift(LocalDateTime start, LocalDateTime end, TypeOfShiftTwelveHours type) {
+    public Shift createShift(LocalDateTime start, LocalDateTime end, TwelveHourShiftType type) {
         return new Shift(
                 start,
                 end,
@@ -164,7 +163,7 @@ public class DefaultShiftFactory implements ShiftFactory {
         int hours = (int) length;
         int minutes = (int) ((length - hours) * 60);
         final LocalDateTime end = start.plusHours(hours).plusMinutes(minutes);
-        return createShift(start, end, TypeOfShiftTwelveHours.DAY);
+        return createShift(start, end, TwelveHourShiftType.DAY);
     }
 
 }

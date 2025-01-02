@@ -1,6 +1,6 @@
 package cz.stanislavcapek.evidencepd.service.shiftplan.shift;
 
-public enum TypeOfShiftTwelveHours {
+public enum TwelveHourShiftType {
     /**
      * Určuje že se jedná o denní směnu, přičemž směna je odpracovaná v rozmezí
      * od půlnoci do 23:59:59 stejného dne.
@@ -56,7 +56,7 @@ public enum TypeOfShiftTwelveHours {
     private final double shiftLength;
     private final String name;
 
-    TypeOfShiftTwelveHours(double shiftLength, String name) {
+    TwelveHourShiftType(double shiftLength, String name) {
         this.shiftLength = shiftLength;
         this.name = name;
     }

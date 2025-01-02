@@ -5,7 +5,7 @@ import cz.stanislavcapek.evidencepd.service.shiftplan.exception.InvalidMonthNumb
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.ShiftFactory;
-import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TwelveHourShiftType;
 import cz.stanislavcapek.evidencepd.service.template.exception.InvalidFormatXslxExeption;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -125,7 +125,7 @@ class OvertimesByMonth {
                 end = end.plusDays(1);
             }
 
-            final Shift shift = factory.createShift(start, end, TypeOfShiftTwelveHours.DAY);
+            final Shift shift = factory.createShift(start, end, TwelveHourShiftType.DAY);
             this.overtimes.add(shift);
 
             entryRow = sheet.getRow(++indexOfRow);

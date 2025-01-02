@@ -43,7 +43,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void nocniVPatek() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.NIGHT);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.NIGHT);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
         assertAll(() -> {
@@ -57,7 +57,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void dovolenaVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.HOLIDAY);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.HOLIDAY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
 
@@ -71,7 +71,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void puldenDovoleneVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.HALF_HOLIDAY);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.HALF_HOLIDAY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
         assertAll(() -> {
@@ -84,7 +84,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void neschopnostVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.INABILITY);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.INABILITY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
         assertAll(() -> {
@@ -97,7 +97,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void osetrovaniVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.HOME_CARE);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.HOME_CARE);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
         assertAll(() -> {
@@ -110,7 +110,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void skoleniVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.TRAINING);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.TRAINING);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
         assertAll(() -> {
@@ -124,7 +124,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void zadnaVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.NONE);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.NONE);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
 
@@ -138,7 +138,7 @@ class TwelveHoursShiftWorkingTimeCounterTest {
 
     @Test
     void zdravotniVolnoVTydnu() {
-        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TypeOfShiftTwelveHours.SICK_DAY);
+        final Shift shift = TOVARNA_NA_SMENY.createShift(DEN_PATEK, TwelveHourShiftType.SICK_DAY);
         final WorkingTime workingTime = POCITADLO_PRACOVNI_DOBY.calulate(shift);
 
         assertAll(() -> {

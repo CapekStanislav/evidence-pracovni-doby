@@ -2,7 +2,7 @@ package cz.stanislavcapek.evidencepd.utils;
 
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
-import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TypeOfShiftTwelveHours;
+import cz.stanislavcapek.evidencepd.service.shiftplan.shift.TwelveHourShiftType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -31,14 +31,14 @@ class DefaultShiftFactoryTest {
         assertAll(() -> {
             assertEquals(SEVEN, shift.getStart().toLocalTime());
             assertEquals(NINETEEN, shift.getEnd().toLocalTime());
-            assertEquals(TypeOfShiftTwelveHours.DAY, shift.getTypeOfShiftTwelveHours());
+            assertEquals(TwelveHourShiftType.DAY, shift.getTypeOfShiftTwelveHours());
         });
     }
 
     @Test
     void testVytvorSmenuSDatumemATypemSmeny() {
         final DefaultShiftFactory tovarna = new DefaultShiftFactory();
-        final Shift shift = tovarna.createShift(DATE, TypeOfShiftTwelveHours.NIGHT);
+        final Shift shift = tovarna.createShift(DATE, TwelveHourShiftType.NIGHT);
         assertAll(() -> {
             assertNotNull(shift.getStart());
             assertNotNull(shift.getEnd());
@@ -50,7 +50,7 @@ class DefaultShiftFactoryTest {
         assertAll(() -> {
             assertEquals(NINETEEN, shift.getStart().toLocalTime());
             assertEquals(SEVEN, shift.getEnd().toLocalTime());
-            assertEquals(TypeOfShiftTwelveHours.NIGHT, shift.getTypeOfShiftTwelveHours());
+            assertEquals(TwelveHourShiftType.NIGHT, shift.getTypeOfShiftTwelveHours());
         });
     }
 
@@ -68,7 +68,7 @@ class DefaultShiftFactoryTest {
         assertAll(() -> {
             assertEquals(SEVEN, shift.getStart().toLocalTime());
             assertEquals(SEVEN.plusHours(7).plusMinutes(30), shift.getEnd().toLocalTime());
-            assertEquals(TypeOfShiftTwelveHours.DAY, shift.getTypeOfShiftTwelveHours());
+            assertEquals(TwelveHourShiftType.DAY, shift.getTypeOfShiftTwelveHours());
         });
     }
 
@@ -81,7 +81,7 @@ class DefaultShiftFactoryTest {
         final Shift shift = tovarna.createShift(
                 LocalDateTime.of(DATE, st),
                 LocalDateTime.of(DATE, et).plusDays(1),
-                TypeOfShiftTwelveHours.NIGHT
+                TwelveHourShiftType.NIGHT
         );
         assertAll(() -> {
             assertNotNull(shift.getStart());
@@ -94,7 +94,7 @@ class DefaultShiftFactoryTest {
         assertAll(() -> {
             assertEquals(st, shift.getStart().toLocalTime());
             assertEquals(et, shift.getEnd().toLocalTime());
-            assertEquals(TypeOfShiftTwelveHours.NIGHT, shift.getTypeOfShiftTwelveHours());
+            assertEquals(TwelveHourShiftType.NIGHT, shift.getTypeOfShiftTwelveHours());
         });
     }
 }
