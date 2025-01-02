@@ -4,88 +4,83 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * Instance rozhraní {@code ITovárnaNaSměny} představují továrnu na {@link Shift}.
- * Továrnu jde nastavit, aby vytvářela instance v určitém roce a měsíci. Není-li
- * továrna přenastavena použije se první měsíc aktuálního roku.
+ * The {@link ShiftFactory} interface is a factory for creating {@link Shift} objects.
+ * The factory can be configured to create shifts within a specific year and month.
+ * If not configured, the factory will default to the first month of the current year.
  *
  * @author Stanislav Čapek
  */
 public interface ShiftFactory {
     /**
-     * Vytvoří novou instanci {@link Shift} dle zadaného datumu, která bude
-     * mít defaultní začátek a délku.
+     * Creates a new {@link Shift} instance starting on the given date with default start time and duration.
      *
-     * @param date date začátku směny
-     * @return nová směna
+     * @param date the start date of the shift
+     * @return the new shift
      */
     Shift createShift(LocalDate date);
 
     /**
-     * Vytvoří novou instanci {@link Shift} dle zadaného datumu a typu směny.
-     * Délka a záčátek směny se odvíjí od {@link TwelveHourShiftType}.
+     * Creates a new {@link Shift} instance based on the given date and shift type.
+     * The shift's duration and start time are determined by the `TwelveHourShiftType`.
      *
-     * @param date                date začátku směny
-     * @param twelveHourShiftType typ požadované směny
-     * @return nová směna
+     * @param date                the start date of the shift
+     * @param twelveHourShiftType the type of shift
+     * @return the new shift
      */
     Shift createShift(LocalDate date, TwelveHourShiftType twelveHourShiftType);
 
-
     /**
-     * Vytvoří novou instanci {@link Shift} dle zadaného začátku, konce a
-     * typu.
+     * Creates a new {@link Shift} instance based on the given start and end times and type.
      *
-     * @param start začátek směny
-     * @param end   konec směny
-     * @param typ   {@link TwelveHourShiftType} důležitý pro další výpočty
-     * @return nová směna
+     * @param start the start of the shift
+     * @param end   the end of the shift
+     * @param type  the `TwelveHourShiftType`, important for further calculations
+     * @return the new shift
      */
-    Shift createShift(LocalDateTime start, LocalDateTime end, TwelveHourShiftType typ);
+    Shift createShift(LocalDateTime start, LocalDateTime end, TwelveHourShiftType type);
 
     /**
-     * Vytvoří novou instanci {@link Shift} dle zadaného začátku se zadanou
-     * délkou v hodinách.
+     * Creates a new {@link Shift} instance starting on the given date with a specified duration in hours.
      *
-     * @param date   začátek směny
-     * @param length délka směny v hodinách
-     * @return nová směna
+     * @param date   the start date of the shift
+     * @param length the duration of the shift in hours
+     * @return the new shift
      */
     Shift createShift(LocalDate date, double length);
 
     /**
-     * Nastaví továrnu na nový měsíc. Pokud nebyl před voláním této metody
-     * nastaven rok metodou {@link ShiftFactory#setYear(int)} použije se
-     * aktuální rok.
+     * Sets the factory to a new month. If the year has not been set using the `setYear(int)` method,
+     * the current year will be used.
      *
-     * @param month nový měsíc (1-12)
+     * @param month the new month (1-12)
      */
     void setMonth(int month);
 
     /**
-     * Získá aktuálně nastavený měsíc
+     * Gets the currently set month.
      *
-     * @return číslo měsíce
+     * @return the month number
      */
     int getMonth();
 
     /**
-     * Nastaví továrnu na nový rok.
+     * Sets the factory to a new year.
      *
-     * @param year nový rok
+     * @param year the new year
      */
     void setYear(int year);
 
     /**
-     * Získá aktuálně nastavený rok.
+     * Gets the currently set year.
      *
-     * @return nastavený rok
+     * @return the set year
      */
     int getYear();
 
     /**
-     * Nastaví továrnu na nové období, přičemž {@code nezáleží} na zadaném dnu.
+     * Sets the factory to a new period, ignoring the specific day.
      *
-     * @param period nové období (měsíc a rok)
+     * @param period the new period (month and year)
      */
     void setPeriod(LocalDate period);
 }

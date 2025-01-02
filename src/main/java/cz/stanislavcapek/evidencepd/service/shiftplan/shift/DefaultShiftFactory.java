@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * Instance třídy {@code TovárnaNaSměny}
+ * This class serves as a default factory for creating {@link Shift} instances.
  *
  * @author Stanislav Čapek
  */
@@ -17,29 +17,27 @@ public class DefaultShiftFactory implements ShiftFactory {
     private LocalDate date;
 
     /**
-     * Defaultní konstruktor továrny, který nastaví továrnu na 1.1. aktuálního roku
+     * Default constructor, initializing the factory to the first day of the current year.
      */
     public DefaultShiftFactory() {
         this(LocalDate.now().withMonth(1).withDayOfMonth(1));
     }
 
     /**
-     * Konstruktor, který nastaví hned při vzniku nastaví na požadované datum.
-     * Nezáleží na dnu v měsíci. Důležítý je rok a měsíc.
+     * Constructor that sets the factory to the specified date.
+     * Only the year and month are considered; the day is set to the first of the month.
      *
-     * @param date požadované datum ({@code období})
+     * @param date the desired date
      */
     private DefaultShiftFactory(LocalDate date) {
         this.date = date.withDayOfMonth(1);
     }
 
-
     /**
-     * Nastaví továrnu na nový měsíc. Pokud nebyl před voláním této metody
-     * nastaven rok metodou {@link ShiftFactory#setYear(int)} použije se
-     * aktuální rok.
+     * Sets the factory to a new month. If the year has not been previously set using the {@link #setYear} method,
+     * the current year will be used.
      *
-     * @param month nový měsíc (1-12)
+     * @param month the new month (1-12)
      */
     @Override
     public void setMonth(int month) {
@@ -47,9 +45,9 @@ public class DefaultShiftFactory implements ShiftFactory {
     }
 
     /**
-     * Získá aktuálně nastavený měsíc
+     * Gets the currently set month.
      *
-     * @return číslo měsíce (1-12)
+     * @return the month number
      */
     @Override
     public int getMonth() {
@@ -57,9 +55,9 @@ public class DefaultShiftFactory implements ShiftFactory {
     }
 
     /**
-     * Nastaví továrnu na nový rok.
+     * Sets the factory to a new year.
      *
-     * @param year nový rok
+     * @param year the new year
      */
     @Override
     public void setYear(int year) {
@@ -67,9 +65,9 @@ public class DefaultShiftFactory implements ShiftFactory {
     }
 
     /**
-     * Získá aktuálně nastavený rok.
+     * Gets the currently set year.
      *
-     * @return nastavený rok
+     * @return the set year
      */
     @Override
     public int getYear() {
@@ -77,22 +75,20 @@ public class DefaultShiftFactory implements ShiftFactory {
     }
 
     /**
-     * Nastaví továrnu na nové období, přičemž {@code nezáleží} na zadaném dnu.
+     * Sets the factory to a new period, ignoring the specific day of the month.
      *
-     * @param period nové období (měsíc a rok)
+     * @param period the new period (month and year)
      */
     @Override
     public void setPeriod(LocalDate period) {
         date = period;
     }
 
-
     /**
-     * Vytvoří novou instanci {@link Shift} dle zadaného datumu, která bude
-     * mít defaultní začátek a délku.
+     * Creates a new {@link Shift} instance for the given date with default start and duration.
      *
-     * @param date datum začátku směny
-     * @return nová směna
+     * @param date the start date of the shift
+     * @return the new shift
      */
     @Override
     public Shift createShift(LocalDate date) {
@@ -100,12 +96,12 @@ public class DefaultShiftFactory implements ShiftFactory {
     }
 
     /**
-     * Vytvoří novou instanci {@link Shift} dle zadaného datumu a typu směny.
-     * Délka a záčátek směny se odvíjí od {@link TwelveHourShiftType}.
+     * Creates a new {@link Shift} instance based on the given date and shift type.
+     * The duration and start time of the shift are determined by the `TwelveHourShiftType`.
      *
-     * @param date                datum začátku směny
-     * @param twelveHourShiftType typ požadované směny
-     * @return nová směna
+     * @param date                the start date of the shift
+     * @param twelveHourShiftType the type of shift
+     * @return the new shift
      */
     @Override
     public Shift createShift(LocalDate date, TwelveHourShiftType twelveHourShiftType) {
@@ -132,16 +128,15 @@ public class DefaultShiftFactory implements ShiftFactory {
 
             case NONE:
                 final LocalDateTime startAndEnd = LocalDateTime.of(date, LocalTime.MIN);
-                final Shift shift = new Shift(
+                return new Shift(
                         startAndEnd,
                         startAndEnd,
                         new WorkingTime(0, 0, 0, 0),
                         new PremiumPayments(0, 0, 0, 0),
                         TwelveHourShiftType.NONE
                 );
-                return shift;
             default:
-                throw new RuntimeException("Chyba při vytváření směny. Neznámý typ směny.");
+                throw new RuntimeException("Error creating shift. Unknown shift type.");
         }
         return createShift(start, end, twelveHourShiftType);
     }
@@ -165,5 +160,4 @@ public class DefaultShiftFactory implements ShiftFactory {
         final LocalDateTime end = start.plusHours(hours).plusMinutes(minutes);
         return createShift(start, end, TwelveHourShiftType.DAY);
     }
-
 }
