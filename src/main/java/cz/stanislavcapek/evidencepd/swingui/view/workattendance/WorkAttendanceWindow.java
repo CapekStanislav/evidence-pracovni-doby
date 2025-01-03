@@ -4,8 +4,7 @@ import cz.stanislavcapek.evidencepd.appconfig.ConfigPaths;
 import cz.stanislavcapek.evidencepd.dao.Dao;
 import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
-import cz.stanislavcapek.evidencepd.service.workattendance.DefaultWorkAttendance;
-import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendanceWithOvertimeDao;
+import cz.stanislavcapek.evidencepd.service.workattendance.*;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -52,7 +51,7 @@ public class WorkAttendanceWindow extends JFrame {
         pnlEmployeeList.addAll(
                 shiftPlan.getEmployeeIds()
                         .stream()
-                        .filter(id -> shiftPlan.isEmployee(id, month))
+                        .filter(id -> shiftPlan.isEmployee(month, id))
                         .map(id -> getEvidencePanel(shiftPlan, month, id))
                         .toList()
         );

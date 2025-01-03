@@ -45,7 +45,7 @@ class ShiftPlanTest {
     @Test
     void vyskytujeSeVMesiciZmestnanec() {
         assertTrue(plan.isEmployee(1, 1));
-        assertFalse(plan.isEmployee(5, 1));
+        assertFalse(plan.isEmployee(1, 5));
         assertFalse(planChybny.isEmployee(1, 1));
     }
 
@@ -80,8 +80,8 @@ class ShiftPlanTest {
         final int march = 3;
         final int january = 1;
 
-        assertFalse(planBezMesicu.isEmployee(id, january));
-        assertTrue(planBezMesicu.isEmployee(id, march));
+        assertFalse(planBezMesicu.isEmployee(january, id));
+        assertTrue(planBezMesicu.isEmployee(march, id));
 
         assertNotNull(planBezMesicu.getWorkAttendance(march, id));
         assertThrows(WorkAttendanceNotFoundException.class, () -> planBezMesicu.getWorkAttendance(id, january));
