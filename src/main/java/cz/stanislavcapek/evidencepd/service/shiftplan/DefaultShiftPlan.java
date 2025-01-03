@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public class DefaultShiftPlan implements ShiftPlan {
         );
 
         monthIdConstraint = new Constraint<>(
-                monthAndId -> isEmployee(monthAndId.id(), monthAndId.month()),
+                monthAndId -> isEmployee(monthAndId.month(), monthAndId.id()),
                 monthAndId -> {
                     final String s = String
                             .format("Zaměstnanec s id %d se nenachází v zadaném měsíci.", monthAndId.id());
@@ -100,6 +101,11 @@ public class DefaultShiftPlan implements ShiftPlan {
         return shiftsInYear.get(monthNum).get(id);
     }
 
+    @Override
+    public WorkAttendance getWorkAttendance(cz.stanislavcapek.evidencepd.domain.shiftplan.Month month, int employeeId) {
+        return null;
+    }
+
     /**
      * @param monthNum měsíc
      * @return Mapu {@code <ID, WorkAttendance>}
@@ -110,6 +116,12 @@ public class DefaultShiftPlan implements ShiftPlan {
         monthNumberConstraint.orThrow(monthNum);
         workAttConstraint.orThrow(monthNum);
         return shiftsInYear.get(monthNum);
+    }
+
+    @Nullable
+    @Override
+    public Map<Integer, WorkAttendance> getWorkAttendanceByMonth(cz.stanislavcapek.evidencepd.domain.shiftplan.Month month) {
+        return Map.of();
     }
 
     /**
@@ -135,6 +147,12 @@ public class DefaultShiftPlan implements ShiftPlan {
         return convertToWorkAttendance(overtimesByMonth, getYear(), monthNum, id);
     }
 
+    @Nullable
+    @Override
+    public WorkAttendance getWorkAttendanceOvertime(cz.stanislavcapek.evidencepd.domain.shiftplan.Month month, int employeeId) {
+        return null;
+    }
+
     /**
      * Zjistí, jestli se zaměstnanec nachází v celém plánu
      * směn.
@@ -151,19 +169,24 @@ public class DefaultShiftPlan implements ShiftPlan {
     /**
      * Zjistí, jestli se zaměstnanec nachází v konkrétním měsíci.
      *
-     * @param id       označení zaměstnance
      * @param monthNum měsíc ve kterém hledáme (1-12)
+     * @param id       označení zaměstnance
      * @return {@code true} zaměstnanec se nachází v měsíci
      * {@code false} zaměstnanec se nenachází v měsíci
      * @throws IllegalArgumentException měsíc je mimo požadovaný rozsah
      */
     @Override
-    public boolean isEmployee(int id, int monthNum) throws IllegalArgumentException {
+    public boolean isEmployee(int monthNum, int id) throws IllegalArgumentException {
         monthNumberConstraint.orThrow(monthNum);
         if (!shiftsInYear.containsKey(monthNum)) {
             return false;
         }
         return shiftsInYear.get(monthNum).containsKey(id);
+    }
+
+    @Override
+    public boolean isEmployee(cz.stanislavcapek.evidencepd.domain.shiftplan.Month month, int employeeId) throws IllegalArgumentException {
+        return false;
     }
 
     /**
