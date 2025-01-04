@@ -1,5 +1,7 @@
 package cz.stanislavcapek.evidencepd.domain.shiftplan;
 
+import java.util.Arrays;
+
 public enum Month {
 
     JANUARY(1, "leden"),
@@ -29,5 +31,21 @@ public enum Month {
 
     public String getMonthName() {
         return monthName;
+    }
+
+    public static Month getByName(String name) {
+        return Arrays.stream(values())
+                .filter(month -> month.getMonthName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow();
+
+    }
+
+    public static Month getByOrder(int order) {
+        return Arrays.stream(values())
+                .filter(month -> month.getOrder() == order)
+                .findFirst()
+                .orElseThrow();
+
     }
 }

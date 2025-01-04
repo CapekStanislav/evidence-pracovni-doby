@@ -1,6 +1,7 @@
 package cz.stanislavcapek.evidencepd.service.shiftplan;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
+import cz.stanislavcapek.evidencepd.domain.shiftplan.Month;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.DefaultShiftFactory;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.ShiftFactory;
@@ -16,9 +17,9 @@ import java.util.List;
  *
  * @author Stanislav Čapek
  */
-class ShiftsByMonth {
+public class ShiftsByMonth {
 
-    private final int month;
+    private final Month month;
     private final LocalDate period;
     private final int numDaysInMonth;
     private final List<String> wholeRow;
@@ -37,13 +38,13 @@ class ShiftsByMonth {
      * @param employee           zaměstnanec
      * @param year               rok
      */
-    ShiftsByMonth(List<String> wholeRowByEmployee, int month, Employee employee, int year) {
+    ShiftsByMonth(List<String> wholeRowByEmployee, Month month, Employee employee, int year) {
         this.wholeRow = wholeRowByEmployee;
         this.month = month;
         this.employee = employee;
         this.year = year;
         final int firstDay = 1;
-        this.period = LocalDate.of(year, this.month, firstDay);
+        this.period = LocalDate.of(year, this.month.getOrder(), firstDay);
 
         int size = wholeRowByEmployee.size();
         for (int i = wholeRowByEmployee.size() - 1; i >= 0; i--) {
@@ -125,7 +126,7 @@ class ShiftsByMonth {
     }
 
     public int getMonth() {
-        return this.month;
+        return this.month.getOrder();
     }
 
     public int getYear() {
@@ -142,7 +143,7 @@ class ShiftsByMonth {
 
         shifts = new ArrayList<>();
 //        setting up the factory to correct period
-        LocalDate start = LocalDate.of(this.year, this.month, 1);
+        LocalDate start = LocalDate.of(this.year, this.month.getOrder(), 1);
         ShiftFactory factory = new DefaultShiftFactory();
         factory.setPeriod(start);
 
