@@ -6,8 +6,8 @@
 package cz.stanislavcapek.evidencepd.swingui.view.shiftplan;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
+import cz.stanislavcapek.evidencepd.domain.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.swingui.controller.EmployeeController;
 import cz.stanislavcapek.evidencepd.swingui.controller.ShiftPlanController;
 import cz.stanislavcapek.evidencepd.swingui.view.workattendance.WorkAttendanceHistoryPanel;
@@ -16,12 +16,12 @@ import cz.stanislavcapek.evidencepd.swingui.view.workattendance.WorkAttendanceWi
 import jiconfont.icons.elusive.Elusive;
 import jiconfont.swing.IconFontSwing;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +65,7 @@ public class LoadShiftPlanPanel extends JPanel {
         cmbMonths.setRenderer((list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getName()));
 
         final JPanel pnlRecordHistory = getWorkAttendanceHistoryPanel();
-        final JPanel pnlTemplateLoader = getTemplateLoaderPanel();
+        final JPanel pnlTemplateLoader = getShiftPlanLoaderPanel();
         pnlRecordFromTemplate = getRecordFromTemplatePanel();
         pnlRecordHistory.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlTemplateLoader.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -88,9 +88,7 @@ public class LoadShiftPlanPanel extends JPanel {
 
     }
 
-//    private instance methods
-
-    private JPanel getTemplateLoaderPanel() {
+    private JPanel getShiftPlanLoaderPanel() {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
@@ -103,10 +101,9 @@ public class LoadShiftPlanPanel extends JPanel {
 
         final ShiftPlanLoadAction action = new ShiftPlanLoadAction("Načíst šablonu", shiftPlanController);
         btnLoad.setAction(action);
-        btnLoad.addPropertyChangeListener(
-                "loaded",
-                evt -> validateLoadedTemplate(action, evt)
-        );
+        shiftPlanController.addShiftPlanLoaded(shiftPlan -> {
+            this.validateLoadedShiftPlan(shiftPlan);
+        });
         return panel;
     }
 
@@ -121,13 +118,12 @@ public class LoadShiftPlanPanel extends JPanel {
         return panel;
     }
 
-    public void validateLoadedTemplate(ShiftPlanLoadAction action, PropertyChangeEvent evt) {
+    public void validateLoadedShiftPlan(@Nullable ShiftPlan plan) {
         IconFontSwing.register(Elusive.getIconFont());
         final int fontSize = 12;
         Icon goodIcon = IconFontSwing.buildIcon(Elusive.OK, fontSize, Color.GREEN);
         Icon wrongIcon = IconFontSwing.buildIcon(Elusive.REMOVE, fontSize, Color.RED);
-        if ((boolean) evt.getNewValue()) {
-            shiftPlan = action.getWorkAttendancePlan();
+        if (shiftPlan != null) {
             final String txt = String.format("Plán služeb %d", shiftPlan.getYear());
             lblLoadValidation.setText(txt);
             lblLoadValidation.setIcon(goodIcon);
@@ -137,6 +133,7 @@ public class LoadShiftPlanPanel extends JPanel {
                 new FoundNewEmployeesDialog(employees, employeeController).show();
             }
             cmbMonths.setModel(new DefaultComboBoxModel<>(getFilteredMonths(shiftPlan)));
+            this.shiftPlan = plan;
         } else {
             lblLoadValidation.setText("Není načten správný soubor");
             lblLoadValidation.setIcon(wrongIcon);

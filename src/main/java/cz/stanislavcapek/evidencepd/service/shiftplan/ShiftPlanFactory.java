@@ -2,9 +2,9 @@ package cz.stanislavcapek.evidencepd.service.shiftplan;
 
 import com.google.inject.Inject;
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
+import cz.stanislavcapek.evidencepd.domain.shiftplan.DefaultShiftPlan;
 import cz.stanislavcapek.evidencepd.domain.shiftplan.Month;
-import cz.stanislavcapek.evidencepd.domain.shiftplan.ShiftPlanModel;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
+import cz.stanislavcapek.evidencepd.domain.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendanceFactory;
 import org.apache.poi.ss.usermodel.Cell;
@@ -60,7 +60,7 @@ public class ShiftPlanFactory {
             shiftsInYear.put(month, byMonth);
         }
 
-        return new ShiftPlanModel(year, shiftsInYear);
+        return new DefaultShiftPlan(year, shiftsInYear);
     }
 
     private int[] getEmployeeIdByMonth(Sheet sheet) {

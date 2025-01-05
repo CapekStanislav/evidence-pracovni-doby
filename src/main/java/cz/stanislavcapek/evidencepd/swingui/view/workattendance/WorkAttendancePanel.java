@@ -2,8 +2,8 @@ package cz.stanislavcapek.evidencepd.swingui.view.workattendance;
 
 
 import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.service.pdf.WorkAttendanceDocument;
+import cz.stanislavcapek.evidencepd.service.shiftplan.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.*;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.DefaultPremiumPaymentsCounter;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.PremiumPaymentsCounter;

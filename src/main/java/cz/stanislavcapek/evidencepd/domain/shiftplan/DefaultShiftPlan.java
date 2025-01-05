@@ -1,7 +1,6 @@
 package cz.stanislavcapek.evidencepd.domain.shiftplan;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
-import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;
 
 import javax.annotation.Nullable;
@@ -10,11 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ShiftPlanModel implements ShiftPlan {
+public class DefaultShiftPlan implements ShiftPlan {
     private final int year;
     private final Map<Month, Map<Integer, WorkAttendance>> shiftsInYear;
 
-    public ShiftPlanModel(int year, Map<Month, Map<Integer, WorkAttendance>> shiftsInYear) {
+    public DefaultShiftPlan(int year, Map<Month, Map<Integer, WorkAttendance>> shiftsInYear) {
         this.year = year;
         this.shiftsInYear = shiftsInYear;
     }

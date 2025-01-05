@@ -1,7 +1,6 @@
-package cz.stanislavcapek.evidencepd.service.shiftplan;
+package cz.stanislavcapek.evidencepd.domain.shiftplan;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
-import cz.stanislavcapek.evidencepd.domain.shiftplan.Month;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;
 
 import javax.annotation.Nullable;

@@ -1,4 +1,4 @@
-package cz.stanislavcapek.evidencepd.model;
+package cz.stanislavcapek.evidencepd.service.shiftplan;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

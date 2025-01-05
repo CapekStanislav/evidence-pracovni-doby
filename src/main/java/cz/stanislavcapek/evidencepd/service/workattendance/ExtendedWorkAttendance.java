@@ -2,7 +2,7 @@ package cz.stanislavcapek.evidencepd.service.workattendance;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
+import cz.stanislavcapek.evidencepd.service.shiftplan.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
 
 import java.util.ArrayList;

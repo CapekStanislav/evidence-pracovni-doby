@@ -7,7 +7,7 @@ package cz.stanislavcapek.evidencepd.service.template;
 
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
+import cz.stanislavcapek.evidencepd.service.shiftplan.WorkingTimeFund;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCell;

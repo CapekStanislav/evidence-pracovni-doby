@@ -1,6 +1,6 @@
 package cz.stanislavcapek.evidencepd.service.pdf;
 
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
+import cz.stanislavcapek.evidencepd.service.shiftplan.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.Shift;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.WorkingTime;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;

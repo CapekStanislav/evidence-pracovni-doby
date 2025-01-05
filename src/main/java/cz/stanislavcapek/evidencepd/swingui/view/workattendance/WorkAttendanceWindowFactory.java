@@ -1,7 +1,7 @@
 package cz.stanislavcapek.evidencepd.swingui.view.workattendance;
 
 import com.google.inject.Inject;
-import cz.stanislavcapek.evidencepd.service.shiftplan.ShiftPlan;
+import cz.stanislavcapek.evidencepd.domain.shiftplan.ShiftPlan;
 
 public class WorkAttendanceWindowFactory {
 

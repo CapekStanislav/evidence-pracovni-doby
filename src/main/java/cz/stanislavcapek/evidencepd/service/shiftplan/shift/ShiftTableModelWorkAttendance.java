@@ -3,7 +3,7 @@ package cz.stanislavcapek.evidencepd.service.shiftplan.shift;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import cz.stanislavcapek.evidencepd.domain.employee.Employee;
 import cz.stanislavcapek.evidencepd.model.Month;
-import cz.stanislavcapek.evidencepd.model.WorkingTimeFund;
+import cz.stanislavcapek.evidencepd.service.shiftplan.WorkingTimeFund;
 import cz.stanislavcapek.evidencepd.service.shiftplan.shift.servants.ShiftTimeAdjuster;
 import cz.stanislavcapek.evidencepd.service.utils.Rounder;
 import cz.stanislavcapek.evidencepd.service.workattendance.WorkAttendance;

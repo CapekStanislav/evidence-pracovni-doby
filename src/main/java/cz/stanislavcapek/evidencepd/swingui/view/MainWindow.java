@@ -108,22 +108,9 @@ public class MainWindow extends JFrame {
         JMenu menuFile = new JMenu("Soubor");
 
         final ShiftPlanLoadAction shiftPlanLoadAction = new ShiftPlanLoadAction("Načíst šablonu", shiftPlanController);
-        final JMenuItem nacistItem = new JMenuItem(shiftPlanLoadAction);
-        nacistItem.addPropertyChangeListener(
-                "loaded",
-                evt -> {
-                    genEvidenceAction.actionPerformed(
-                            new ActionEvent(
-                                    genEvidenceAction,
-                                    ActionEvent.ACTION_PERFORMED,
-                                    genEvidenceAction.getValue(Action.ACTION_COMMAND_KEY).toString()
-                            )
-                    );
-                    loadShiftPlanPanel.validateLoadedTemplate(shiftPlanLoadAction, evt);
-
-                }
-        );
-        menuFile.add(nacistItem);
+        final JMenuItem loadShiftPlanItem = new JMenuItem(shiftPlanLoadAction);
+        shiftPlanController.addShiftPlanLoaded(loadShiftPlanPanel::validateLoadedShiftPlan);
+        menuFile.add(loadShiftPlanItem);
 
         menuFile.add(actionFactory.createSaveEmployees(
                 "Uložit seznam",
